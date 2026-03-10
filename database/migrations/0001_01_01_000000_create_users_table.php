@@ -12,12 +12,34 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
+            // Laravel strongly prefers 'id' over 'user_id' for primary keys. 
+            // Using $table->id() makes establishing database relationships much easier later!
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+
+            $table->string('first_name', 50);
+            $table->string('last_name', 50);
+            $table->string('email', 100)->unique();
+            $table->string('phone', 15)->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->text('address')->nullable();
+            $table->string('city', 50)->nullable();
+            $table->string('state', 50)->nullable();
+            $table->string('postal_code', 10)->nullable();
+
+            $table->enum('role', ['user', 'admin'])->default('user');
+
+            $table->boolean('is_verified')->default(0);
+            $table->string('verification_token')->nullable();
+
+            // Laravel handles password resets in a separate table by default, 
+            // but we can keep your columns here if you prefer your custom logic!
+            $table->string('reset_token')->nullable();
+            $table->dateTime('reset_token_expiry')->nullable();
+
+            $table->string('profile_picture')->nullable();
+            $table->boolean('is_active')->default(1);
+
+            // This automatically creates both your 'created_at' and 'updated_at' timestamp columns
             $table->timestamps();
         });
 
