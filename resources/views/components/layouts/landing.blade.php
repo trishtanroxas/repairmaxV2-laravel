@@ -25,7 +25,7 @@
 
     <x-landing-header />
 
-    <main>
+    <main class="animate-fade-in">
         {{ $slot }}
     </main>
 

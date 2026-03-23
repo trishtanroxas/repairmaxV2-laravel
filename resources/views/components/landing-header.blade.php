@@ -34,12 +34,12 @@
 
             @php
             $navLinks = [
-            ['url' => '/about-us', 'label' => 'About Us'],
-            ['url' => '/services', 'label' => 'Services'],
-            ['url' => '/repairs', 'label' => 'What We Repair'],
-            ['url' => '/faq', 'label' => 'FAQ'],
-            ['url' => '/contact', 'label' => 'Contact'],
-            ['url' => '/login', 'label' => 'Login'],
+            ['url' => route('about'), 'label' => 'About Us'],
+            ['url' => route('services'), 'label' => 'Services'],
+            ['url' => route('repairs'), 'label' => 'What We Repair'],
+            ['url' => route('faq'), 'label' => 'FAQ'],
+            ['url' => route('contact'), 'label' => 'Contact'],
+            ['url' => route('login'), 'label' => 'Login'],
             ];
             @endphp
 

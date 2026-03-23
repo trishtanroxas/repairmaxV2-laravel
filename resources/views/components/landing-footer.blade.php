@@ -44,10 +44,18 @@
             <div>
                 <h3 class="text-sm font-semibold text-gray-100 tracking-wider uppercase mb-4">Account</h3>
                 <ul class="space-y-3 text-sm">
-                    <li><a href="/login" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Log In</a></li>
-                    <li><a href="/register" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Register</a></li>
-                    <li><a href="#" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">My Tickets</a></li>
-                    <li><a href="#" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Billing</a></li>
+                    <li>
+                        <a href="{{ route('login') }}" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Log In</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('register') }}" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Register</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">My Tickets</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Billing</a>
+                    </li>
                 </ul>
             </div>
 
