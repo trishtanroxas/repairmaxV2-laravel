@@ -57,7 +57,7 @@ Route::middleware('guest')->group(function () {
 
     // We name this 'password.request' because Laravel's core auth system looks for this specific name
     Route::get('/forgot-password', ForgotPassword::class)->name('password.request');
-    Route::get('/reset-password', ResetPassword::class)->name('password.reset');
+    Route::get('/reset-password/{token}', ResetPassword::class)->name('password.reset');
 });
 
 

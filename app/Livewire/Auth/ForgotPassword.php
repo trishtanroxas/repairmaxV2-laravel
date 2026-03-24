@@ -7,8 +7,7 @@ use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
@@ -40,37 +39,21 @@ class ForgotPassword extends Component
             ]
         );
 
-        $resetLink = url('/reset-password?token=' . $token . '&email=' . urlencode($this->email));
-
-        $mail = new PHPMailer(true);
+        $resetLink = url('/reset-password/' . $token . '?email=' . urlencode($this->email));
 
         try {
-            $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
-            $mail->SMTPAuth   = true;
-            $mail->Username   = 'repairmaxsample@gmail.com';
-            $mail->Password   = 'mlxg ygtu irzb ottv';
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
+            // 🔥 The Laravel Way: Point to your new blade file and pass the data array
+            Mail::send('emails.forgot-password', ['resetLink' => $resetLink], function ($message) {
+                $message->to($this->email)
+                    ->subject('Reset Your Repairmax Password');
+            });
 
-            $mail->setFrom('repairmaxsample@gmail.com', 'Repairmax Admin');
-            $mail->addAddress($this->email);
-
-            $mail->isHTML(true);
-            $mail->Subject = 'Reset Your Repairmax Password';
-            $mail->Body    = "
-                <h3>Hello!</h3>
-                <p>We received a password reset request for your account.</p>
-                <p><a href='{$resetLink}' style='display:inline-block;padding:10px 20px;background-color:#212529;color:#ffffff;text-decoration:none;border-radius:5px;'>Reset Password</a></p>
-                <p>If you did not request this, please ignore this email.</p>
-            ";
-
-            $mail->send();
-
+            // Trigger the sliding success UI
             $this->isSent = true;
             $this->errorMessage = '';
-        } catch (Exception $e) {
-            $this->errorMessage = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+        } catch (\Exception $e) {
+            // Catch any SMTP errors and show them on the form
+            $this->errorMessage = 'Message could not be sent. Please try again later. Error: ' . $e->getMessage();
         }
     }
 

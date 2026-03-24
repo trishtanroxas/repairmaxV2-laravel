@@ -4,10 +4,12 @@ namespace App\Livewire\Auth;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
+use App\Mail\WelcomeEmail; // 🔥 1. Import your new Mailable class
 
 #[Layout('components.layouts.auth', [
     'heading' => 'Create an account.',
@@ -52,7 +54,10 @@ class Register extends Component
             'password'   => Hash::make($this->password),
         ]);
 
-        // 2. Trigger the success UI
+        // 🔥 2. Send the Branded HTML Welcome Email using the Mailable
+        Mail::to($this->email)->send(new WelcomeEmail($this->first_name));
+
+        // 3. Trigger the success UI
         $this->isRegistered = true;
     }
 

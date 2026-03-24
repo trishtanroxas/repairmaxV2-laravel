@@ -1,19 +1,30 @@
 <div>
     @if($isRegistered)
-    <div class="flex flex-col items-center text-center mt-8">
-        <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-6">
-            <span class="material-symbols-outlined text-3xl text-gray-700">check_circle</span>
+    <div class="flex flex-col items-center text-center mt-8"
+        x-data="{ showSuccess: false }"
+        x-init="setTimeout(() => showSuccess = true, 50)">
+
+        <div x-show="showSuccess"
+            x-transition:enter="transition ease-out duration-700 transform"
+            x-transition:enter-start="opacity-0 translate-y-6"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            class="flex flex-col items-center"
+            x-cloak style="display: none;">
+
+            <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-3xl text-gray-700">check_circle</span>
+            </div>
+
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Account created successfully</h2>
+
+            <p class="text-gray-600 mb-8 max-w-sm">
+                Welcome to Repairmax! Your account for <span class="font-medium text-gray-900">{{ $email }}</span> has been successfully created.
+            </p>
+
+            <a href="/login" wire:navigate class="w-full bg-[#0B1120] text-white font-medium rounded-md px-4 py-3 hover:bg-gray-800 transition-colors shadow-sm block">
+                Return to Log in
+            </a>
         </div>
-
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Account created successfully</h2>
-
-        <p class="text-gray-600 mb-8 max-w-sm">
-            Welcome to Repairmax! Your account for <span class="font-medium text-gray-900">{{ $email }}</span> has been successfully created.
-        </p>
-
-        <a href="/login" wire:navigate class="w-full bg-[#0B1120] text-white font-medium rounded-md px-4 py-3 hover:bg-gray-800 transition-colors shadow-sm block">
-            Return to Log in
-        </a>
     </div>
     @else
     <div class="mb-10 text-center sm:text-left">

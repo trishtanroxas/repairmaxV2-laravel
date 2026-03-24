@@ -28,6 +28,9 @@ class ResetPassword extends Component
 
     public $password_confirmation;
 
+    // 🔥 Added to control the sliding success UI
+    public $isReset = false;
+
     public function mount()
     {
         // Grab the token and email from the URL query string
@@ -63,9 +66,8 @@ class ResetPassword extends Component
         // 4. Delete the token so it can't be used again
         DB::table('password_reset_tokens')->where('email', $this->email)->delete();
 
-        // 5. Flash a success message to the session and redirect to login
-        session()->flash('status', 'Your password has been reset successfully!');
-        return redirect()->route('login');
+        // 🔥 5. Instead of redirecting, trigger the sliding success screen
+        $this->isReset = true;
     }
 
     public function render()
