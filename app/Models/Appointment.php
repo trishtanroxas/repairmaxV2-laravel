@@ -22,6 +22,15 @@ class Appointment extends Model
         'status'
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'pref_date' => 'date',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+        ];
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

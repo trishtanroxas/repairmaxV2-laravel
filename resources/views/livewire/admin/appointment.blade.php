@@ -33,7 +33,7 @@
                             <td class="px-6 py-4"><span class="font-medium text-gray-900">{{ $appointment->device_brand }} {{ $appointment->device_model }}</span></td>
                             <td class="px-6 py-4"><span class="text-gray-600">{{ $appointment->user->getFullName() }}</span></td>
                             <td class="px-6 py-4"><span class="text-gray-600">{{ $appointment->fault_category }}</span></td>
-                            <td class="px-6 py-4"><span class="text-gray-600">{{ $appointment->pref_date->format('M d, Y') }}</span></td>
+                            <td class="px-6 py-4"><span class="text-gray-600">{{ $appointment->pref_date ? $appointment->pref_date->format('M d, Y') : 'N/A' }}</span></td>
                             <td class="px-6 py-4">
                                 @php
                                     $statusColor = match($appointment->status) {
