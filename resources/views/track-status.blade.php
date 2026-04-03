@@ -1,5 +1,5 @@
 <x-layouts.landing title="Track Status | Repairmax">
-    <main class="pt-32 lg:pt-40 pb-16 md:pb-24 min-h-[80vh] flex flex-col justify-center">
+    <main class="pt-32 lg:pt-40 py-16 md:py-24 !pt-40 min-h-[80vh] flex flex-col justify-center">
 
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 fade-in-element">
             <div class="text-center max-w-3xl mx-auto">
@@ -10,7 +10,7 @@
             </div>
         </section>
 
-        <section class="max-w-2xl w-full mx-auto px-4 sm:px-6 lg:px-8 fade-in-element">
+        <section class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 w-full fade-in-element">
             <div class="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-200">
                 <form action="/track-status" method="POST" class="space-y-6">
                     @csrf

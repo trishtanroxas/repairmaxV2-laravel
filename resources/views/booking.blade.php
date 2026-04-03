@@ -1,5 +1,5 @@
 <x-layouts.landing title="Book a Repair | Repairmax">
-    <div class="w-full max-w-3xl mx-auto pt-32 pb-16 px-4 sm:px-6 lg:px-8 animate-fade-in">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 pt-32">
 
         <div class="mb-10 text-center md:text-left">
             <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">

@@ -12,7 +12,7 @@
         </div>
     @endif
 
-    <div class="max-w-3xl">
+    <div>
         <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-100">
                 <h2 class="text-lg font-bold text-gray-900">System Configuration</h2>
@@ -85,5 +85,4 @@
                 </button>
             </div>
         </div>
-    </div>
 </div>

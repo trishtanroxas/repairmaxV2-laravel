@@ -10,10 +10,19 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @livewireStyles
+    <style>
+        .no-transition * {
+            transition: none !important;
+        }
+    </style>
 </head>
 
-<body class="font-sans antialiased text-gray-800 bg-gray-50">
-    <div x-data="{ sidebarOpen: false, sidebarCollapsed: false }"
+<body class="font-sans antialiased text-gray-800 bg-gray-50 no-transition">
+    <div x-data="{ 
+            sidebarOpen: false, 
+            sidebarCollapsed: localStorage.getItem('sidebar-collapsed') === 'true' 
+        }"
+        x-init="$watch('sidebarCollapsed', value => localStorage.setItem('sidebar-collapsed', value))"
         @resize.window="if(window.innerWidth >= 1024) sidebarOpen = false"
         class="min-h-screen flex flex-col">
 
@@ -45,7 +54,7 @@
                 </button>
             </div>
 
-            <nav class="flex-1 overflow-y-auto py-6 space-y-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <nav id="sidebar-nav" class="flex-1 overflow-y-auto py-6 space-y-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 <div class="mb-6">
                     <h3 class="px-6 py-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Main</h3>
                     <x-sidebar.link href="/user/dashboard" icon="dashboard" :active="request()->is('user/dashboard')">Dashboard</x-sidebar.link>
@@ -95,7 +104,7 @@
                 @endauth
 
                 <a href="{{ route('logout') }}" class="flex items-center gap-3 px-3 py-2.5 text-red-400 hover:text-white hover:bg-red-500/20 rounded-lg transition-all duration-200 group">
-                    <span class="material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform">logout</span>
+                    <span class="material-symbols-outlined text-[22px]">logout</span>
                     <span class="font-medium text-sm">Logout</span>
                 </a>
             </div>
@@ -108,7 +117,7 @@
 
                 <button @click="window.innerWidth >= 1024 ? sidebarCollapsed = !sidebarCollapsed : sidebarOpen = !sidebarOpen"
                     class="inline-flex items-center justify-center w-10 h-10 bg-transparent hover:bg-gray-200/50 rounded-lg transition-colors text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 shrink-0">
-                    <span class="material-symbols-outlined text-[26px] transition-transform duration-200 hover:scale-110"
+                    <span class="material-symbols-outlined text-[26px]"
                         x-text="(window.innerWidth >= 1024 ? !sidebarCollapsed : sidebarOpen) ? 'menu_open' : 'menu'">
                     </span>
                 </button>
@@ -123,7 +132,7 @@
         <main :class="{ 'lg:ml-0': sidebarCollapsed, 'lg:ml-64': !sidebarCollapsed }"
             class="pt-20 transition-all duration-300 flex-1 flex flex-col">
 
-            <div class="p-4 md:p-8 animate-fade-in flex-1 w-full max-w-7xl mx-auto">
+            <div class="w-full px-4 sm:px-6 lg:px-8 py-8 flex-1 text-gray-800">
                 {{ $slot }}
             </div>
 
@@ -131,6 +140,28 @@
     </div>
 
     @livewireScripts
+    <script>
+        // Disable transitions on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.remove('no-transition');
+            }, 50);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar-nav');
+            if (!sidebar) return;
+
+            // Restore scroll position
+            const scrollPos = sessionStorage.getItem('sidebar-scroll');
+            if (scrollPos) sidebar.scrollTop = scrollPos;
+
+            // Save scroll position before navigation
+            window.addEventListener('beforeunload', () => {
+                sessionStorage.setItem('sidebar-scroll', sidebar.scrollTop);
+            });
+        });
+    </script>
 </body>
 
 </html>

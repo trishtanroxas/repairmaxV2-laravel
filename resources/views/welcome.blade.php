@@ -72,9 +72,9 @@
         </div>
     </section>
 
-    <section class="py-16 md:py-20 bg-gray-900 border-b border-gray-800">
+    <section class="py-10 md:py-16 bg-gray-900 border-b border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 sm:grid-cols-12 gap-8 text-center divide-y sm:divide-y-0 sm:divide-x divide-gray-700 fade-in-element">
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-6 text-center divide-y sm:divide-y-0 sm:divide-x divide-gray-700 fade-in-element">
                 <div class="sm:col-span-6 lg:col-span-3 flex flex-col items-center justify-center pt-6 sm:pt-0">
                     <span class="material-symbols-outlined text-4xl text-gray-300 mb-3">settings_suggest</span>
                     <span class="text-gray-100 font-bold text-lg mb-1">OEM Quality Parts</span>
@@ -99,14 +99,14 @@
         </div>
     </section>
 
-    <section class="py-20 md:py-28 bg-white">
+    <section class="py-16 md:py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16 fade-in-element">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">A Seamless Digital Process</h2>
                 <p class="text-base md:text-lg text-gray-600 leading-relaxed">We have eliminated the waiting rooms and confusing paperwork. Our streamlined process gets your device back in your hands faster.</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-12 gap-6 md:gap-8 fade-in-element">
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-8 md:gap-12 fade-in-element">
                 <div class="sm:col-span-6 lg:col-span-3 flex flex-col items-center text-center">
                     <div class="w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-full flex items-center justify-center mb-5 border-2 border-gray-300">
                         <span class="text-xl md:text-2xl font-bold text-gray-900">1</span>
@@ -142,7 +142,7 @@
         </div>
     </section>
 
-    <section id="services" class="py-20 md:py-28 bg-gray-100">
+    <section id="services" class="py-16 md:py-24 bg-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-12 md:mb-16 max-w-3xl mx-auto text-center fade-in-element">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Digital Platform Modules</h2>
@@ -208,7 +208,7 @@
                 <p class="text-base md:text-lg text-gray-600 leading-relaxed">We don't just replace parts; we restore your device to its optimal factory condition using industry-leading standards.</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-12 gap-6 md:gap-8 fade-in-element">
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-8 md:gap-12 fade-in-element">
                 <div class="sm:col-span-6 lg:col-span-4 p-6 md:p-8 border border-gray-200 rounded-2xl bg-gray-50">
                     <span class="material-symbols-outlined text-4xl text-gray-900 mb-5 block">memory</span>
                     <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-3">Micro-Soldering Experts</h3>
@@ -230,14 +230,14 @@
         </div>
     </section>
 
-    <section id="repairs" class="py-20 md:py-28 bg-gray-900 border-t border-gray-800">
+    <section id="repairs" class="py-16 md:py-24 bg-gray-900 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-12 md:mb-16 max-w-3xl fade-in-element">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-100 mb-4">What We Can Repair</h2>
                 <p class="text-base md:text-lg text-gray-400 leading-relaxed">Our expert technicians are trained to handle a wide variety of complex hardware and software issues.</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-12 gap-6 md:gap-8 fade-in-element">
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-8 md:gap-10 fade-in-element">
                 <article class="sm:col-span-6 lg:col-span-4 flex flex-col p-6 md:p-8 bg-gray-800 rounded-2xl border border-gray-700 hover:border-gray-500 hover:bg-gray-700 transition-colors duration-300">
                     <div class="flex items-center gap-4 mb-4">
                         <span class="material-symbols-outlined text-gray-300 text-3xl" aria-hidden="true">smartphone</span>
@@ -289,7 +289,7 @@
         </div>
     </section>
 
-    <section id="faq" class="py-20 md:py-28 bg-gray-100">
+    <section id="faq" class="py-16 md:py-24 bg-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-12 md:mb-16 text-center max-w-3xl mx-auto fade-in-element">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>

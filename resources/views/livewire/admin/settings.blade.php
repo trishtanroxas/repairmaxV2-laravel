@@ -13,52 +13,53 @@
     @endif
 
     <!-- Tabs Navigation -->
-    <div x-data="{ activeTab: 'general' }" class="mb-6">
-        <div class="bg-white border-b border-gray-200 rounded-t-2xl overflow-hidden">
-            <div class="flex flex-wrap gap-0 px-6">
-                <button @click="activeTab = 'general'" :class="activeTab === 'general' ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-gray-600 hover:text-gray-900'" class="px-4 py-4 font-medium transition-colors">
-                    <span class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[20px]">business</span>
-                        General
-                    </span>
-                </button>
-                <button @click="activeTab = 'email'" :class="activeTab === 'email' ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-gray-600 hover:text-gray-900'" class="px-4 py-4 font-medium transition-colors">
-                    <span class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[20px]">mail</span>
-                        Email
-                    </span>
-                </button>
-                <button @click="activeTab = 'notifications'" :class="activeTab === 'notifications' ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-gray-600 hover:text-gray-900'" class="px-4 py-4 font-medium transition-colors">
-                    <span class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[20px]">notifications</span>
-                        Notifications
-                    </span>
-                </button>
-                <button @click="activeTab = 'payment'" :class="activeTab === 'payment' ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-gray-600 hover:text-gray-900'" class="px-4 py-4 font-medium transition-colors">
-                    <span class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[20px]">payment</span>
-                        Payment
-                    </span>
-                </button>
-                <button @click="activeTab = 'hours'" :class="activeTab === 'hours' ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-gray-600 hover:text-gray-900'" class="px-4 py-4 font-medium transition-colors">
-                    <span class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[20px]">schedule</span>
-                        Hours
-                    </span>
-                </button>
-                <button @click="activeTab = 'security'" :class="activeTab === 'security' ? 'border-b-2 border-blue-600 text-blue-600' : 'border-b-2 border-transparent text-gray-600 hover:text-gray-900'" class="px-4 py-4 font-medium transition-colors">
-                    <span class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[20px]">security</span>
-                        Security
-                    </span>
-                </button>
-            </div>
+    <div x-data="{ activeTab: 'general' }" class="space-y-6">
+        <div class="bg-white p-1.5 rounded-2xl border border-gray-200 shadow-sm inline-flex flex-wrap gap-1">
+            <button @click="activeTab = 'general'" 
+                :class="activeTab === 'general' ? 'bg-gray-900 text-white shadow-md' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'" 
+                class="px-5 py-2.5 rounded-xl font-bold transition-all duration-200 flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-[20px]">business</span>
+                General
+            </button>
+            <button @click="activeTab = 'email'" 
+                :class="activeTab === 'email' ? 'bg-gray-900 text-white shadow-md' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'" 
+                class="px-5 py-2.5 rounded-xl font-bold transition-all duration-200 flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-[20px]">mail</span>
+                Email
+            </button>
+            <button @click="activeTab = 'notifications'" 
+                :class="activeTab === 'notifications' ? 'bg-gray-900 text-white shadow-md' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'" 
+                class="px-5 py-2.5 rounded-xl font-bold transition-all duration-200 flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-[20px]">notifications</span>
+                Notifications
+            </button>
+            <button @click="activeTab = 'payment'" 
+                :class="activeTab === 'payment' ? 'bg-gray-900 text-white shadow-md' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'" 
+                class="px-5 py-2.5 rounded-xl font-bold transition-all duration-200 flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-[20px]">payment</span>
+                Payment
+            </button>
+            <button @click="activeTab = 'hours'" 
+                :class="activeTab === 'hours' ? 'bg-gray-900 text-white shadow-md' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'" 
+                class="px-5 py-2.5 rounded-xl font-bold transition-all duration-200 flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-[20px]">schedule</span>
+                Hours
+            </button>
+            <button @click="activeTab = 'security'" 
+                :class="activeTab === 'security' ? 'bg-gray-900 text-white shadow-md' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'" 
+                class="px-5 py-2.5 rounded-xl font-bold transition-all duration-200 flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-[20px]">security</span>
+                Security
+            </button>
         </div>
 
         <!-- General Settings Tab -->
-        <div x-show="activeTab === 'general'" class="bg-white rounded-b-2xl border border-t-0 border-gray-200 p-6 space-y-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-6">Business Information</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div x-show="activeTab === 'general'" class="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm space-y-8">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900">Business Information</h2>
+                <p class="text-gray-500 text-sm mt-1">Basic identification and contact details for your business.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Business Name</label>
                     <input type="text" wire:model="businessName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
@@ -75,32 +76,23 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Website</label>
                     <input type="url" wire:model="businessWebsite" placeholder="https://example.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                 </div>
-                <div class="md:col-span-2">
+                <div class="lg:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
-                    <input type="text" wire:model="businessAddress" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">City</label>
-                    <input type="text" wire:model="businessCity" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">State/Province</label>
-                    <input type="text" wire:model="businessState" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Zip/Postal Code</label>
-                    <input type="text" wire:model="businessZipCode" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                    <input type="text" wire:model="businessAddress" placeholder="e.g., 123 Tech Lane" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
                 </div>
             </div>
-            <div class="pt-4 border-t border-gray-200 flex justify-end">
-                <button wire:click="saveGeneralSettings" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-colors">Save Changes</button>
+            <div class="pt-6 border-t border-gray-100 flex justify-end">
+                <button wire:click="saveGeneralSettings" class="px-8 py-2.5 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-all shadow-md active:scale-95">Save Changes</button>
             </div>
         </div>
 
         <!-- Email Settings Tab -->
-        <div x-show="activeTab === 'email'" class="bg-white rounded-b-2xl border border-t-0 border-gray-200 p-6 space-y-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-6">Email Configuration</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div x-show="activeTab === 'email'" class="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm space-y-8">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900">Email Configuration</h2>
+                <p class="text-gray-500 text-sm mt-1">Configure SMTP settings for system outgoing emails.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">SMTP Host</label>
                     <input type="text" wire:model="smtpHost" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
@@ -117,22 +109,28 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">From Name</label>
                     <input type="text" wire:model="emailFromName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                 </div>
-                <div class="md:col-span-2">
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" wire:model="emailNotificationsEnabled" class="w-5 h-5 border-gray-300 rounded focus:ring-2 focus:ring-blue-500" />
-                        <span class="text-sm font-medium text-gray-700">Enable Email Notifications</span>
+                <div class="lg:col-span-2">
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <div class="relative">
+                            <input type="checkbox" wire:model="emailNotificationsEnabled" class="sr-only peer" />
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </div>
+                        <span class="text-sm font-bold text-gray-700 group-hover:text-gray-900 transition-colors">Enable Email Notifications</span>
                     </label>
                 </div>
             </div>
-            <div class="pt-4 border-t border-gray-200 flex justify-end">
-                <button wire:click="saveEmailSettings" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-colors">Save Changes</button>
+            <div class="pt-6 border-t border-gray-100 flex justify-end">
+                <button wire:click="saveEmailSettings" class="px-8 py-2.5 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-all shadow-md active:scale-95">Save Changes</button>
             </div>
         </div>
 
         <!-- Notifications Settings Tab -->
-        <div x-show="activeTab === 'notifications'" class="bg-white rounded-b-2xl border border-t-0 border-gray-200 p-6 space-y-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-6">Notification Preferences</h2>
-            <div class="space-y-4">
+        <div x-show="activeTab === 'notifications'" class="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm space-y-8">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900">Notification Preferences</h2>
+                <p class="text-gray-500 text-sm mt-1">Control how and when you receive system alerts.</p>
+            </div>
+            <div class="space-y-6 max-w-2xl">
                 <label class="flex items-center gap-3 cursor-pointer">
                     <input type="checkbox" wire:model="appointmentReminders" class="w-5 h-5 border-gray-300 rounded focus:ring-2 focus:ring-blue-500" />
                     <span class="text-sm font-medium text-gray-700">Send Appointment Reminders</span>
@@ -147,30 +145,42 @@
                         <option value="48">48 hours</option>
                     </select>
                 </div>
-                <label class="flex items-center gap-3 cursor-pointer mt-4">
-                    <input type="checkbox" wire:model="statusUpdateNotifications" class="w-5 h-5 border-gray-300 rounded focus:ring-2 focus:ring-blue-500" />
-                    <span class="text-sm font-medium text-gray-700">Send Status Update Notifications</span>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                    <div class="relative">
+                        <input type="checkbox" wire:model="statusUpdateNotifications" class="sr-only peer" />
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </div>
+                    <span class="text-sm font-bold text-gray-700 group-hover:text-gray-900 transition-colors">Send Status Update Notifications</span>
                 </label>
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" wire:model="adminAlerts" class="w-5 h-5 border-gray-300 rounded focus:ring-2 focus:ring-blue-500" />
-                    <span class="text-sm font-medium text-gray-700">Send Admin Alerts for New Orders</span>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                    <div class="relative">
+                        <input type="checkbox" wire:model="adminAlerts" class="sr-only peer" />
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </div>
+                    <span class="text-sm font-bold text-gray-700 group-hover:text-gray-900 transition-colors">Send Admin Alerts for New Orders</span>
                 </label>
             </div>
-            <div class="pt-4 border-t border-gray-200 flex justify-end">
-                <button wire:click="saveNotificationSettings" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-colors">Save Changes</button>
+            <div class="pt-6 border-t border-gray-100 flex justify-end">
+                <button wire:click="saveNotificationSettings" class="px-8 py-2.5 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-all shadow-md active:scale-95">Save Changes</button>
             </div>
         </div>
 
         <!-- Payment Settings Tab -->
-        <div x-show="activeTab === 'payment'" class="bg-white rounded-b-2xl border border-t-0 border-gray-200 p-6 space-y-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-6">Payment Gateway Configuration</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div x-show="activeTab === 'payment'" class="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm space-y-8">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900">Payment Configuration</h2>
+                <p class="text-gray-500 text-sm mt-1">Manage your payment gateways and currency settings.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Payment Gateway</label>
-                    <select wire:model="paymentGateway" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                        <option value="stripe">Stripe</option>
-                        <option value="paypal">PayPal</option>
-                    </select>
+                    <div class="relative">
+                        <select wire:model="paymentGateway" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white">
+                            <option value="stripe">Stripe</option>
+                            <option value="paypal">PayPal</option>
+                        </select>
+                        <span class="material-symbols-outlined absolute left-3 top-2.5 text-gray-400 text-sm">payments</span>
+                    </div>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Currency Code</label>
@@ -181,42 +191,47 @@
                     <input type="number" wire:model="taxPercentage" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                 </div>
             </div>
-            <div class="pt-4 border-t border-gray-200 flex justify-end">
-                <button wire:click="savePaymentSettings" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-colors">Save Changes</button>
+            <div class="pt-6 border-t border-gray-100 flex justify-end">
+                <button wire:click="savePaymentSettings" class="px-8 py-2.5 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-all shadow-md active:scale-95">Save Changes</button>
             </div>
         </div>
 
         <!-- Business Hours Tab -->
-        <div x-show="activeTab === 'hours'" class="bg-white rounded-b-2xl border border-t-0 border-gray-200 p-6 space-y-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-6">Business Operating Hours</h2>
-            <div class="space-y-4">
+        <div x-show="activeTab === 'hours'" class="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm space-y-8">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900">Business Operating Hours</h2>
+                <p class="text-gray-500 text-sm mt-1">Set your standard opening and closing times for each day.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @foreach(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
-                    <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-                        <label class="w-24 text-sm font-medium text-gray-700 capitalize">{{ $day }}</label>
-                        <input type="time" wire:model="{{ $day }}Open" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" />
-                        <span class="text-gray-500">to</span>
-                        <input type="time" wire:model="{{ $day }}Close" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" />
-                        @if($day === 'sunday')
-                            <span class="text-xs text-gray-500 ml-2">(Leave empty if closed)</span>
-                        @endif
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-transparent hover:border-gray-200 hover:bg-white transition-all duration-200">
+                        <label class="w-24 text-sm font-bold text-gray-700 capitalize">{{ $day }}</label>
+                        <div class="flex items-center gap-3">
+                            <input type="time" wire:model="{{ $day }}Open" class="px-3 py-1.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm bg-white" />
+                            <span class="text-gray-400 font-medium text-xs">to</span>
+                            <input type="time" wire:model="{{ $day }}Close" class="px-3 py-1.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 text-sm bg-white" />
+                        </div>
                     </div>
                 @endforeach
             </div>
-            <div class="pt-4 border-t border-gray-200 flex justify-end">
-                <button wire:click="saveBusinessHours" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-colors">Save Changes</button>
+            <div class="pt-6 border-t border-gray-100 flex justify-end">
+                <button wire:click="saveBusinessHours" class="px-8 py-2.5 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-all shadow-md active:scale-95">Save Changes</button>
             </div>
         </div>
 
         <!-- Security Settings Tab -->
-        <div x-show="activeTab === 'security'" class="bg-white rounded-b-2xl border border-t-0 border-gray-200 p-6 space-y-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-6">Security Configuration</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div x-show="activeTab === 'security'" class="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm space-y-8">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900">Security Configuration</h2>
+                <p class="text-gray-500 text-sm mt-1">Enhance your application security with advanced authentication rules.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Minimum Password Length</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Min Password Length</label>
                     <input type="number" wire:model="passwordMinLength" min="6" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Session Timeout (minutes)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Session Timeout (min)</label>
                     <input type="number" wire:model="sessionTimeout" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                 </div>
                 <div>
@@ -228,23 +243,34 @@
                     <input type="number" wire:model="passwordExpireDays" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                 </div>
             </div>
-            <div class="space-y-3 py-4 border-y border-gray-200">
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" wire:model="passwordRequireNumbers" class="w-5 h-5 border-gray-300 rounded focus:ring-2 focus:ring-blue-500" />
-                    <span class="text-sm font-medium text-gray-700">Require numbers in passwords</span>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 py-8 border-y border-gray-100">
+                <label class="flex items-center gap-3 cursor-pointer group">
+                    <div class="relative">
+                        <input type="checkbox" wire:model="passwordRequireNumbers" class="sr-only peer" />
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </div>
+                    <span class="text-sm font-bold text-gray-700 group-hover:text-gray-900 transition-colors">Require numbers</span>
                 </label>
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" wire:model="passwordRequireSpecialChars" class="w-5 h-5 border-gray-300 rounded focus:ring-2 focus:ring-blue-500" />
-                    <span class="text-sm font-medium text-gray-700">Require special characters in passwords</span>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                    <div class="relative">
+                        <input type="checkbox" wire:model="passwordRequireSpecialChars" class="sr-only peer" />
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </div>
+                    <span class="text-sm font-bold text-gray-700 group-hover:text-gray-900 transition-colors">Require special characters</span>
                 </label>
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" wire:model="twoFactorAuthRequired" class="w-5 h-5 border-gray-300 rounded focus:ring-2 focus:ring-blue-500" />
-                    <span class="text-sm font-medium text-gray-700">Require 2-Factor Authentication for admin accounts</span>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                    <div class="relative">
+                        <input type="checkbox" wire:model="twoFactorAuthRequired" class="sr-only peer" />
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </div>
+                    <span class="text-sm font-bold text-gray-700 group-hover:text-gray-900 transition-colors">Require 2FA for Admins</span>
                 </label>
             </div>
-            <div class="pt-4 border-t border-gray-200 flex justify-end">
-                <button wire:click="saveSecuritySettings" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-colors">Save Changes</button>
+            <div class="pt-6 flex justify-end">
+                <button wire:click="saveSecuritySettings" class="px-8 py-2.5 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-all shadow-md active:scale-95">Save Changes</button>
             </div>
         </div>
+    </div>
+</div>
     </div>
 </div>

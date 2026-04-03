@@ -78,8 +78,8 @@
                 Change Password
             </h2>
         </div>
-        <div class="p-6 max-w-md">
-            <div class="space-y-4">
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
                     <input type="password" placeholder="Enter current password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
@@ -92,7 +92,9 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
                     <input type="password" placeholder="Confirm new password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                 </div>
-                <button class="w-full px-6 py-2 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-800 transition-colors mt-4">Update Password</button>
+            </div>
+            <div class="flex justify-start mt-6">
+                <button class="px-6 py-2 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-800 transition-colors">Update Password</button>
             </div>
         </div>
     </div>

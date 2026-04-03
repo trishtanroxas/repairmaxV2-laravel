@@ -22,7 +22,7 @@
 
     <main class="min-h-screen flex flex-col lg:flex-row">
 
-        <div class="hidden lg:flex lg:w-5/12 bg-gray-900 text-gray-100 p-16 flex-col justify-between sticky top-0 h-screen items-start">
+        <div class="hidden lg:flex lg:w-5/12 bg-gray-900 text-gray-100 p-12 lg:p-16 flex-col justify-between sticky top-0 h-screen items-start">
             <div>
                 <h1 class="text-3xl font-bold tracking-tight text-white">Repairmax</h1>
             </div>
@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <div class="w-full lg:w-7/12 flex flex-col justify-center p-8 pt-24 sm:p-12 sm:pt-28 lg:p-24 relative min-h-screen bg-gray-50">
+        <div class="w-full lg:w-7/12 flex flex-col justify-center px-4 sm:px-8 lg:px-16 py-12 lg:py-24 relative min-h-screen bg-gray-50">
 
             <div class="absolute top-6 left-6 sm:top-10 sm:left-10 lg:top-16 lg:left-24">
                 <a href="/" class="inline-flex items-center gap-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">

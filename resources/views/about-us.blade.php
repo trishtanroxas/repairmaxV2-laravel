@@ -1,5 +1,5 @@
 <x-layouts.landing title="About Us | Repairmax">
-    <main class="pt-32 lg:pt-40 pb-16 md:pb-24">
+    <main class="pt-32 lg:pt-40 py-16 md:py-24 !pt-40">
 
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 md:mb-24 fade-in-element">
             <div class="text-center max-w-3xl mx-auto">
@@ -48,7 +48,7 @@
             </div>
         </section>
 
-        <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-element">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-element">
             <div class="bg-gray-900 rounded-3xl p-8 md:p-12 text-center shadow-xl border border-gray-800">
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-100 mb-4">Experience the Difference Today</h2>
                 <p class="text-gray-400 mb-8 max-w-2xl mx-auto text-base md:text-lg">
