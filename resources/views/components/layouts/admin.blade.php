@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @livewireStyles
     <style>
         .no-transition * {
@@ -78,6 +77,11 @@
                 <div class="mb-6">
                     <h3 class="px-6 py-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Users</h3>
                     <x-sidebar.link href="/admin/user-management" icon="group" :active="request()->is('admin/user-management')">User Management</x-sidebar.link>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="px-6 py-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Notifications</h3>
+                    <x-sidebar.link href="{{ route('admin.notifications') }}" icon="notifications" :active="request()->routeIs('admin.notifications')">Notifications</x-sidebar.link>
                 </div>
 
                 <div class="mb-6">

@@ -40,6 +40,7 @@ class User extends Authenticatable
         'reset_token_expiry',
         'profile_picture',
         'is_active',
+        'remember_token',
     ];
 
     /**
@@ -69,13 +70,60 @@ class User extends Authenticatable
             'reset_token_expiry' => 'datetime',
         ];
     }
-    // Add this method inside your User class!
+    // Relationships
     public function repairs()
     {
         return $this->hasMany(Repair::class);
     }
+
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    public function adminProfile()
+    {
+        return $this->hasOne(AdminProfile::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function sentNotifications()
+    {
+        return $this->hasMany(Notification::class, 'admin_id');
+    }
+
+    public function activityLogs()
+    {
+        return $this->hasMany(AdminActivityLog::class, 'admin_id');
+    }
+
+    // Helper methods
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isUser()
+    {
+        return $this->role === 'user';
+    }
+
+    public function getFullName()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function getUnreadNotificationsCount()
+    {
+        return $this->notifications()->where('is_read', false)->count();
     }
 }

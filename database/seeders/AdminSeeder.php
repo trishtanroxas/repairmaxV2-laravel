@@ -15,7 +15,7 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         // Create the pre-created admin account
-        User::create([
+        $user = User::create([
             'first_name' => 'Admin',
             'last_name' => 'Repairmax',
             'email' => 'repairmaxsample@gmail.com',
@@ -28,6 +28,15 @@ class AdminSeeder extends Seeder
             'role' => 'admin', // Set role as admin
             'is_verified' => 1, // Admin is verified
             'is_active' => 1, // Admin is active
+        ]);
+
+        // Create admin profile
+        $user->adminProfile()->create([
+            'admin_level' => 'super_admin',
+            'department' => 'Management',
+            'job_title' => 'System Administrator',
+            'permissions' => ['all'],
+            'notes' => 'Default super admin account created during installation',
         ]);
     }
 }

@@ -33,6 +33,7 @@ use App\Livewire\Admin\AppointmentManagement;
 use App\Livewire\Admin\Inventory;
 use App\Livewire\Admin\InventoryManagement;
 use App\Livewire\Admin\UserManagement;
+use App\Livewire\Admin\AdminNotifications;
 use App\Livewire\Admin\Messages;
 use App\Livewire\Admin\MessagesSupport;
 use App\Livewire\Admin\Reports;
@@ -148,6 +149,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     // Users
     Route::get('/user-management', UserManagement::class)->name('user-management');
+    Route::get('/notifications', AdminNotifications::class)->name('notifications');
     
     // Messages & Support
     Route::get('/messages', Messages::class)->name('messages');

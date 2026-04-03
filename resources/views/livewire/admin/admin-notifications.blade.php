@@ -1,4 +1,4 @@
-<div class="w-full max-w-5xl mx-auto">
+<div class="w-full">
 
     <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -9,12 +9,14 @@
                     <span class="ml-2 inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 rounded-full">{{ $unreadCount }}</span>
                 @endif
             </h1>
-            <p class="text-gray-500 mt-1">Stay updated on your repair status, appointments, and messages.</p>
+            <p class="text-gray-500 mt-1">System alerts and important updates.</p>
         </div>
 
         <div class="flex gap-2">
+            <input type="text" wire:model.live="search" placeholder="Search notifications..." 
+                class="px-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500" />
             <select wire:model.live="filterRead" class="px-4 py-2 border border-gray-200 text-gray-700 rounded-lg font-bold shadow-sm hover:bg-gray-50">
-                <option value="all">All Notifications</option>
+                <option value="all">All</option>
                 <option value="unread">Unread</option>
                 <option value="read">Read</option>
             </select>
@@ -38,6 +40,12 @@
                         <span class="text-xs text-gray-400 font-medium whitespace-nowrap">{{ $notification->created_at->diffForHumans() }}</span>
                     </div>
                     <p class="text-sm text-gray-600">{{ $notification->message }}</p>
+                    @if($notification->related_model && $notification->related_id)
+                        <p class="text-xs text-gray-500 mt-2">
+                            <span class="font-medium">Type:</span> {{ ucfirst(str_replace('_', ' ', $notification->related_model)) }} 
+                            <span class="font-medium">ID:</span> {{ $notification->related_id }}
+                        </p>
+                    @endif
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
                     @if(!$notification->is_read)
@@ -55,8 +63,8 @@
                 <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100">
                     <span class="material-symbols-outlined text-4xl text-gray-300">notifications_paused</span>
                 </div>
-                <h3 class="text-lg font-bold text-gray-900">You're all caught up!</h3>
-                <p class="text-sm mt-1">Check back later for updates on your repairs.</p>
+                <h3 class="text-lg font-bold text-gray-900">No notifications</h3>
+                <p class="text-sm mt-1">You're all caught up with notifications.</p>
             </div>
             @endforelse
         </div>

@@ -15,11 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Call the AdminSeeder to create the pre-created admin account
+        // Call seeders in order
         $this->call([
             AdminSeeder::class,
+            UserSeeder::class,
             SettingSeeder::class,
-            \Database\Seeders\InventoryItemSeeder::class,
+            InventoryItemSeeder::class,
+            RepairSeeder::class,
+            AppointmentSeeder::class,
+            NotificationSeeder::class,
         ]);
     }
 }
