@@ -1,4 +1,28 @@
 <div class="w-full">
+    {{-- Custom Alpine Toast --}}
+    @if (session('success'))
+        <div x-data="{ show: true }" 
+            x-init="setTimeout(() => show = false, 5000)" 
+            x-show="show" 
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 -translate-y-4"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-4"
+            class="fixed top-6 left-1/2 -translate-x-1/2 z-[200] max-w-sm w-full bg-white border border-blue-100 shadow-2xl rounded-2xl p-4 flex items-center gap-4 border-l-4 border-l-blue-500">
+            <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[20px]">check_circle</span>
+            </div>
+            <div class="flex-1">
+                <h4 class="text-sm font-bold text-gray-900 leading-none">Booking Confirmed!</h4>
+                <p class="text-[11px] text-gray-500 mt-1.5 leading-snug">{{ session('success') }}</p>
+            </div>
+            <button @click="show = false" class="text-gray-300 hover:text-gray-500 shrink-0">
+                <span class="material-symbols-outlined text-[18px]">close</span>
+            </button>
+        </div>
+    @endif
 
     <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>

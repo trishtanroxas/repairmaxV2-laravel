@@ -29,7 +29,7 @@ class AppointmentSeeder extends Seeder
                     'device_model' => $models[array_rand($models)],
                     'fault_category' => $faultCategories[array_rand($faultCategories)],
                     'description' => 'Device needs repair and assessment.',
-                    'photo_path' => null,
+                    'photo_paths' => null,
                     'pref_date' => now()->addDays(rand(1, 30))->format('Y-m-d'),
                     'pref_time' => rand(9, 17) . ':00',
                     'status' => $statuses[array_rand($statuses)],

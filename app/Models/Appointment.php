@@ -16,7 +16,7 @@ class Appointment extends Model
         'device_model',
         'fault_category',
         'description',
-        'photo_path',
+        'photo_paths',
         'pref_date',
         'pref_time',
         'status'
@@ -26,6 +26,7 @@ class Appointment extends Model
     {
         return [
             'pref_date' => 'date',
+            'photo_paths' => 'array',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];

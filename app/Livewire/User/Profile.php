@@ -30,6 +30,7 @@ class Profile extends Component
     public $city = '';
     public $province = '';
     public $country = 'PH';
+    public $birthdate = '';
 
     // Photo Upload & Cropping
     public $profile_picture;
@@ -60,18 +61,24 @@ class Profile extends Component
         $this->province = $user->state ?? ''; // Assuming DB column is 'state'
         $this->country = $user->country ?? 'PH';
 
-        $this->bio = $user->bio ?? '';
-        $this->gender = $user->gender ?? '';
-
-        if ($user->date_of_birth) {
-            try {
-                $this->age = \Carbon\Carbon::parse($user->date_of_birth)->diffInYears(now());
-            } catch (\Exception $e) {
-                $this->age = '';
-            }
-        }
-
+        $this->birthdate = $user->date_of_birth ? $user->date_of_birth->format('Y-m-d') : '';
+        $this->age = $this->calculateAge($this->birthdate);
         $this->current_profile_picture = $user->profile_picture;
+    }
+
+    public function updatedBirthdate($value)
+    {
+        $this->age = $this->calculateAge($value);
+    }
+
+    private function calculateAge($birthdate)
+    {
+        if (!$birthdate) return '';
+        try {
+            return (int) \Carbon\Carbon::parse($birthdate)->diffInYears(now());
+        } catch (\Exception $e) {
+            return '';
+        }
     }
 
     public function handleCroppedImage($base64Data)
@@ -115,7 +122,8 @@ class Profile extends Component
             'state' => $this->province,
             'country' => $this->country,
             'bio' => $this->bio,
-            'gender' => $this->gender,
+            'gender' => $this->gender ?: null, // Fix truncation error by sending null if empty
+            'date_of_birth' => $this->birthdate ?: null,
         ];
 
         if ($this->age) {
@@ -174,18 +182,23 @@ class Profile extends Component
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        if ($user->profile_picture) {
-            Storage::disk('public')->delete($user->profile_picture);
+        try {
+            if ($user->profile_picture) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+
+            $user->delete();
+
+            Auth::logout();
+            session()->invalidate();
+            session()->regenerateToken();
+
+            session()->flash('info', 'Your account has been deleted.');
+            $this->redirectRoute('login', navigate: true);
+        } catch (\Exception $e) {
+            $this->dispatch('toast', message: 'Cannot delete account. You have active associations (appointments/repairs).', type: 'error');
+            // We ensure we close the modal and update UI
         }
-
-        $user->delete();
-
-        Auth::logout();
-        session()->invalidate();
-        session()->regenerateToken();
-
-        session()->flash('info', 'Your account has been deleted.');
-        return redirect()->route('login');
     }
 
     public function render()
