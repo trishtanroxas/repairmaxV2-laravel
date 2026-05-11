@@ -8,6 +8,7 @@ use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Livewire\WithFileUploads;
 
 #[Layout('components.layouts.admin')]
@@ -129,7 +130,7 @@ class Profile extends Component
             session()->flash('success', 'Profile picture updated successfully!');
             $this->dispatch('refresh-page');
         } catch (\Exception $e) {
-            \Log::error('Profile picture error: ' . $e->getMessage());
+            Log::error('Profile picture error: ' . $e->getMessage());
             session()->flash('error', 'Failed to update profile picture: ' . $e->getMessage());
         }
     }

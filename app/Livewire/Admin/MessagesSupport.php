@@ -5,16 +5,17 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use App\Models\Message;
 
 #[Layout('components.layouts.admin')]
 #[Title('Support Tickets | Repairmax')]
 class MessagesSupport extends Component
 {
-    public $selectedMessage = null;
+    public ?Message $selectedMessage = null;
 
-    public function viewMessage($id)
+    public function viewMessage(int|string $id)
     {
-        $this->selectedMessage = \App\Models\Message::with('user')->find($id);
+        $this->selectedMessage = Message::with('user')->find($id);
         
         if ($this->selectedMessage && !$this->selectedMessage->admin_read) {
             $this->selectedMessage->update([
@@ -29,7 +30,7 @@ class MessagesSupport extends Component
     public function render()
     {
         return view('livewire.admin.messages-support', [
-            'tickets' => \App\Models\Message::with('user')->latest()->get()
+            'tickets' => Message::with('user')->latest()->get()
         ]);
     }
 }
