@@ -83,7 +83,10 @@ Route::post('/help/track', function (Request $request) {
     $ticketId = $request->input('ticket_id');
     $email = $request->input('email');
     
-    $appointment = \App\Models\Appointment::where('tracking_code', $ticketId)
+    $appointment = \App\Models\Appointment::where(function ($query) use ($ticketId) {
+            $query->where('tracking_code', $ticketId)
+                  ->orWhere('booking_number', $ticketId);
+        })
         ->whereHas('user', function ($query) use ($email) {
             $query->where('email', $email);
         })->first();

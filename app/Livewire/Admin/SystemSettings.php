@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Illuminate\Support\Facades\Session;
 
 #[Layout('components.layouts.admin')]
 #[Title('System Settings | Repairmax')]
@@ -34,7 +35,7 @@ class SystemSettings extends Component
 
     public function saveSettings()
     {
-        session()->flash('success', 'System settings updated successfully!');
+        Session::flash('success', 'System settings updated successfully!');
     }
 
     public function render()

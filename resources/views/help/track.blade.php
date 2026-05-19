@@ -5,7 +5,7 @@
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
             <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">Track Your Repair</h1>
             <p class="text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                Enter your unique repair ticket ID and email address below to get real-time tracking updates and technician reports.
+                Enter your Booking Reference Number or Repair Ticket ID and email address below to get real-time tracking updates and technician reports.
             </p>
         </section>
 
@@ -18,12 +18,12 @@
                     @csrf
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Repair Ticket ID</label>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Booking Reference or Repair Ticket ID</label>
                             <div class="relative group">
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                     <span class="material-symbols-outlined text-gray-400 group-focus-within:text-gray-900 transition-colors">tag</span>
                                 </div>
-                                <input type="text" name="ticket_id" placeholder="e.g. RPR-664654F7" value="{{ $ticket_id ?? '' }}" required 
+                                <input type="text" name="ticket_id" placeholder="e.g. BK-20260519-00001 or RM-20260519-00001" value="{{ $ticket_id ?? '' }}" required 
                                     class="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all text-sm shadow-sm">
                             </div>
                         </div>
@@ -58,9 +58,19 @@
                 @if(isset($appointment))
                 <div class="mt-12 pt-10 border-t border-gray-200 fade-in-element">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-                        <div>
-                            <span class="text-xs font-black uppercase tracking-widest text-gray-400">Order Information</span>
-                            <h3 class="text-xl font-bold text-gray-900 mt-1">Ticket #{{ $appointment->tracking_code }}</h3>
+                        <div class="flex flex-col sm:flex-row gap-x-8 gap-y-4">
+                            @if($appointment->tracking_code)
+                            <div>
+                                <span class="text-[10px] uppercase font-black tracking-widest text-blue-500 block">Booking Reference Number</span>
+                                <h3 class="text-lg font-black text-gray-900 mt-0.5">{{ $appointment->tracking_code }}</h3>
+                            </div>
+                            @endif
+                            @if($appointment->booking_number)
+                            <div>
+                                <span class="text-[10px] uppercase font-black tracking-widest text-indigo-500 block">Repair Ticket ID</span>
+                                <h3 class="text-lg font-black text-gray-900 mt-0.5">{{ $appointment->booking_number }}</h3>
+                            </div>
+                            @endif
                         </div>
                         <div class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider inline-block w-fit
                             @if($appointment->status === 'Completed') bg-green-50 text-green-700 border border-green-200

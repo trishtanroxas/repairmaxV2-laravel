@@ -12,6 +12,7 @@ class Appointment extends Model
     protected $fillable = [
         'user_id',
         'tracking_code',
+        'booking_number',
         'device_brand',
         'device_model',
         'fault_category',

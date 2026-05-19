@@ -230,6 +230,18 @@
 
             <!-- Modal Content (Scrollable) -->
             <div class="p-8 overflow-y-auto space-y-6">
+                <!-- Reference Codes Grid (Logistics vs Substance) -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-50/30 border border-blue-100/50 rounded-[1.25rem] p-4 text-left">
+                        <span class="text-[9px] uppercase font-black tracking-widest text-blue-600 block">Booking Reference Number</span>
+                        <span class="text-sm md:text-base font-black text-blue-900 mt-1 block">{{ $tracking_code }}</span>
+                    </div>
+                    <div class="bg-indigo-50/30 border border-indigo-100/50 rounded-[1.25rem] p-4 text-left">
+                        <span class="text-[9px] uppercase font-black tracking-widest text-indigo-600 block">Repair Ticket ID</span>
+                        <span class="text-sm md:text-base font-black text-indigo-900 mt-1 block">{{ $booking_number }}</span>
+                    </div>
+                </div>
+
                 <!-- Personal details section -->
                 <div class="bg-gray-50 rounded-[1.5rem] p-5 border border-gray-100">
                     <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
@@ -376,13 +388,21 @@
                         </div>
                     </div>
 
-                    <!-- Warning Disclaimer Label -->
                     <div class="mt-5 p-3.5 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2.5">
                         <span class="material-symbols-outlined text-amber-600 text-[18px] shrink-0 mt-0.5 animate-pulse">warning</span>
                         <div class="text-xs text-amber-800 leading-relaxed font-semibold">
                             <strong class="font-black uppercase tracking-wider block mb-1">Pricing Notice (Subject to Final Inspection)</strong>
                             This estimated total is not complete. The final cost will be determined after a technical diagnostic check of your device's actual condition. Additional fees may apply for secondary issues (e.g. internal hardware damages, bloated battery, water exposure) discovered during the repair process.
                         </div>
+                    </div>
+                </div>
+
+                <!-- Email Active & Inbox Notice -->
+                <div class="p-4 bg-blue-50 border border-blue-100 rounded-[1.25rem] flex items-start gap-3 shadow-sm shadow-blue-50/50">
+                    <span class="material-symbols-outlined text-blue-600 text-[20px] shrink-0 mt-0.5">mail</span>
+                    <div class="text-xs text-blue-800 leading-relaxed font-medium">
+                        <strong class="font-black uppercase tracking-wider block mb-1">Active Email & Inbox Verification Required</strong>
+                        Please ensure your email (<span class="font-bold underline text-blue-900">{{ $email }}</span>) is active and correct. A detailed booking receipt and repair tracking credentials will be sent directly to your inbox. Please check your Inbox (and Spam/Junk folder) shortly.
                     </div>
                 </div>
             </div>
@@ -530,6 +550,17 @@
                         <label for="phone" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Phone Number <span class="text-red-500">*</span></label>
                         <input type="tel" id="phone" wire:model="phone" placeholder="e.g. (555) 123-4567" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
                         @error('phone') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Create Account Checkbox Option -->
+                    <div class="col-span-1 md:col-span-2 mt-2">
+                        <label class="flex items-start gap-3 p-4 rounded-2xl border border-gray-100 bg-gray-50/30 hover:bg-gray-50/60 cursor-pointer transition-all">
+                            <input type="checkbox" wire:model="create_account" class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-0.5">
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold text-gray-900">Register a customer account with these details</span>
+                                <span class="text-xs text-gray-500 mt-0.5">Recommended. Checking this will register your profile in our system, allowing you to access a personalized customer dashboard to track active repairs, view invoice history, and manage multiple booking requests.</span>
+                            </div>
+                        </label>
                     </div>
                 </div>
             </section>

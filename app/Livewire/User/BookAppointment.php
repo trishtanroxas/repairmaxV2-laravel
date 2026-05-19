@@ -43,6 +43,7 @@ class BookAppointment extends Component
     public $pref_date      = '';
     public $pref_time      = '';
     public $tracking_code  = '';
+    public $booking_number = '';
     public $showReviewModal = false;
 
     // Pickup and Address details
@@ -158,6 +159,7 @@ class BookAppointment extends Component
         $count = Appointment::where('pref_date', $this->pref_date)->count();
         $nextNumber = str_pad($count + 1, 5, '0', STR_PAD_LEFT);
         $this->tracking_code = 'RM-' . date('Ymd', strtotime($this->pref_date)) . '-' . $nextNumber;
+        $this->booking_number = 'BK-' . date('Ymd', strtotime($this->pref_date)) . '-' . $nextNumber;
     }
 
     #[Computed]
@@ -326,6 +328,7 @@ class BookAppointment extends Component
         $appointment = new Appointment();
         $appointment->user_id        = Auth::id();
         $appointment->tracking_code  = $trackingCode;
+        $appointment->booking_number = $this->booking_number ?: 'BK-' . date('Ymd', strtotime($this->pref_date)) . '-' . str_pad(Appointment::where('pref_date', $this->pref_date)->count() + 1, 5, '0', STR_PAD_LEFT);
         $appointment->device_brand   = $finalBrand;
         $appointment->device_model   = $finalModel;
         $appointment->fault_category = $finalCategory;
@@ -353,7 +356,7 @@ class BookAppointment extends Component
             ]);
         }
 
-        Session::flash('success', 'Booking confirmed! Tracking code: ' . $trackingCode);
+        Session::flash('success', 'Booking confirmed! Booking No: ' . $appointment->booking_number);
         return redirect()->route('user.dashboard');
     }
 

@@ -14,6 +14,8 @@ use App\Models\Brand;
 use App\Models\FaultType;
 use App\Models\Notification;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppointmentDetailsEmail;
 
 class PublicBooking extends Component
 {
@@ -30,6 +32,7 @@ class PublicBooking extends Component
     public $address        = '';
     public $pickup_option  = 'Drop-off'; // Default to Drop-off at Shop
     public $other_details  = '';
+    public $create_account = false;
 
     // Device and booking details
     public $device_brand   = '';
@@ -44,6 +47,7 @@ class PublicBooking extends Component
     public $pref_date      = '';
     public $pref_time      = '';
     public $tracking_code  = '';
+    public $booking_number = '';
     public $showReviewModal = false;
 
     public int $calendar_week_offset = 0;
@@ -147,6 +151,7 @@ class PublicBooking extends Component
         $count = Appointment::where('pref_date', $this->pref_date)->count();
         $nextNumber = str_pad($count + 1, 5, '0', STR_PAD_LEFT);
         $this->tracking_code = 'RM-' . date('Ymd', strtotime($this->pref_date)) . '-' . $nextNumber;
+        $this->booking_number = 'BK-' . date('Ymd', strtotime($this->pref_date)) . '-' . $nextNumber;
     }
 
     #[Computed]
@@ -273,18 +278,20 @@ class PublicBooking extends Component
         }
 
         // Create or find guest user profile, and update details
-        $user = User::firstOrCreate(
-            ['email' => $this->email],
-            [
-                'role' => 'user',
-                'is_verified' => false,
-            ]
-        );
+        $user = User::firstOrNew(['email' => $this->email]);
         $user->first_name = $this->first_name;
         $user->last_name = $this->last_name;
         $user->phone = $this->phone;
         $user->address = $this->address;
         $user->city = $this->city;
+        if (!$user->exists) {
+            $user->role = $this->create_account ? 'user' : 'guest';
+            $user->is_verified = false;
+            $user->password = \Illuminate\Support\Facades\Hash::make(Str::random(16));
+        } elseif ($this->create_account && $user->role === 'guest') {
+            // Upgrade guest profile to registered user if requested
+            $user->role = 'user';
+        }
         $user->save();
 
         $photoPaths = [];
@@ -317,6 +324,7 @@ class PublicBooking extends Component
         $appointment = new Appointment();
         $appointment->user_id        = $user->id;
         $appointment->tracking_code  = $trackingCode;
+        $appointment->booking_number = $this->booking_number ?: 'BK-' . date('Ymd', strtotime($this->pref_date)) . '-' . str_pad(Appointment::where('pref_date', $this->pref_date)->count() + 1, 5, '0', STR_PAD_LEFT);
         $appointment->device_brand   = $finalBrand;
         $appointment->device_model   = $finalModel;
         $appointment->fault_category = $finalCategory;
@@ -344,8 +352,16 @@ class PublicBooking extends Component
             ]);
         }
 
-        Session::flash('success', 'Booking confirmed! Tracking code: ' . $trackingCode);
-        Session::flash('success_message', 'Tracking Code: ' . $trackingCode . '. Our team will contact you shortly to confirm the appointment details.');
+        // Send appointment details email to guest
+        try {
+            Mail::to($this->email)->send(new AppointmentDetailsEmail($appointment));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Failed to send appointment details email: ' . $e->getMessage());
+        }
+
+        Session::flash('success', 'Booking confirmed! Booking No: ' . $appointment->booking_number);
+        Session::flash('success_message', 'Booking Number (Logistics): ' . $appointment->booking_number . ' | Ticket Number (Substance): ' . $trackingCode . '. Our team will contact you shortly to confirm the appointment details.');
+        Session::flash('message', 'Your appointment booking is completed successfully!');
 
         return redirect()->route('booking');
     }

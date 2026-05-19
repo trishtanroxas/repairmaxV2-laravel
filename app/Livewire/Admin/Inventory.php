@@ -9,6 +9,7 @@ use App\Models\InventoryItem;
 use App\Models\Brand;
 use App\Models\FaultType;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 #[Layout('components.layouts.admin')]
 #[Title('Inventory | Repairmax')]
@@ -109,7 +110,7 @@ class Inventory extends Component
 
         $this->showEditModal = false;
         $this->resetForm();
-        session()->flash('message', 'Record updated successfully.');
+        Session::flash('message', 'Record updated successfully.');
     }
 
     public function confirmDelete(string $type, int $id)
@@ -138,7 +139,7 @@ class Inventory extends Component
             } else { // item
                 InventoryItem::findOrFail($this->deletingId)->delete();
             }
-            session()->flash('message', 'Record deleted successfully.');
+            Session::flash('message', 'Record deleted successfully.');
         }
 
         $this->showDeleteModal = false;

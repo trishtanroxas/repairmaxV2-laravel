@@ -51,6 +51,18 @@
 
             @foreach($navLinks as $link)
                 @if($link['label'] === 'Services')
+                    @php
+                        $allFaults = \App\Models\FaultType::where('is_active', true)->get();
+                        
+                        // Group 1: Screen & Power
+                        $screenAndPower = $allFaults->filter(fn($f) => in_array($f->category, ['screen', 'power']))->take(4);
+                        
+                        // Group 2: Hardware Repairs
+                        $hardwareRepairs = $allFaults->filter(fn($f) => $f->category === 'hardware')->take(4);
+                        
+                        // Group 3: Software & Audio
+                        $softwareAndAudio = $allFaults->filter(fn($f) => in_array($f->category, ['software', 'audio']))->take(4);
+                    @endphp
                     <!-- Services Dropdown (Shopify Style) -->
                     <div class="relative lg:static lg:h-full lg:flex lg:items-center" 
                          @mouseenter="servicesMenuOpen = true" 
@@ -74,60 +86,48 @@
                              style="display: none;">
                              
                             <div class="max-w-7xl mx-auto px-8 py-10 grid grid-cols-12 gap-8 text-left">
-                                <!-- Column 1: Hardware Repairs -->
+                                <!-- Column 1: Screen & Power -->
                                 <div class="col-span-3 space-y-6">
-                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-400">Hardware Repairs</h4>
+                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-400">Screen & Power</h4>
                                     <div class="space-y-4">
-                                        <a href="/services" class="group block">
-                                            <span class="text-sm font-bold block text-gray-900 group-hover:text-blue-500 transition-colors">Screen Replacement</span>
-                                            <span class="text-xs block mt-1 text-gray-500">OEM-quality display restorations.</span>
-                                        </a>
-                                        <a href="/services" class="group block">
-                                            <span class="text-sm font-bold block text-gray-900 group-hover:text-blue-500 transition-colors">Battery & Power</span>
-                                            <span class="text-xs block mt-1 text-gray-500">Long-lasting capacity upgrades.</span>
-                                        </a>
-                                        <a href="/services" class="group block">
-                                            <span class="text-sm font-bold block text-gray-900 group-hover:text-blue-500 transition-colors">Charging Ports</span>
-                                            <span class="text-xs block mt-1 text-gray-500">Restore flawless power connectivity.</span>
-                                        </a>
+                                        @forelse($screenAndPower as $service)
+                                            <a href="{{ route('services.detail', $service->id) }}" class="group block">
+                                                <span class="text-sm font-bold block text-gray-900 group-hover:text-blue-500 transition-colors">{{ $service->name }}</span>
+                                                <span class="text-xs block mt-1 text-gray-500">{{ \Illuminate\Support\Str::limit($service->description, 60) }}</span>
+                                            </a>
+                                        @empty
+                                            <span class="text-xs text-gray-400">No screen/power services available.</span>
+                                        @endforelse
                                     </div>
                                 </div>
                                 
-                                <!-- Column 2: OS & System -->
+                                <!-- Column 2: Hardware Repairs -->
                                 <div class="col-span-3 space-y-6">
-                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-400">Software & OS</h4>
+                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-400">Hardware Repairs</h4>
                                     <div class="space-y-4">
-                                        <a href="/services" class="group block">
-                                            <span class="text-sm font-bold block text-gray-900 group-hover:text-blue-500 transition-colors">Data Recovery</span>
-                                            <span class="text-xs block mt-1 text-gray-500">Retrieve lost media and files safely.</span>
-                                        </a>
-                                        <a href="/services" class="group block">
-                                            <span class="text-sm font-bold block text-gray-900 group-hover:text-blue-500 transition-colors">OS Reinstallation</span>
-                                            <span class="text-xs block mt-1 text-gray-500">Maximize and speed up performance.</span>
-                                        </a>
-                                        <a href="/services" class="group block">
-                                            <span class="text-sm font-bold block text-gray-900 group-hover:text-blue-500 transition-colors">Virus Removal</span>
-                                            <span class="text-xs block mt-1 text-gray-500">Deep cleanse spyware and threats.</span>
-                                        </a>
+                                        @forelse($hardwareRepairs as $service)
+                                            <a href="{{ route('services.detail', $service->id) }}" class="group block">
+                                                <span class="text-sm font-bold block text-gray-900 group-hover:text-blue-500 transition-colors">{{ $service->name }}</span>
+                                                <span class="text-xs block mt-1 text-gray-500">{{ \Illuminate\Support\Str::limit($service->description, 60) }}</span>
+                                            </a>
+                                        @empty
+                                            <span class="text-xs text-gray-400">No hardware services available.</span>
+                                        @endforelse
                                     </div>
                                 </div>
 
-                                <!-- Column 3: Audio & Diagnostics -->
+                                <!-- Column 3: Software & Audio -->
                                 <div class="col-span-3 space-y-6">
-                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-400">Audio & Diagnostics</h4>
+                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-400">Software & Audio</h4>
                                     <div class="space-y-4">
-                                        <a href="/services" class="group block">
-                                            <span class="text-sm font-bold block text-gray-900 group-hover:text-blue-500 transition-colors">Audio Jack Repair</span>
-                                            <span class="text-xs block mt-1 text-gray-500">Fix static audio and loose headphone ports.</span>
-                                        </a>
-                                        <a href="/services" class="group block">
-                                            <span class="text-sm font-bold block text-gray-900 group-hover:text-blue-500 transition-colors">Speaker Replacement</span>
-                                            <span class="text-xs block mt-1 text-gray-500">Restore crisp and loud acoustics.</span>
-                                        </a>
-                                        <a href="/services" class="group block">
-                                            <span class="text-sm font-bold block text-gray-900 group-hover:text-blue-500 transition-colors">Complete Inspection</span>
-                                            <span class="text-xs block mt-1 text-gray-500">Full multi-point diagnostic check.</span>
-                                        </a>
+                                        @forelse($softwareAndAudio as $service)
+                                            <a href="{{ route('services.detail', $service->id) }}" class="group block">
+                                                <span class="text-sm font-bold block text-gray-900 group-hover:text-blue-500 transition-colors">{{ $service->name }}</span>
+                                                <span class="text-xs block mt-1 text-gray-500">{{ \Illuminate\Support\Str::limit($service->description, 60) }}</span>
+                                            </a>
+                                        @empty
+                                            <span class="text-xs text-gray-400">No software/audio services available.</span>
+                                        @endforelse
                                     </div>
                                 </div>
 
