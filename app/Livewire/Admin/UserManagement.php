@@ -57,12 +57,14 @@ class UserManagement extends Component
 
     public function getUsers()
     {
-        $query = User::query();
+        $query = User::query()->where('role', '!=', 'guest');
 
         if ($this->search) {
-            $query->where('email', 'like', "%{$this->search}%")
+            $query->where(function ($q) {
+                $q->where('email', 'like', "%{$this->search}%")
                   ->orWhere('first_name', 'like', "%{$this->search}%")
                   ->orWhere('last_name', 'like', "%{$this->search}%");
+            });
         }
 
         if ($this->filterRole !== 'all') {

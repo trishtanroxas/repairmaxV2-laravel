@@ -232,6 +232,18 @@
 
         <!-- Modal Content (Scrollable) -->
         <div class="p-8 overflow-y-auto space-y-6">
+            <!-- Reference Codes Grid (Logistics vs Substance) -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-blue-50/30 border border-blue-100/50 rounded-[1.25rem] p-4 text-left">
+                    <span class="text-[9px] uppercase font-black tracking-widest text-blue-600 block">Booking Reference Number</span>
+                    <span class="text-sm md:text-base font-black text-blue-900 mt-1 block">{{ $tracking_code }}</span>
+                </div>
+                <div class="bg-indigo-50/30 border border-indigo-100/50 rounded-[1.25rem] p-4 text-left">
+                    <span class="text-[9px] uppercase font-black tracking-widest text-indigo-600 block">Repair Ticket ID</span>
+                    <span class="text-sm md:text-base font-black text-indigo-900 mt-1 block">{{ $booking_number }}</span>
+                </div>
+            </div>
+
             <!-- Personal details section -->
             <div class="bg-gray-50 rounded-[1.5rem] p-5 border border-gray-100">
                 <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
