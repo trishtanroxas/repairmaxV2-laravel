@@ -232,10 +232,10 @@
             <!-- Modal Content (Scrollable) -->
             <div class="p-8 overflow-y-auto space-y-6">
                 <!-- Reference Codes Grid (Logistics vs Substance) -->
-                <div class="bg-blue-50/30 border border-blue-100/50 rounded-[1.25rem] p-4 text-left">
-                    <span class="text-[9px] uppercase font-black tracking-widest text-blue-600 block">Booking Reference Number</span>
-                    <span class="text-sm md:text-base font-black text-blue-900 mt-1 block font-mono">{{ $booking_number }}</span>
-                </div>
+            <div class="bg-blue-50/30 border border-blue-100/50 rounded-[1.25rem] p-4 text-left">
+                <span class="text-[9px] uppercase font-black tracking-widest text-blue-600 block">Ticket Number</span>
+                <span class="text-sm md:text-base font-black text-blue-900 mt-1 block font-mono">{{ $tracking_code }}</span>
+            </div>
 
                 <!-- Personal details section -->
                 <div class="bg-gray-50 rounded-[1.5rem] p-5 border border-gray-100">
@@ -428,12 +428,12 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm mb-5">
-            <!-- Booking Reference -->
+            <!-- Ticket Number -->
             <div class="bg-blue-50 rounded-xl p-3 border border-blue-100">
-                <p class="text-[10px] font-black text-blue-500 uppercase tracking-wider mb-1">Booking Reference</p>
+                <p class="text-[10px] font-black text-blue-500 uppercase tracking-wider mb-1">Ticket Number</p>
                 <p class="font-bold text-blue-700 text-xs leading-snug font-mono">
                     @if($pref_date)
-                        {{ $booking_number }}
+                        {{ $tracking_code }}
                     @else
                         <span class="text-blue-300 font-normal italic">Select a date</span>
                     @endif
@@ -618,14 +618,45 @@
                             </label>
                         </div>
 
-                        <!-- Show Shop Address if Drop-off selected -->
+                        <!-- Shop Address Card (Drop-off only) -->
                         @if($pickup_option === 'Drop-off')
-                        <div class="mt-4 p-4 bg-blue-50/50 border border-blue-100/60 rounded-[1.25rem] flex items-start gap-3 animate-fade-in">
-                            <span class="material-symbols-outlined text-blue-500 text-[20px] shrink-0 mt-0.5">pin_drop</span>
-                            <div>
-                                <h4 class="text-xs font-bold text-blue-800 uppercase tracking-wider mb-0.5">Shop Drop-off Location</h4>
-                                <p class="text-xs text-blue-700 font-medium leading-relaxed">Commonwealth Ave. Cor. IBP Road (Litex Junction), Quezon City, Metro Manila, Philippines</p>
+                        <div x-data="{ showMap: false }" class="mt-4 p-5 bg-blue-50/50 border border-blue-100/60 rounded-[1.25rem] flex flex-col gap-4 animate-fade-in mb-6">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-blue-500 text-[20px] shrink-0 mt-0.5">pin_drop</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-blue-800 uppercase tracking-wider mb-0.5">Shop Drop-off Location</h4>
+                                        <p class="text-xs text-blue-700 font-medium leading-relaxed">Commonwealth Ave. Cor. IBP Road (Litex Junction), Quezon City, Metro Manila, Philippines</p>
+                                    </div>
+                                </div>
+                                <button type="button" @click="showMap = !showMap" class="text-xs font-black text-blue-600 hover:text-blue-800 flex items-center gap-1 bg-blue-100/50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-all shrink-0 border-none outline-none focus:outline-none cursor-pointer">
+                                    <span class="material-symbols-outlined text-[16px]" x-show="!showMap">map</span>
+                                    <span class="material-symbols-outlined text-[16px]" x-show="showMap" x-cloak>close</span>
+                                    <span x-text="showMap ? 'Hide Map' : 'Show Map'">Show Map</span>
+                                </button>
                             </div>
+                            
+                            <!-- Map Container -->
+                            <div x-show="showMap" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-[300px]" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 max-h-[300px]" x-transition:leave-end="opacity-0 max-h-0" class="overflow-hidden rounded-xl border border-blue-100 shadow-sm w-full h-[250px]">
+                                <iframe class="w-full h-full border-none" src="https://maps.google.com/maps?q=Commonwealth%20Ave.%20Cor.%20IBP%20Road%20(Litex%20Junction),%20Quezon%20City,%20Metro%20Manila,%20Philippines&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </div>
+                        @endif
+
+                        <!-- Geomap address locator (Pickup only) -->
+                        @if($pickup_option === 'Pickup')
+                        <div x-data="pickupMapComponent($wire)" class="mt-4 p-5 bg-blue-50/50 border border-blue-100/60 rounded-[1.25rem] flex flex-col gap-4 animate-fade-in mb-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-blue-500">pin_drop</span>
+                                    <span class="text-xs font-bold text-blue-800 uppercase tracking-wider">Locate Pickup Address on Map</span>
+                                </div>
+                                <span class="text-[9px] font-black text-blue-600 bg-blue-100/65 px-2 py-0.5 rounded uppercase">Draggable Marker</span>
+                            </div>
+                            <div id="pickup-map" class="w-full h-[250px] rounded-xl border border-blue-100 shadow-sm overflow-hidden" wire:ignore></div>
+                            <p class="text-[10px] text-gray-400 font-medium leading-relaxed">
+                                Drag the marker or click on the map to set your exact location. This will automatically fill in your Barangay, Street and City inputs below.
+                            </p>
                         </div>
                         @endif
 
@@ -633,7 +664,25 @@
                     </div>
 
                     <!-- Pickup Address & City -->
-                    <div class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6" x-data="addressSearch($wire)">
+                        <!-- Search Address -->
+                        <div class="col-span-1 md:col-span-3 mb-2 relative">
+                            <label class="block text-sm font-bold text-gray-800 mb-2 ml-1">Search Address (Auto-fill)</label>
+                            <div class="relative">
+                                <input type="text" x-model="query" @input.debounce.500ms="search" placeholder="Type to search for your address..." class="w-full px-4 py-3 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium">
+                                <div x-show="loading" class="absolute right-4 top-1/2 -translate-y-1/2">
+                                    <span class="material-symbols-outlined animate-spin text-blue-500">progress_activity</span>
+                                </div>
+                            </div>
+                            <div x-show="results.length > 0" @click.away="results = []" class="absolute z-[200] w-full mt-1 bg-white border border-gray-200 rounded-[1.25rem] shadow-lg max-h-60 overflow-y-auto">
+                                <template x-for="result in results" :key="result.place_id">
+                                    <div @click="select(result)" class="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-gray-50 last:border-0 transition-colors">
+                                        <p class="text-sm font-bold text-gray-900 truncate" x-text="result.display_name"></p>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
                         <div class="md:col-span-2">
                             <label for="address" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Street Address & Barangay <span class="text-red-500">*</span></label>
                             <input type="text" id="address" wire:model="address" placeholder="Enter Street name, Building, House No., Barangay..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
@@ -642,7 +691,7 @@
                         <div class="md:col-span-1">
                             <label for="city" class="block text-sm font-bold text-gray-800 mb-2 ml-1">City / Municipality <span class="text-red-500">*</span></label>
                             <div class="relative w-full">
-                                <select id="city" wire:model="city" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" required>
+                                <select id="city" wire:model.live="city" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" required>
                                     <option value="" disabled selected>Select City...</option>
                                     @foreach($this->cities as $c)
                                         <option value="{{ $c->name }}">{{ $c->name }}</option>
@@ -650,6 +699,11 @@
                                 </select>
                                 <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[20px]">unfold_more</span>
                             </div>
+                            @if($additional_fee > 0)
+                                <span class="text-xs font-bold text-blue-600 block mt-2 ml-1 animate-fade-in">+ ₱{{ number_format($additional_fee, 2) }} Shipping Fee</span>
+                            @elseif($city)
+                                <span class="text-xs font-bold text-green-600 block mt-2 ml-1 animate-fade-in">Free Shipping</span>
+                            @endif
                             @error('city') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -1012,5 +1066,144 @@
                 }
             });
         });
+        
+        function addressSearch(wire) {
+            return {
+                query: '',
+                results: [],
+                loading: false,
+                async search() {
+                    if (this.query.length < 3) {
+                        this.results = [];
+                        return;
+                    }
+                    this.loading = true;
+                    try {
+                        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(this.query)}&countrycodes=ph&limit=5&addressdetails=1`);
+                        this.results = await response.json();
+                    } catch(e) {}
+                    this.loading = false;
+                },
+                select(result) {
+                    this.query = result.display_name;
+                    this.results = [];
+                    
+                    const addr = result.address || {};
+                    const barangay = addr.quarter || addr.suburb || addr.neighbourhood || addr.village || addr.hamlet || '';
+                    const road = addr.road || '';
+                    const houseNumber = addr.house_number || '';
+                    
+                    let streetAddress = '';
+                    if (houseNumber) streetAddress += houseNumber + ' ';
+                    if (road) streetAddress += road;
+                    if (barangay) {
+                        if (streetAddress) streetAddress += ', ';
+                        streetAddress += 'Brgy. ' + barangay;
+                    }
+                    
+                    const city = addr.city || addr.town || addr.municipality || addr.province || '';
+                    
+                    if (streetAddress) {
+                        wire.set('address', streetAddress);
+                    }
+                    if (city) {
+                        wire.set('city', city);
+                    }
+                    
+                    window.dispatchEvent(new CustomEvent('location-selected', { detail: { lat: result.lat, lng: result.lon } }));
+                }
+            }
+        }
+
+        function pickupMapComponent(wire) {
+            return {
+                map: null,
+                marker: null,
+                init() {
+                    if (!document.getElementById('leaflet-css')) {
+                        const css = document.createElement('link');
+                        css.id = 'leaflet-css';
+                        css.rel = 'stylesheet';
+                        css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+                        document.head.appendChild(css);
+                    }
+                    if (typeof L === 'undefined') {
+                        const script = document.createElement('script');
+                        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+                        script.onload = () => this.initMap();
+                        document.head.appendChild(script);
+                    } else {
+                        this.initMap();
+                    }
+                    
+                    window.addEventListener('location-selected', (e) => {
+                        if (this.map && this.marker) {
+                            const latlng = e.detail;
+                            this.map.setView(latlng, 17);
+                            this.marker.setLatLng(latlng);
+                            this.geocodePosition(latlng);
+                        }
+                    });
+                },
+                initMap() {
+                    const defaultLat = 14.6956;
+                    const defaultLng = 121.0950;
+                    
+                    setTimeout(() => {
+                        this.map = L.map('pickup-map').setView([defaultLat, defaultLng], 15);
+                        
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 19,
+                            attribution: '© OpenStreetMap'
+                        }).addTo(this.map);
+                        
+                        this.marker = L.marker([defaultLat, defaultLng], {
+                            draggable: true
+                        }).addTo(this.map);
+                        
+                        this.marker.on('dragend', () => {
+                            const position = this.marker.getLatLng();
+                            this.geocodePosition(position);
+                        });
+                        
+                        this.map.on('click', (e) => {
+                            this.marker.setLatLng(e.latlng);
+                            this.geocodePosition(e.latlng);
+                        });
+                    }, 300);
+                },
+                async geocodePosition(latlng) {
+                    try {
+                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1&countrycodes=ph`);
+                        const data = await response.json();
+                        if (data && data.address) {
+                            const addr = data.address;
+                            const barangay = addr.quarter || addr.suburb || addr.neighbourhood || addr.village || addr.hamlet || '';
+                            const road = addr.road || '';
+                            const houseNumber = addr.house_number || '';
+                            
+                            let streetAddress = '';
+                            if (houseNumber) streetAddress += houseNumber + ' ';
+                            if (road) streetAddress += road;
+                            if (barangay) {
+                                if (streetAddress) streetAddress += ', ';
+                                streetAddress += 'Brgy. ' + barangay;
+                            }
+                            
+                            const city = addr.city || addr.town || addr.municipality || addr.province || '';
+                            
+                            if (streetAddress) {
+                                wire.set('address', streetAddress);
+                            }
+                            if (city) {
+                                wire.set('city', city);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Geocoding error:', error);
+                    }
+                }
+            };
+        }
     </script>
 </div>

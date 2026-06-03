@@ -828,7 +828,25 @@
                 @endif
 
                 <!-- User's Physical Address & City (Strictly Required) -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6" x-data="addressSearch($wire)">
+                    <!-- Search Address -->
+                    <div class="col-span-1 md:col-span-3 mb-2 relative">
+                        <label class="block text-sm font-bold text-gray-800 mb-2 ml-1">Search Address (Auto-fill)</label>
+                        <div class="relative">
+                            <input type="text" x-model="query" @input.debounce.500ms="search" placeholder="Type to search for your address..." class="w-full px-4 py-3 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium">
+                            <div x-show="loading" class="absolute right-4 top-1/2 -translate-y-1/2">
+                                <span class="material-symbols-outlined animate-spin text-blue-500">progress_activity</span>
+                            </div>
+                        </div>
+                        <div x-show="results.length > 0" @click.away="results = []" class="absolute z-[200] w-full mt-1 bg-white border border-gray-200 rounded-[1.25rem] shadow-lg max-h-60 overflow-y-auto">
+                            <template x-for="result in results" :key="result.place_id">
+                                <div @click="select(result)" class="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-gray-50 last:border-0 transition-colors">
+                                    <p class="text-sm font-bold text-gray-900 truncate" x-text="result.display_name"></p>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
                     <div class="md:col-span-2">
                         <label for="address" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Street Address & Barangay <span class="text-red-500">*</span></label>
                         <input type="text" id="address" wire:model="address" placeholder="Enter Street name, Building, House No., Barangay..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
@@ -837,7 +855,7 @@
                     <div class="md:col-span-1">
                         <label for="city" class="block text-sm font-bold text-gray-800 mb-2 ml-1">City / Municipality <span class="text-red-500">*</span></label>
                         <div class="relative w-full">
-                            <select id="city" wire:model="city" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" required>
+                            <select id="city" wire:model.live="city" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" required>
                                 <option value="" disabled selected>Select City...</option>
                                 @foreach($this->cities as $c)
                                     <option value="{{ $c->name }}">{{ $c->name }}</option>
@@ -845,6 +863,11 @@
                             </select>
                             <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[20px]">unfold_more</span>
                         </div>
+                        @if($additional_fee > 0)
+                            <span class="text-xs font-bold text-blue-600 block mt-2 ml-1 animate-fade-in">+ ₱{{ number_format($additional_fee, 2) }} Shipping Fee</span>
+                        @elseif($city)
+                            <span class="text-xs font-bold text-green-600 block mt-2 ml-1 animate-fade-in">Free Shipping</span>
+                        @endif
                         @error('city') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                     </div>
                 </div>
@@ -1011,8 +1034,55 @@
                         }
                     }, 150);
                 }
-            });
         });
+        
+        function addressSearch(wire) {
+            return {
+                query: '',
+                results: [],
+                loading: false,
+                async search() {
+                    if (this.query.length < 3) {
+                        this.results = [];
+                        return;
+                    }
+                    this.loading = true;
+                    try {
+                        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(this.query)}&countrycodes=ph&limit=5&addressdetails=1`);
+                        this.results = await response.json();
+                    } catch(e) {}
+                    this.loading = false;
+                },
+                select(result) {
+                    this.query = result.display_name;
+                    this.results = [];
+                    
+                    const addr = result.address || {};
+                    const barangay = addr.quarter || addr.suburb || addr.neighbourhood || addr.village || addr.hamlet || '';
+                    const road = addr.road || '';
+                    const houseNumber = addr.house_number || '';
+                    
+                    let streetAddress = '';
+                    if (houseNumber) streetAddress += houseNumber + ' ';
+                    if (road) streetAddress += road;
+                    if (barangay) {
+                        if (streetAddress) streetAddress += ', ';
+                        streetAddress += 'Brgy. ' + barangay;
+                    }
+                    
+                    const city = addr.city || addr.town || addr.municipality || addr.province || '';
+                    
+                    if (streetAddress) {
+                        wire.set('address', streetAddress);
+                    }
+                    if (city) {
+                        wire.set('city', city);
+                    }
+                    
+                    window.dispatchEvent(new CustomEvent('location-selected', { detail: { lat: result.lat, lng: result.lon } }));
+                }
+            }
+        }
 
         function pickupMapComponent(wire) {
             return {
@@ -1034,6 +1104,15 @@
                     } else {
                         this.initMap();
                     }
+                    
+                    window.addEventListener('location-selected', (e) => {
+                        if (this.map && this.marker) {
+                            const latlng = e.detail;
+                            this.map.setView(latlng, 17);
+                            this.marker.setLatLng(latlng);
+                            this.geocodePosition(latlng);
+                        }
+                    });
                 },
                 initMap() {
                     const defaultLat = 14.6956;

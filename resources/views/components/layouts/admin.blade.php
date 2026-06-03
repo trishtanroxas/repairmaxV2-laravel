@@ -107,8 +107,7 @@
 
                 <div class="mb-6">
                     <h3 class="px-6 py-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Reporting</h3>
-                    <x-sidebar.link href="/admin/reports" icon="description" :active="request()->is('admin/reports')">Reports</x-sidebar.link>
-                    <x-sidebar.link href="/admin/reports-analytics" icon="analytics" :active="request()->is('admin/reports-analytics')">Analytics</x-sidebar.link>
+                    <x-sidebar.link href="/admin/reports" icon="analytics" :active="request()->is('admin/reports')">Reports & Analytics</x-sidebar.link>
                 </div>
 
                 <div>

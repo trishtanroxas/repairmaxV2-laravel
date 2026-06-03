@@ -171,12 +171,26 @@ class PublicBooking extends Component
         $this->booking_number = 'BK-' . $nextNumber;
     }
 
+    public function calculateAdditionalFee()
+    {
+        if ($this->pickup_option === 'Pickup' && $this->city) {
+            $cityRecord = \App\Models\SupportedCity::where('name', $this->city)->first();
+            $this->additional_fee = $cityRecord ? $cityRecord->shipping_fee : 0;
+        } else {
+            $this->additional_fee = 0;
+        }
+    }
+
+    public function updatedCity($value)
+    {
+        $this->city = $value;
+        $this->calculateAdditionalFee();
+    }
+
     public function updatedPickupOption($value)
     {
         $this->pickup_option = $value;
-        // Set additional fee based on pickup option
-        // Drop-off: Free | Pickup: ₱300 (calculated as 300 pesos)
-        $this->additional_fee = ($value === 'Pickup') ? 300 : 0;
+        $this->calculateAdditionalFee();
     }
 
     #[Computed]
@@ -357,6 +371,8 @@ class PublicBooking extends Component
         if (!empty($this->other_details)) {
             $fullDescription .= "\n\nOther Details / Special Instructions:\n" . $this->other_details;
         }
+
+        $this->calculateAdditionalFee();
 
         $selectedFault = ($finalCategory && $finalCategory !== 'Other') ? \App\Models\FaultType::where('name', $finalCategory)->first() : null;
         $basePrice = $selectedFault ? $selectedFault->base_price : 0;

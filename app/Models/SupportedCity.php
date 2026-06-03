@@ -14,9 +14,11 @@ class SupportedCity extends Model
     protected $fillable = [
         'name',
         'is_active',
+        'shipping_fee',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'shipping_fee' => 'decimal:2',
     ];
 }

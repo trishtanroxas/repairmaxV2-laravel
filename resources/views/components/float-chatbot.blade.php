@@ -44,6 +44,30 @@
         this.isLoading = true;
         this.scrollToBottom();
 
+        const trackingRegex = /^RM-\d{5}$/i;
+        if (trackingRegex.test(userMsg.trim())) {
+            try {
+                const response = await fetch('/api/chatbot/track', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']').getAttribute('content')
+                    },
+                    body: JSON.stringify({ tracking_code: userMsg.trim().toUpperCase() })
+                });
+
+                const data = await response.json();
+                this.messages.push({ role: 'bot', content: data.reply || 'Sorry, I couldn\'t track that ticket.' });
+                this.scrollToBottom();
+            } catch (error) {
+                this.messages.push({ role: 'bot', content: 'System error while tracking ticket. Please try again.' });
+                this.scrollToBottom();
+            } finally {
+                this.isLoading = false;
+            }
+            return;
+        }
+
         try {
             const response = await fetch('/api/chatbot', {
                 method: 'POST',

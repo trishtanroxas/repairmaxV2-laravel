@@ -13,6 +13,7 @@ class Cities extends Component
     public $search = '';
     public $name = '';
     public $is_active = true;
+    public $shipping_fee = 0;
 
     public $editingCityId = null;
     public $isEditMode = false;
@@ -23,6 +24,7 @@ class Cities extends Component
     protected $rules = [
         'name' => 'required|string|max:255|unique:supported_cities,name',
         'is_active' => 'boolean',
+        'shipping_fee' => 'required|numeric|min:0',
     ];
 
     public function updatingSearch()
@@ -34,6 +36,7 @@ class Cities extends Component
     {
         $this->name = '';
         $this->is_active = true;
+        $this->shipping_fee = 0;
         $this->editingCityId = null;
         $this->isEditMode = false;
         $this->confirmingDeletionId = null;
@@ -45,11 +48,13 @@ class Cities extends Component
             $this->validate([
                 'name' => 'required|string|max:255|unique:supported_cities,name,' . $this->editingCityId,
                 'is_active' => 'boolean',
+                'shipping_fee' => 'required|numeric|min:0',
             ]);
             $city = SupportedCity::findOrFail($this->editingCityId);
             $city->update([
                 'name' => trim($this->name),
                 'is_active' => $this->is_active,
+                'shipping_fee' => $this->shipping_fee,
             ]);
             session()->flash('message', 'City updated successfully.');
         } else {
@@ -57,6 +62,7 @@ class Cities extends Component
             SupportedCity::create([
                 'name' => trim($this->name),
                 'is_active' => $this->is_active,
+                'shipping_fee' => $this->shipping_fee,
             ]);
             session()->flash('message', 'City added successfully.');
         }
@@ -70,6 +76,7 @@ class Cities extends Component
         $this->editingCityId = $city->id;
         $this->name = $city->name;
         $this->is_active = $city->is_active;
+        $this->shipping_fee = $city->shipping_fee;
         $this->isEditMode = true;
     }
 

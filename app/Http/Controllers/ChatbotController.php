@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Models\Appointment;
 
 class ChatbotController extends Controller
 {
@@ -48,6 +49,51 @@ class ChatbotController extends Controller
             
             return response()->json([
                 'reply' => "Sorry, I encountered an internal error. Please contact support if this persists."
+            ], 500);
+        }
+    }
+
+    /**
+     * Track a ticket directly by tracking code.
+     */
+    public function trackTicket(Request $request)
+    {
+        $request->validate([
+            'tracking_code' => 'required|string|max:50',
+        ]);
+
+        try {
+            $appointment = Appointment::where('tracking_code', $request->tracking_code)->first();
+
+            if (!$appointment) {
+                return response()->json([
+                    'reply' => "I couldn't find a ticket with tracking code: **{$request->tracking_code}**. Please check the code and try again."
+                ]);
+            }
+
+            $reply = "Here is the status for your ticket **{$appointment->tracking_code}**:\n\n";
+            $reply .= "- **Device**: {$appointment->device_brand} {$appointment->device_model}\n";
+            $reply .= "- **Status**: ".ucfirst($appointment->status)."\n";
+            
+            if ($appointment->fault_category) {
+                $reply .= "- **Issue**: {$appointment->fault_category}\n";
+            }
+
+            if ($appointment->status === 'completed') {
+                $reply .= "\nYour device is ready for pickup!";
+            } else if ($appointment->status === 'scheduled' || $appointment->status === 'pending') {
+                $reply .= "\nWe are currently working on it. We'll notify you once there's an update.";
+            }
+
+            return response()->json([
+                'reply' => $reply
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Chatbot Track Ticket Exception', ['error' => $e->getMessage()]);
+            
+            return response()->json([
+                'reply' => "Sorry, I encountered an internal error while tracking your ticket. Please contact support."
             ], 500);
         }
     }

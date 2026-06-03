@@ -33,6 +33,7 @@
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-100">
                     <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">City Name</th>
+                    <th class="px-6 py-4 text-center text-[10px] font-black text-gray-400 uppercase tracking-widest w-48">Shipping Fee</th>
                     <th class="px-6 py-4 text-center text-[10px] font-black text-gray-400 uppercase tracking-widest w-48">Service Availability</th>
                     <th class="px-6 py-4 text-center text-[10px] font-black text-gray-400 uppercase tracking-widest w-48">Actions</th>
                 </tr>
@@ -47,6 +48,9 @@
                                 </div>
                                 <span class="font-bold text-gray-900 leading-snug">{{ $city->name }}</span>
                             </div>
+                        </td>
+                        <td class="px-6 py-4 text-center font-bold text-gray-900">
+                            ₱{{ number_format($city->shipping_fee, 2) }}
                         </td>
                         <td class="px-6 py-4 text-center">
                             <button wire:click="toggleStatus({{ $city->id }})" 
@@ -69,7 +73,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3" class="px-6 py-12 text-center text-gray-400 italic text-sm">No cities found matching search rules.</td>
+                        <td colspan="4" class="px-6 py-12 text-center text-gray-400 italic text-sm">No cities found matching search rules.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -117,6 +121,13 @@
                         <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">City / Municipality Name</label>
                         <input type="text" wire:model="name" placeholder="e.g. Quezon City, Manila..." class="w-full px-5 py-4 border border-gray-200 rounded-[1.25rem] bg-gray-50 focus:bg-white focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all outline-none text-sm font-bold text-gray-900" required>
                         @error('name') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Shipping Fee -->
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Shipping Fee (₱)</label>
+                        <input type="number" step="0.01" wire:model="shipping_fee" placeholder="0.00" class="w-full px-5 py-4 border border-gray-200 rounded-[1.25rem] bg-gray-50 focus:bg-white focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all outline-none text-sm font-bold text-gray-900" required>
+                        @error('shipping_fee') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                     </div>
 
                     <!-- Status Toggle -->

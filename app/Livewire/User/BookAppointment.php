@@ -50,6 +50,7 @@ class BookAppointment extends Component
     public $address        = '';
     public $pickup_option  = 'Drop-off'; // Default to Drop-off at Shop
     public $other_details  = '';
+    public $additional_fee = 0;
 
     public int $calendar_week_offset = 0;
     public ?int $selected_index  = null;
@@ -72,6 +73,7 @@ class BookAppointment extends Component
             $supported = \App\Models\SupportedCity::where('is_active', true)->pluck('name')->toArray();
             $this->city = in_array($userCity, $supported) ? $userCity : '';
         }
+        $this->calculateAdditionalFee();
         $this->pref_date = date('Y-m-d');
         $this->generateTrackingCode();
         $this->generateAvailableDays();
@@ -179,6 +181,28 @@ class BookAppointment extends Component
         $nextNumber = str_pad($count + 1, 5, '0', STR_PAD_LEFT);
         $this->tracking_code = 'RM-' . $nextNumber;
         $this->booking_number = 'BK-' . $nextNumber;
+    }
+
+    public function calculateAdditionalFee()
+    {
+        if ($this->pickup_option === 'Pickup' && $this->city) {
+            $cityRecord = \App\Models\SupportedCity::where('name', $this->city)->first();
+            $this->additional_fee = $cityRecord ? $cityRecord->shipping_fee : 0;
+        } else {
+            $this->additional_fee = 0;
+        }
+    }
+
+    public function updatedCity($value)
+    {
+        $this->city = $value;
+        $this->calculateAdditionalFee();
+    }
+
+    public function updatedPickupOption($value)
+    {
+        $this->pickup_option = $value;
+        $this->calculateAdditionalFee();
     }
 
     #[Computed]
@@ -356,10 +380,10 @@ class BookAppointment extends Component
             $fullDescription .= "\n\nOther Details / Special Instructions:\n" . $this->other_details;
         }
 
-        $additionalFee = ($this->pickup_option === 'Pickup') ? 150 : 0;
+        $this->calculateAdditionalFee();
         $selectedFault = ($finalCategory && $finalCategory !== 'Other') ? \App\Models\FaultType::where('name', $finalCategory)->first() : null;
         $basePrice = $selectedFault ? $selectedFault->base_price : 0;
-        $calculatedQuote = $basePrice + $additionalFee;
+        $calculatedQuote = $basePrice + $this->additional_fee;
 
         $appointment = new Appointment();
         $appointment->user_id        = Auth::id();
@@ -375,7 +399,7 @@ class BookAppointment extends Component
         $appointment->service_method = $this->pickup_option;
         $appointment->address        = $this->address;
         $appointment->city           = $this->city;
-        $appointment->additional_fee = $additionalFee;
+        $appointment->additional_fee = $this->additional_fee;
         $appointment->quote          = $calculatedQuote;
         $appointment->save();
 

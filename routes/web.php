@@ -65,6 +65,7 @@ use App\Http\Controllers\AppointmentDownloadController;
 use App\Http\Controllers\ChatbotController;
 
 Route::post('/api/chatbot', [ChatbotController::class, 'sendMessage'])->name('chatbot.send');
+Route::post('/api/chatbot/track', [ChatbotController::class, 'trackTicket'])->name('chatbot.track');
 
 Route::get('/', function () {
     return view('welcome');
@@ -364,7 +365,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     // Reports & Analytics
     Route::get('/reports', Reports::class)->name('reports');
-    Route::get('/reports-analytics', ReportsAnalytics::class)->name('reports-analytics');
+    Route::redirect('/reports-analytics', '/admin/reports');
     
     // Settings
     Route::get('/settings', Settings::class)->name('settings');
