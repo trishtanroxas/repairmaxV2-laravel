@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\WithPagination;
 use App\Models\InventoryItem;
 use App\Models\Brand;
 use App\Models\FaultType;
@@ -15,73 +16,53 @@ use Illuminate\Support\Facades\Session;
 #[Title('Inventory | Repairmax')]
 class Inventory extends Component
 {
-    public $activeTab = 'brand'; // 'brand', 'models', 'items'
+    use WithPagination;
     public $search = '';
     public $sortOrder = 'latest'; // 'latest', 'alpha_asc', 'alpha_desc', 'stock_asc', 'stock_desc'
+    
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
     
     // Modal & Form State
     public $showEditModal = false;
     public ?int $editingId = null;
-    public $editingType = ''; // 'brand', 'model', 'item'
     
     public $showDeleteModal = false;
-    public $deletingType = '';
     public ?int $deletingId = null;
     public $deletingName = '';
     
     // Form Fields
     public $formName = '';
-    public $formCategory = '';
     public $formSku = '';
     public $formQuantity = 0;
     public $formUnitPrice = 0;
     public ?int $formBrandId = null;
-    public $formIsActive = true;
 
     protected function rules()
     {
-        if ($this->editingType === 'brand') {
-            return [
-                'formName' => 'required|string|max:255|unique:brands,name,' . $this->editingId,
-            ];
-        } elseif ($this->editingType === 'model') {
-            return [
-                'formName' => 'required|string|max:255',
-                'formBrandId' => 'required|exists:brands,id',
-            ];
-        } else { // item
-            return [
-                'formName' => 'required|string|max:255',
-                'formBrandId' => 'nullable|exists:brands,id',
-                'formSku' => 'required|string|max:100|unique:inventory_items,sku,' . $this->editingId,
-                'formQuantity' => 'required|integer|min:0',
-                'formUnitPrice' => 'required|numeric|min:0',
-            ];
-        }
+        return [
+            'formName' => 'required|string|max:255',
+            'formBrandId' => 'nullable|exists:brands,id',
+            'formSku' => 'required|string|max:100|unique:inventory_items,sku,' . $this->editingId,
+            'formQuantity' => 'required|integer|min:0',
+            'formUnitPrice' => 'required|numeric|min:0',
+        ];
     }
 
-    public function editRecord(string $type, ?int $id = null)
+    public function editRecord(?int $id = null)
     {
         $this->resetForm();
-        $this->editingType = $type;
         $this->editingId = $id ?: null;
         
         if ($this->editingId) {
-            if ($type === 'brand') {
-                $record = Brand::findOrFail($id);
-                $this->formName = $record->name;
-            } elseif ($type === 'model') {
-                $record = \App\Models\DeviceModel::findOrFail($id);
-                $this->formName = $record->name;
-                $this->formBrandId = $record->brand_id;
-            } else { // item
-                $record = InventoryItem::findOrFail($id);
-                $this->formName = $record->name;
-                $this->formBrandId = $record->brand_id;
-                $this->formSku = $record->sku;
-                $this->formQuantity = $record->quantity;
-                $this->formUnitPrice = $record->unit_price;
-            }
+            $record = InventoryItem::findOrFail($id);
+            $this->formName = $record->name;
+            $this->formBrandId = $record->brand_id;
+            $this->formSku = $record->sku;
+            $this->formQuantity = $record->quantity;
+            $this->formUnitPrice = $record->unit_price;
         }
         
         $this->showEditModal = true;
@@ -91,60 +72,35 @@ class Inventory extends Component
     {
         $this->validate();
 
-        if ($this->editingType === 'brand') {
-            Brand::updateOrCreate(['id' => $this->editingId], ['name' => $this->formName]);
-        } elseif ($this->editingType === 'model') {
-            \App\Models\DeviceModel::updateOrCreate(['id' => $this->editingId], [
-                'name' => $this->formName,
-                'brand_id' => $this->formBrandId,
-            ]);
-        } else { // item
-            InventoryItem::updateOrCreate(['id' => $this->editingId], [
-                'name' => $this->formName,
-                'brand_id' => $this->formBrandId,
-                'sku' => $this->formSku,
-                'quantity' => $this->formQuantity,
-                'unit_price' => $this->formUnitPrice,
-            ]);
-        }
+        InventoryItem::updateOrCreate(['id' => $this->editingId], [
+            'name' => $this->formName,
+            'brand_id' => $this->formBrandId,
+            'sku' => $this->formSku,
+            'quantity' => $this->formQuantity,
+            'unit_price' => $this->formUnitPrice,
+        ]);
 
         $this->showEditModal = false;
         $this->resetForm();
-        Session::flash('message', 'Record updated successfully.');
+        Session::flash('message', 'Inventory item saved successfully.');
     }
 
-    public function confirmDelete(string $type, int $id)
+    public function confirmDelete(int $id)
     {
-        $this->deletingType = $type;
         $this->deletingId = $id;
-        
-        if ($type === 'brand') {
-            $this->deletingName = Brand::find($id)?->name ?? '';
-        } elseif ($type === 'model') {
-            $this->deletingName = \App\Models\DeviceModel::find($id)?->name ?? '';
-        } else {
-            $this->deletingName = InventoryItem::find($id)?->name ?? '';
-        }
-        
+        $this->deletingName = InventoryItem::find($id)?->name ?? '';
         $this->showDeleteModal = true;
     }
 
     public function deleteRecord()
     {
         if ($this->deletingId) {
-            if ($this->deletingType === 'brand') {
-                Brand::findOrFail($this->deletingId)->delete();
-            } elseif ($this->deletingType === 'model') {
-                \App\Models\DeviceModel::findOrFail($this->deletingId)->delete();
-            } else { // item
-                InventoryItem::findOrFail($this->deletingId)->delete();
-            }
-            Session::flash('message', 'Record deleted successfully.');
+            InventoryItem::findOrFail($this->deletingId)->delete();
+            Session::flash('message', 'Inventory item deleted successfully.');
         }
 
         $this->showDeleteModal = false;
         $this->deletingId = null;
-        $this->deletingType = '';
         $this->deletingName = '';
     }
 
@@ -160,19 +116,12 @@ class Inventory extends Component
 
     public function render()
     {
-        $brands = Brand::all();
-        
-        $query = null;
-        if ($this->activeTab === 'brand') {
-            $query = Brand::query();
-        } elseif ($this->activeTab === 'models') {
-            $query = \App\Models\DeviceModel::with('brand');
-        } else {
-            $query = InventoryItem::with('brand');
-        }
+        $brands = Brand::orderBy('name')->get();
+        $query = InventoryItem::with('brand');
 
         if ($this->search) {
-            $query->where('name', 'like', '%' . $this->search . '%');
+            $query->where('name', 'like', '%' . $this->search . '%')
+                  ->orWhere('sku', 'like', '%' . $this->search . '%');
         }
 
         // Apply Sorting
@@ -180,15 +129,15 @@ class Inventory extends Component
             $query->orderBy('name', 'asc');
         } elseif ($this->sortOrder === 'alpha_desc') {
             $query->orderBy('name', 'desc');
-        } elseif ($this->sortOrder === 'stock_asc' && $this->activeTab === 'items') {
+        } elseif ($this->sortOrder === 'stock_asc') {
             $query->orderBy('quantity', 'asc');
-        } elseif ($this->sortOrder === 'stock_desc' && $this->activeTab === 'items') {
+        } elseif ($this->sortOrder === 'stock_desc') {
             $query->orderBy('quantity', 'desc');
         } else {
             $query->latest();
         }
 
-        $records = $query->get();
+        $records = $query->simplePaginate(10);
 
         return view('livewire.admin.inventory', [
             'records' => $records,

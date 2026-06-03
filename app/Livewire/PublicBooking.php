@@ -200,6 +200,18 @@ class PublicBooking extends Component
         return FaultType::orderBy('name')->get();
     }
 
+    #[Computed]
+    public function cities()
+    {
+        return \App\Models\SupportedCity::where('is_active', true)->orderBy('name')->get();
+    }
+
+    #[Computed]
+    public function activeAnnouncement()
+    {
+        return \App\Models\Announcement::where('is_active', true)->latest()->first();
+    }
+
     public function updatedPhotos($value, int|string $key)
     {
         if (isset($this->photos[$key]) && $this->photos[$key]) {
@@ -247,7 +259,7 @@ class PublicBooking extends Component
             'last_name'      => 'required|string|max:255',
             'email'          => 'required|email|max:255',
             'phone'          => 'required|string|max:20',
-            'city'           => $this->pickup_option === 'Pickup' ? 'required|string|max:100' : 'nullable|string|max:100',
+            'city'           => $this->pickup_option === 'Pickup' ? 'required|string|exists:supported_cities,name' : 'nullable|string|exists:supported_cities,name',
             'device_brand'   => 'required|string',
             'device_model'   => 'required|string|max:255',
             'fault_category' => 'required|string',
@@ -353,7 +365,6 @@ class PublicBooking extends Component
         $appointment = new Appointment();
         $appointment->user_id        = $user->id;
         $appointment->tracking_code  = $trackingCode;
-        $appointment->booking_number = $this->booking_number ?: 'BK-' . str_pad(Appointment::count() + 1, 5, '0', STR_PAD_LEFT);
         $appointment->device_brand   = $finalBrand;
         $appointment->device_model   = $finalModel;
         $appointment->fault_category = $finalCategory;
@@ -367,6 +378,10 @@ class PublicBooking extends Component
         $appointment->city           = $this->city;
         $appointment->additional_fee = $this->additional_fee;
         $appointment->quote          = $calculatedQuote;
+        $appointment->save();
+
+        // Dynamically save the actual auto-incremented ID as Book ID: #
+        $appointment->booking_number = 'Book ID: ' . $appointment->id;
         $appointment->save();
 
         // Create notifications for all admins
@@ -393,8 +408,8 @@ class PublicBooking extends Component
             \Illuminate\Support\Facades\Log::error('Failed to send appointment details email: ' . $e->getMessage());
         }
 
-        Session::flash('success', 'Booking confirmed! Booking No: ' . $appointment->booking_number);
-        Session::flash('success_message', 'Booking Reference: ' . $appointment->booking_number . '. Our team will contact you shortly to confirm the appointment details.');
+        Session::flash('success', 'Booking confirmed! Ticket Number: ' . $appointment->tracking_code);
+        Session::flash('success_message', 'Ticket Number: ' . $appointment->tracking_code . '. Our team will contact you shortly to confirm the appointment details.');
         Session::flash('message', 'Your appointment booking is completed successfully!');
 
         return redirect()->route('booking');

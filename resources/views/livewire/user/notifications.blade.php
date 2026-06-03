@@ -134,7 +134,7 @@
             <!-- Sidebar Footer Pagination -->
             @if($notifications->hasPages())
             <div class="p-4 border-t border-gray-100 bg-gray-50/50 shrink-0">
-                {{ $notifications->links() }}
+                {{ $notifications->links(data: ['scrollTo' => false]) }}
             </div>
             @endif
         </div>

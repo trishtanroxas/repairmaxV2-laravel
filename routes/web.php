@@ -48,6 +48,9 @@ use App\Livewire\Admin\MessagesSupport;
 use App\Livewire\Admin\Reports;
 use App\Livewire\Admin\ReportsAnalytics;
 use App\Livewire\Admin\Settings;
+use App\Livewire\Admin\Announcements;
+use App\Livewire\Admin\Cities;
+use App\Livewire\Admin\BrandModels;
 
 // Controllers
 use App\Http\Controllers\AppointmentDownloadController;
@@ -347,6 +350,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     // Services
     Route::get('/services', Services::class)->name('services');
+    Route::get('/announcements', Announcements::class)->name('announcements');
+    Route::get('/cities', Cities::class)->name('cities');
+    Route::get('/brand-models', BrandModels::class)->name('brand-models');
     
     // Users
     Route::get('/user-management', UserManagement::class)->name('user-management');

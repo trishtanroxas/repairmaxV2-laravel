@@ -150,6 +150,12 @@
                 @endforelse
             </tbody>
         </table>
+        
+        @if($records->hasPages())
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+                {{ $records->links(data: ['scrollTo' => false]) }}
+            </div>
+        @endif
     </div>
 
     <!-- Edit Modal -->

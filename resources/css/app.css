@@ -194,7 +194,7 @@
 @layer components {
 
     /* --- Buttons --- */
-    button,
+    button:not(nav button),
     .btn {
         border-radius: 1.25rem;
         border: 1px solid transparent;
@@ -212,25 +212,25 @@
 
     /* Primary Action Style */
     .btn-primary,
-    button:not([class*="bg-"]) {
+    button:not([class*="bg-"]):not(nav button) {
         background-color: var(--accent);
         color: var(--bg-alt);
         box-shadow: var(--shadow-sm);
     }
 
-    button:not(.bg-transparent):not(.bg-white):hover,
+    button:not(.bg-transparent):not(.bg-white):not(nav button):hover,
     .btn:hover {
         background-color: var(--accent-hover);
         box-shadow: var(--shadow-md);
         transform: translateY(-1px);
     }
 
-    button .material-symbols-outlined,
+    button:not(nav button) .material-symbols-outlined,
     .btn .material-symbols-outlined {
         font-size: 1.25rem;
     }
 
-    button:focus-visible,
+    button:not(nav button):focus-visible,
     .btn:focus-visible,
     a:focus-visible {
         outline: 2px solid var(--gray-500);
@@ -458,5 +458,33 @@
         background-color: #FFFFFF;
         border-color: var(--gray-200);
         box-shadow: var(--shadow-md);
+    }
+
+    /* --- Pagination Design System Overrides --- */
+    nav[role="navigation"] a,
+    nav[role="navigation"] button,
+    nav[role="navigation"] span {
+        background-color: transparent !important;
+        background: transparent !important;
+        border-color: var(--gray-200) !important;
+        color: var(--gray-700) !important;
+    }
+
+    /* Hover states for interactive pagination items */
+    nav[role="navigation"] a:hover,
+    nav[role="navigation"] button:not([disabled]):hover {
+        background-color: var(--gray-100) !important;
+        color: var(--gray-900) !important;
+        border-color: var(--gray-300) !important;
+    }
+
+    /* Active pagination page styling */
+    nav[role="navigation"] span[aria-current="page"] span,
+    nav[role="navigation"] span[aria-current="page"] button,
+    nav[role="navigation"] [class*="bg-gray-200"],
+    nav[role="navigation"] [class*="bg-blue-"] {
+        background-color: var(--gray-200) !important;
+        color: var(--gray-900) !important;
+        font-weight: 700 !important;
     }
 }

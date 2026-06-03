@@ -106,7 +106,7 @@
         </div>
 
         <div class="px-6 py-4 border-t border-brand-100 bg-white">
-            {{ $history->links() }}
+            {{ $history->links(data: ['scrollTo' => false]) }}
         </div>
 
     </div>

@@ -53,7 +53,7 @@
                 <!-- Pagination -->
                 @if($messages->hasPages())
                     <div class="px-6 py-4 border-t border-gray-100">
-                        {{ $messages->links() }}
+                        {{ $messages->links(data: ['scrollTo' => false]) }}
                     </div>
                 @endif
             </div>

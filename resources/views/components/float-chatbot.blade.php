@@ -1,6 +1,6 @@
 <div x-data="{ 
     isOpen: false, 
-    activeTab: 'chat',
+    activeTab: 'home',
     searchQuery: '',
     userInput: '',
     isLoading: false,
@@ -28,6 +28,12 @@
                 });
             }
         });
+    },
+    async triggerQuickQuestion(questionText) {
+        this.activeTab = 'chat';
+        this.userInput = questionText;
+        await this.$nextTick();
+        this.sendMessage();
     },
     async sendMessage() {
         if (!this.userInput.trim() || this.isLoading) return;
@@ -58,158 +64,223 @@
             this.isLoading = false;
         }
     }
-}" id="chatbot-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+}" id="chatbot-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end font-sans">
 
+    <!-- Larger Chat Window with Brand Deep Charcoal Theme -->
     <div x-show="isOpen"
         x-transition:enter="transition ease-out duration-300 transform origin-bottom-right"
-        x-transition:enter-start="opacity-0 scale-90"
-        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
         x-transition:leave="transition ease-in duration-200 transform origin-bottom-right"
-        x-transition:leave-start="opacity-100 scale-100"
-        x-transition:leave-end="opacity-0 scale-90"
+        x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+        x-transition:leave-end="opacity-0 scale-95 translate-y-4"
         id="chat-window"
         style="display: none;"
-        class="w-[90vw] sm:w-96 h-130 bg-white border border-gray-300 rounded-2xl shadow-2xl mb-4 overflow-hidden flex flex-col transition-all duration-300">
+        class="w-[calc(100vw-32px)] sm:w-[420px] h-[660px] max-h-[calc(100vh-120px)] max-sm:fixed max-sm:inset-0 max-sm:w-full max-sm:h-full max-sm:max-h-full max-sm:rounded-none max-sm:mb-0 max-sm:z-[60] bg-white border border-gray-100 rounded-[2.2rem] shadow-[0_16px_48px_rgba(0,0,0,0.12)] mb-4 overflow-hidden flex flex-col transition-all duration-300">
 
-        <!-- Header -->
-        <div class="bg-gray-900 text-white p-4 flex justify-between items-center shadow-lg">
-            <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-white text-2xl">smart_toy</span>
-                <div class="flex flex-col">
-                    <span class="font-bold text-lg text-white leading-tight">Maxie</span>
-                    <span class="text-gray-400 text-xs font-medium uppercase tracking-wider">Repairmax Assistant</span>
+        <!-- Tab 1: Home View -->
+        <div x-show="activeTab === 'home'" class="flex-1 flex flex-col overflow-y-auto bg-gray-50 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+            <!-- Premium Deep Charcoal & Slate Gradient Header -->
+            <div class="bg-gradient-to-br from-[#1e293b] via-[#0f172a] to-[#090d16] text-white px-7 pt-9 pb-16 rounded-b-[2.5rem] relative shadow-lg flex flex-col gap-3">
+                <div class="flex items-center justify-between">
+                    <span class="material-symbols-outlined text-white text-2xl bg-white/20 p-2 rounded-xl backdrop-blur-md">smart_toy</span>
+                    <button @click="isOpen = false" class="bg-transparent! border-none! shadow-none! p-0! text-white/80 hover:text-white transition-colors cursor-pointer flex items-center justify-center">
+                        <span class="material-symbols-outlined text-xl">close</span>
+                    </button>
+                </div>
+                <div class="flex flex-col gap-1 mt-2">
+                    <h2 class="text-3xl font-extrabold text-white leading-tight">Hi there! 👋</h2>
+                    <p class="text-white/85 text-xs font-semibold leading-relaxed max-w-[90%]">
+                        AI chat powered by Repairmax - how can we help you today?
+                    </p>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button @click="isOpen = false" id="close-chat" class="bg-transparent! border-none! shadow-none! p-0! text-white transition-colors focus:outline-none">
+
+            <!-- Overlapping Floating Card Layout -->
+            <div class="px-6 -mt-10 flex flex-col gap-4 mb-6">
+                
+                <!-- Quick Actions List Card -->
+                <div class="bg-white border border-gray-100 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.03)] overflow-hidden">
+                    <div class="divide-y divide-gray-100">
+                        <div @click="triggerQuickQuestion('What is Repairmax?')" class="flex justify-between items-center p-4.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
+                            <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">What is Repairmax?</span>
+                            <span class="material-symbols-outlined text-gray-400 group-hover:text-[#0f172a] text-base transition-all duration-200 group-hover:translate-x-0.5">chevron_right</span>
+                        </div>
+                        
+                        <div @click="triggerQuickQuestion('How do I book a repair?')" class="flex justify-between items-center p-4.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
+                            <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">How do I book a repair?</span>
+                            <span class="material-symbols-outlined text-gray-400 group-hover:text-[#0f172a] text-base transition-all duration-200 group-hover:translate-x-0.5">chevron_right</span>
+                        </div>
+                        
+                        <div @click="activeTab = 'help'" class="flex justify-between items-center p-4.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
+                            <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">FAQs & Help Center</span>
+                            <span class="material-symbols-outlined text-gray-400 group-hover:text-[#0f172a] text-base transition-all duration-200 group-hover:translate-x-0.5">chevron_right</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main CTA Chat with Maxie Card -->
+                <div @click="activeTab = 'chat'; scrollToBottom();" class="bg-white border border-gray-100 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-5 flex items-center justify-between hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer group">
+                    <div class="flex flex-col gap-1">
+                        <h3 class="text-xs font-extrabold text-gray-900 group-hover:text-[#0f172a] transition-colors">Chat with Maxie</h3>
+                        <p class="text-[10px] text-gray-400 font-bold">Have questions? Maxie is here to assist you</p>
+                    </div>
+                    <div class="bg-[#0f172a] text-white w-9 h-9 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+                        <span class="material-symbols-outlined text-lg leading-none" style="transform: rotate(-30deg); margin-left: 2px;">send</span>
+                    </div>
+                </div>
+
+                <!-- Quick Booking Link Card -->
+                <a href="/booking" class="bg-white border border-gray-100 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-5 flex items-center justify-between hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline group">
+                    <div class="flex flex-col gap-1">
+                        <h3 class="text-xs font-extrabold text-gray-900 group-hover:text-[#0f172a] transition-colors">Book a Repair</h3>
+                        <p class="text-[10px] text-gray-400 font-bold">Setup a diagnostic and repair reservation</p>
+                    </div>
+                    <div class="bg-gray-100 text-gray-700 w-9 h-9 rounded-full flex items-center justify-center group-hover:bg-[#0f172a] group-hover:text-white transition-colors duration-300">
+                        <span class="material-symbols-outlined text-lg leading-none">calendar_month</span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+        <!-- Tab 2: Chat View -->
+        <div x-show="activeTab === 'chat'" class="flex-1 flex flex-col overflow-hidden bg-gray-50">
+            <!-- Slim Header with Brand Deep Charcoal Gradient -->
+            <div class="bg-gradient-to-r from-[#1e293b] to-[#0f172a] text-white p-4.5 flex items-center gap-3 shadow-md relative">
+                <button @click="activeTab = 'home'" class="bg-transparent! border-none! shadow-none! p-0! text-white/80 hover:text-white transition-colors cursor-pointer flex items-center justify-center">
+                    <span class="material-symbols-outlined text-xl">arrow_back</span>
+                </button>
+                <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-white text-lg bg-white/20 p-1.5 rounded-lg backdrop-blur-sm">smart_toy</span>
+                    <div class="flex flex-col">
+                        <span class="font-extrabold text-sm leading-tight text-white">Maxie</span>
+                        <span class="text-[9px] text-white/80 font-bold uppercase tracking-wider">Online | Assistant</span>
+                    </div>
+                </div>
+                <button @click="isOpen = false" class="bg-transparent! border-none! shadow-none! p-0! text-white/80 hover:text-white transition-colors cursor-pointer absolute right-4 flex items-center justify-center">
                     <span class="material-symbols-outlined text-xl">close</span>
                 </button>
             </div>
-        </div>
 
-        <!-- Tabs -->
-        <div class="px-4 py-2.5 bg-white border-b border-gray-100 flex justify-center">
-            <div class="flex p-1 bg-gray-100 rounded-xl w-full">
-                <button @click="activeTab = 'chat'; scrollToBottom();" 
-                    :class="activeTab === 'chat' ? 'bg-white! text-gray-900 font-bold rounded-lg! shadow-sm!' : 'bg-transparent! text-gray-500 hover:text-gray-900 font-medium rounded-lg!'"
-                    class="flex-1 py-2 text-center text-xs transition-all duration-200 flex items-center justify-center gap-2 border-none! p-0! focus:outline-none cursor-pointer">
-                    <span class="material-symbols-outlined text-base">smart_toy</span>
-                    Chatbot
-                </button>
-                <button @click="activeTab = 'help'" 
-                    :class="activeTab === 'help' ? 'bg-white! text-gray-900 font-bold rounded-lg! shadow-sm!' : 'bg-transparent! text-gray-500 hover:text-gray-900 font-medium rounded-lg!'"
-                    class="flex-1 py-2 text-center text-xs transition-all duration-200 flex items-center justify-center gap-2 border-none! p-0! focus:outline-none cursor-pointer">
-                    <span class="material-symbols-outlined text-base">help</span>
-                    Help Center
-                </button>
-            </div>
-        </div>
-
-        <!-- Chatbot Tab Content -->
-        <div x-show="activeTab === 'chat'" class="flex-1 flex flex-col overflow-hidden">
-            <!-- Messages -->
-            <div id="chat-messages-container" class="p-4 flex-1 overflow-y-auto bg-gray-50 flex flex-col gap-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+            <!-- Scrollable Messages Container -->
+            <div id="chat-messages-container" class="flex-1 p-5 overflow-y-auto bg-gray-50 flex flex-col gap-4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
                 <template x-for="(msg, index) in messages" :key="index">
                     <div :class="msg.role === 'bot' ? 'self-start' : 'self-end'" class="max-w-[85%] flex flex-col gap-1">
-                        <div :class="msg.role === 'bot' ? 'bg-white border border-gray-200 text-gray-800 rounded-tl-none shadow-sm' : 'bg-gray-900 text-white rounded-tr-none'"
-                            class="p-3.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap"
+                        <div :class="msg.role === 'bot' ? 'bg-white border border-gray-100 text-gray-800 rounded-2xl rounded-tl-none shadow-sm' : 'bg-[#0f172a] text-white rounded-2xl rounded-tr-none shadow-md'"
+                            class="px-4 py-3 text-xs leading-relaxed font-semibold whitespace-pre-wrap"
                             x-text="msg.content">
                         </div>
                     </div>
                 </template>
-                <div x-show="isLoading" class="self-start bg-white border border-gray-200 text-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm flex gap-1.5 items-center">
+                
+                <!-- Bouncing Three-Dot Loader -->
+                <div x-show="isLoading" class="self-start bg-white border border-gray-100 text-gray-800 px-4 py-3 rounded-2xl rounded-tl-none shadow-sm flex gap-1.5 items-center">
                     <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                     <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
                     <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
                 </div>
             </div>
 
-            <!-- Input -->
-            <div class="p-4 border-t border-gray-200 bg-white">
-                <div class="flex items-center gap-2 bg-gray-100 rounded-full px-4 py-1.5 border border-transparent focus-within:border-gray-300 transition-all">
+            <!-- Input Form -->
+            <div class="p-3.5 border-t border-gray-100 bg-white">
+                <div class="flex items-center gap-2 bg-gray-50 rounded-full px-4 py-1.5 border border-transparent focus-within:border-gray-200 focus-within:bg-white transition-all shadow-inner">
                     <input type="text" 
                         x-model="userInput" 
                         @keydown.enter="sendMessage()"
                         placeholder="Ask Maxie anything..." 
-                        class="flex-1 bg-transparent border-none text-sm focus:ring-0 py-2">
+                        class="flex-1 bg-transparent border-none text-xs focus:ring-0 py-2.5 font-semibold text-gray-700 placeholder-gray-400">
                     <button @click="sendMessage()"
-                        :disabled="isLoading"
-                        class="bg-transparent! border-none! shadow-none! p-0! text-gray-900 disabled:text-gray-300 transition-colors flex items-center justify-center focus:outline-none cursor-pointer">
-                        <span class="material-symbols-outlined text-2xl" style="color: #101828">send</span>
+                        :disabled="isLoading || !userInput.trim()"
+                        class="bg-transparent! border-none! shadow-none! p-0! text-[#0f172a] disabled:text-gray-300 transition-colors flex items-center justify-center focus:outline-none cursor-pointer">
+                        <span class="material-symbols-outlined text-2xl">send</span>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Help Center Tab Content -->
-        <div x-show="activeTab === 'help'" class="flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-            <!-- Search Bar -->
-            <div class="px-0.5">
-                <div class="flex items-center gap-2 bg-white rounded-xl px-3 py-2 border border-gray-200 focus-within:border-gray-400 transition-all shadow-sm">
-                    <span class="material-symbols-outlined text-gray-400 text-lg">search</span>
+        <!-- Tab 3: Help View -->
+        <div x-show="activeTab === 'help'" class="flex-1 flex flex-col overflow-hidden bg-gray-50">
+            <!-- Slim Header -->
+            <div class="bg-gradient-to-r from-[#1e293b] to-[#0f172a] text-white p-4.5 flex items-center gap-3 shadow-md relative">
+                <button @click="activeTab = 'home'" class="bg-transparent! border-none! shadow-none! p-0! text-white/80 hover:text-white transition-colors cursor-pointer flex items-center justify-center">
+                    <span class="material-symbols-outlined text-xl">arrow_back</span>
+                </button>
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-white text-lg bg-white/20 p-1.5 rounded-lg backdrop-blur-sm">help</span>
+                    <span class="font-extrabold text-sm text-white">Help Center</span>
+                </div>
+                <button @click="isOpen = false" class="bg-transparent! border-none! shadow-none! p-0! text-white/80 hover:text-white transition-colors cursor-pointer absolute right-4 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-xl">close</span>
+                </button>
+            </div>
+
+            <!-- FAQ Search Box and Accordions -->
+            <div class="flex-1 p-5 overflow-y-auto flex flex-col gap-4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+                <!-- Premium Search Box -->
+                <div class="bg-white rounded-2xl p-2 border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-gray-400 text-lg pl-1.5">search</span>
                     <input type="text" 
                         x-model="searchQuery" 
-                        placeholder="Search help articles..." 
-                        class="flex-1 bg-transparent border-none text-xs focus:ring-0 p-0 text-gray-700 py-1">
-                    <button x-show="searchQuery" @click="searchQuery = ''" class="bg-transparent! border-none! shadow-none! p-0! text-gray-400 hover:text-gray-600 transition-colors cursor-pointer">
-                        <span class="material-symbols-outlined text-sm">close</span>
+                        placeholder="Search FAQs..." 
+                        class="flex-1 bg-transparent border-none text-xs focus:ring-0 p-0 text-gray-700 py-1.5 font-semibold placeholder-gray-400">
+                    <button x-show="searchQuery" @click="searchQuery = ''" class="bg-transparent! border-none! shadow-none! p-0! text-gray-400 hover:text-gray-600 transition-colors cursor-pointer pr-1 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-base">close</span>
                     </button>
                 </div>
-            </div>
 
-            <!-- Quick Links -->
-            <div class="flex flex-col gap-2">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 px-0.5">Quick Actions</span>
-                <div class="grid grid-cols-2 gap-2">
-                    <a href="/booking" class="bg-white border border-gray-200 hover:border-gray-900 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1.5 transition-all shadow-sm hover:shadow-md group no-underline">
-                        <span class="material-symbols-outlined text-gray-700 group-hover:text-black text-xl">calendar_month</span>
-                        <span class="text-xs font-bold text-gray-800 group-hover:text-black">Book Repair</span>
-                    </a>
-                    <a href="/help/track" class="bg-white border border-gray-200 hover:border-gray-900 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1.5 transition-all shadow-sm hover:shadow-md group no-underline">
-                        <span class="material-symbols-outlined text-gray-700 group-hover:text-black text-xl">travel_explore</span>
-                        <span class="text-xs font-bold text-gray-800 group-hover:text-black">Track Status</span>
-                    </a>
-                    <a href="/help/contact" class="bg-white border border-gray-200 hover:border-gray-900 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1.5 transition-all shadow-sm hover:shadow-md group no-underline">
-                        <span class="material-symbols-outlined text-gray-700 group-hover:text-black text-xl">mail</span>
-                        <span class="text-xs font-bold text-gray-800 group-hover:text-black">Contact Us</span>
-                    </a>
-                    <a href="/help/faqs" class="bg-white border border-gray-200 hover:border-gray-900 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1.5 transition-all shadow-sm hover:shadow-md group no-underline">
-                        <span class="material-symbols-outlined text-gray-700 group-hover:text-black text-xl">help_outline</span>
-                        <span class="text-xs font-bold text-gray-800 group-hover:text-black">FAQ Page</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- FAQs Accordion -->
-            <div class="flex flex-col gap-2">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 px-0.5">Common Questions</span>
-                <div class="flex flex-col gap-2">
+                <!-- List of FAQ Cards -->
+                <div class="flex flex-col gap-2.5">
                     <template x-for="(faq, index) in filteredFaqs" :key="index">
-                        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm transition-all">
+                        <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.02)] transition-all">
                             <button @click="faq.open = !faq.open" 
-                                class="w-full text-left p-3 flex justify-between items-center gap-3 transition-colors hover:bg-gray-50 bg-transparent! border-none! shadow-none! focus:outline-none cursor-pointer">
-                                <span class="text-xs font-semibold text-gray-800" x-text="faq.q"></span>
-                                <span class="material-symbols-outlined text-gray-500 text-lg transition-transform duration-200" 
+                                class="w-full text-left p-4 flex justify-between items-center gap-3 transition-colors hover:bg-gray-50 bg-transparent! border-none! shadow-none! focus:outline-none cursor-pointer">
+                                <span class="text-xs font-bold text-gray-800" x-text="faq.q"></span>
+                                <span class="material-symbols-outlined text-gray-400 text-lg transition-transform duration-200" 
                                     :class="faq.open ? 'rotate-180' : ''">expand_more</span>
                             </button>
                             <div x-show="faq.open" x-transition
-                                class="px-3 pb-3 text-xs text-gray-600 border-t border-gray-100 pt-2 leading-relaxed whitespace-normal"
+                                class="px-4 pb-4 text-xs font-semibold text-gray-500 border-t border-gray-50 pt-2 leading-relaxed whitespace-normal"
                                 x-text="faq.a">
                             </div>
                         </div>
                     </template>
-                    <div x-show="filteredFaqs.length === 0" class="text-center py-6 text-gray-400 text-xs bg-white rounded-xl border border-gray-200 shadow-sm">
-                        No results found for "<span x-text="searchQuery" class="font-semibold text-gray-600"></span>"
+                    
+                    <div x-show="filteredFaqs.length === 0" class="text-center py-8 text-gray-400 text-xs font-bold bg-white rounded-2xl border border-gray-100 shadow-sm">
+                        No matching results found
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Persistent Bottom Tab Bar (Deep Charcoal Accents) -->
+        <div class="bg-white border-t border-gray-100 py-3 px-8 flex justify-around items-center shadow-inner">
+            <button @click="activeTab = 'home'" 
+                class="flex flex-col items-center gap-1 bg-transparent! border-none! shadow-none! p-0! cursor-pointer focus:outline-none transition-all duration-200"
+                :class="activeTab === 'home' || activeTab === 'help' ? 'text-[#0f172a] font-semibold' : 'text-gray-400 hover:text-gray-600'">
+                <span class="material-symbols-outlined text-2xl">home</span>
+                <span class="text-[10px] uppercase tracking-wider font-semibold">Home</span>
+            </button>
+            
+            <button @click="activeTab = 'chat'; scrollToBottom();" 
+                class="flex flex-col items-center gap-1 bg-transparent! border-none! shadow-none! p-0! cursor-pointer focus:outline-none transition-all duration-200"
+                :class="activeTab === 'chat' ? 'text-[#0f172a] font-semibold' : 'text-gray-400 hover:text-gray-600'">
+                <span class="material-symbols-outlined text-2xl">chat</span>
+                <span class="text-[10px] uppercase tracking-wider font-semibold">Chat</span>
+            </button>
+        </div>
+        
+        <!-- Subtle Branding -->
+        <div class="bg-white text-center pb-2 pt-0.5 text-[8px] font-bold text-gray-300 uppercase tracking-widest select-none">
+            Powered by Repairmax AI Agent
+        </div>
+
     </div>
 
-    <!-- Toggle Button -->
+    <!-- Floating Toggle Button (Deep Charcoal) -->
     <button @click="isOpen = !isOpen; if(isOpen && activeTab === 'chat') scrollToBottom();"
         id="chat-toggle"
-        class="bg-gray-900 hover:bg-black text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none cursor-pointer"
+        class="bg-[#0f172a] hover:bg-[#1e293b] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(15,23,42,0.35)] transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none cursor-pointer"
         :class="isOpen ? 'rotate-90' : ''">
         <span class="material-symbols-outlined text-2xl" x-text="isOpen ? 'close' : 'chat'">chat</span>
     </button>

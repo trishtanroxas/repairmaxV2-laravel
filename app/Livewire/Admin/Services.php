@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 use App\Models\FaultType;
 use Illuminate\Support\Facades\Session;
 
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 class Services extends Component
 {
     use WithFileUploads;
+    use WithPagination;
 
     public string $search = '';
     public string $sortOrder = 'latest'; // 'latest', 'alpha_asc', 'alpha_desc', 'price_asc', 'price_desc'
@@ -149,7 +151,7 @@ class Services extends Component
             $query->latest();
         }
 
-        $records = $query->get();
+        $records = $query->simplePaginate(10);
 
         return view('livewire.admin.services', [
             'records' => $records,

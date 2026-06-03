@@ -41,10 +41,12 @@ services:
       - N8N_EDITOR_BASEURL=https://repairmax.n8n.app
       - N8N_TRUSTED_HOSTS=repairmax.n8n.app,localhost,127.0.0.1
       - GENERIC_TIMEZONE=Asia/Manila
-      - GOOGLE_APPLICATION_CREDENTIALS=/home/node/google-credentials.json
+      # - GOOGLE_APPLICATION_CREDENTIALS=/home/node/google-credentials.json
     volumes:
       - n8n_data:/home/node/.n8n
-      - ./silken-alloy-493903-n2-17a73b495c8d.json:/home/node/google-credentials.json
+      # Uncomment the line below if you want to use Google Cloud credentials.
+      # Place your credentials file as 'google-credentials.json' in this directory (safely ignored by git).
+      # - ./google-credentials.json:/home/node/google-credentials.json
     networks:
       - n8n_network
 

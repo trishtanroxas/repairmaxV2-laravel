@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             RepairSeeder::class,
             AppointmentSeeder::class,
             NotificationSeeder::class,
+            SupportedCitySeeder::class,
         ]);
     }
 }

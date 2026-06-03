@@ -352,7 +352,7 @@
 
         @if($users->hasPages())
             <div class="px-8 py-4 border-t border-gray-100 bg-gray-50/30">
-                {{ $users->links() }}
+                {{ $users->links(data: ['scrollTo' => false]) }}
             </div>
         @endif
     </div>

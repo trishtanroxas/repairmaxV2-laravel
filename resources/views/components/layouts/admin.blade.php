@@ -81,6 +81,9 @@
                 <div class="mb-6">
                     <h3 class="px-6 py-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Services</h3>
                     <x-sidebar.link href="/admin/services" icon="handyman" :active="request()->is('admin/services')">Services</x-sidebar.link>
+                    <x-sidebar.link href="/admin/brand-models" icon="branding_watermark" :active="request()->is('admin/brand-models')">Brands & Models</x-sidebar.link>
+                    <x-sidebar.link href="/admin/announcements" icon="campaign" :active="request()->is('admin/announcements')">Announcements</x-sidebar.link>
+                    <x-sidebar.link href="/admin/cities" icon="location_city" :active="request()->is('admin/cities')">Supported Cities</x-sidebar.link>
                 </div>
 
                 <div class="mb-6">

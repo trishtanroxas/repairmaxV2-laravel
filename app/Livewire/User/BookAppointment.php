@@ -67,7 +67,10 @@ class BookAppointment extends Component
             $this->email      = $user->email ?? '';
             $this->phone      = $user->phone ?? '';
             $this->address    = $user->address ?? '';
-            $this->city       = $user->city ?? '';
+            // Only pre-fill city if it's a recognized supported city; otherwise leave blank
+            $userCity = $user->city ?? '';
+            $supported = \App\Models\SupportedCity::where('is_active', true)->pluck('name')->toArray();
+            $this->city = in_array($userCity, $supported) ? $userCity : '';
         }
         $this->pref_date = date('Y-m-d');
         $this->generateTrackingCode();
@@ -199,6 +202,18 @@ class BookAppointment extends Component
         return FaultType::orderBy('name')->get();
     }
 
+    #[Computed]
+    public function cities()
+    {
+        return \App\Models\SupportedCity::where('is_active', true)->orderBy('name')->get();
+    }
+
+    #[Computed]
+    public function activeAnnouncement()
+    {
+        return \App\Models\Announcement::where('is_active', true)->latest()->first();
+    }
+
     public function updatedPhotos($value, int|string $key)
     {
         if (isset($this->photos[$key]) && $this->photos[$key]) {
@@ -246,7 +261,7 @@ class BookAppointment extends Component
             'last_name'      => 'required|string|max:255',
             'email'          => 'required|email|max:255|unique:users,email,' . Auth::id(),
             'phone'          => 'required|string|max:20',
-            'city'           => 'required|string|max:100',
+            'city'           => 'required|string|exists:supported_cities,name',
             'device_brand'   => 'required|string',
             'device_model'   => 'required|string|max:255',
             'fault_category' => 'required|string',
@@ -349,7 +364,6 @@ class BookAppointment extends Component
         $appointment = new Appointment();
         $appointment->user_id        = Auth::id();
         $appointment->tracking_code  = $trackingCode;
-        $appointment->booking_number = $this->booking_number ?: 'BK-' . str_pad(Appointment::count() + 1, 5, '0', STR_PAD_LEFT);
         $appointment->device_brand   = $finalBrand;
         $appointment->device_model   = $finalModel;
         $appointment->fault_category = $finalCategory;
@@ -363,6 +377,10 @@ class BookAppointment extends Component
         $appointment->city           = $this->city;
         $appointment->additional_fee = $additionalFee;
         $appointment->quote          = $calculatedQuote;
+        $appointment->save();
+
+        // Dynamically save the actual auto-incremented ID as Book ID: #
+        $appointment->booking_number = 'Book ID: ' . $appointment->id;
         $appointment->save();
 
         // Create notifications for all admins
@@ -382,7 +400,7 @@ class BookAppointment extends Component
             ]);
         }
 
-        Session::flash('success', 'Booking confirmed! Booking No: ' . $appointment->booking_number);
+        Session::flash('success', 'Booking confirmed! Ticket Number: ' . $appointment->tracking_code);
         return redirect()->route('user.dashboard');
     }
 

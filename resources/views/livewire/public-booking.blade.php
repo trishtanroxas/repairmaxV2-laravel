@@ -513,6 +513,32 @@
         </div>
     </div>
 
+    @if($this->activeAnnouncement)
+        <div class="mb-8 p-6 rounded-3xl border flex items-start gap-4 animate-fade-in shadow-sm
+            @if($this->activeAnnouncement->style === 'warning') bg-amber-50 border-amber-200 text-amber-900
+            @elseif($this->activeAnnouncement->style === 'success') bg-emerald-50 border-emerald-200 text-emerald-900
+            @elseif($this->activeAnnouncement->style === 'danger') bg-red-50 border-red-200 text-red-900
+            @else bg-blue-50 border-blue-200 text-blue-900
+            @endif">
+            <span class="material-symbols-outlined text-[28px] shrink-0 mt-0.5
+                @if($this->activeAnnouncement->style === 'warning') text-amber-600
+                @elseif($this->activeAnnouncement->style === 'success') text-emerald-600
+                @elseif($this->activeAnnouncement->style === 'danger') text-red-600
+                @else text-blue-600
+                @endif">
+                @if($this->activeAnnouncement->style === 'warning') warning
+                @elseif($this->activeAnnouncement->style === 'success') check_circle
+                @elseif($this->activeAnnouncement->style === 'danger') error
+                @else info
+                @endif
+            </span>
+            <div class="flex-1">
+                <h4 class="text-sm font-black uppercase tracking-wider mb-1">Notice Update</h4>
+                <p class="text-sm leading-relaxed font-semibold whitespace-pre-line">{{ $this->activeAnnouncement->content }}</p>
+            </div>
+        </div>
+    @endif
+
     <!-- ===== MAIN FORM ===== -->
     <div class="bg-white border border-gray-200 shadow-xl rounded-3xl p-6 md:p-10 mb-8">
         <form wire:submit.prevent="prepareReview" class="space-y-12" novalidate>
@@ -615,7 +641,15 @@
                         </div>
                         <div class="md:col-span-1">
                             <label for="city" class="block text-sm font-bold text-gray-800 mb-2 ml-1">City / Municipality <span class="text-red-500">*</span></label>
-                            <input type="text" id="city" wire:model="city" placeholder="e.g. Quezon City" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                            <div class="relative w-full">
+                                <select id="city" wire:model="city" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" required>
+                                    <option value="" disabled selected>Select City...</option>
+                                    @foreach($this->cities as $c)
+                                        <option value="{{ $c->name }}">{{ $c->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[20px]">unfold_more</span>
+                            </div>
                             @error('city') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -694,52 +728,7 @@
                 @endif
             </section>
 
-            <!-- Service Method Selection (Pickup vs Drop-off) -->
-            <section>
-                <h3 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 mb-6 flex items-center gap-2.5">
-                    <span class="material-symbols-outlined text-[20px] leading-none text-blue-500 bg-blue-50 p-1.5 rounded-xl shrink-0 transform translate-y-[1px]">local_shipping</span>
-                    <span class="leading-none">Service Method</span>
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <!-- Drop-off at Shop -->
-                    <label class="relative flex items-start p-6 border-2 rounded-[1.5rem] cursor-pointer transition-all {{ $pickup_option === 'Drop-off' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300' }}">
-                        <input type="radio" wire:model.live="pickup_option" value="Drop-off" class="mt-1 w-5 h-5 cursor-pointer">
-                        <div class="ml-4 flex-1">
-                            <p class="font-bold text-gray-900">🏪 Drop-off at Shop</p>
-                            <p class="text-sm text-gray-600 mt-1">Visit our repair shop in Quezon City</p>
-                            <p class="text-sm font-bold text-green-600 mt-2">FREE</p>
-                            <p class="text-xs text-gray-500 mt-1">Mon-Sat, 9:00 AM - 6:00 PM</p>
-                        </div>
-                    </label>
 
-                    <!-- Home Pickup -->
-                    <label class="relative flex items-start p-6 border-2 rounded-[1.5rem] cursor-pointer transition-all {{ $pickup_option === 'Pickup' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300' }}">
-                        <input type="radio" wire:model.live="pickup_option" value="Pickup" class="mt-1 w-5 h-5 cursor-pointer">
-                        <div class="ml-4 flex-1">
-                            <p class="font-bold text-gray-900">🚗 Home Pickup & Delivery</p>
-                            <p class="text-sm text-gray-600 mt-1">We pickup and deliver to your location</p>
-                            <p class="text-sm font-bold text-blue-600 mt-2">₱300 (Metro Manila only)</p>
-                            <p class="text-xs text-gray-500 mt-1">Same-day available</p>
-                        </div>
-                    </label>
-                </div>
-
-                <!-- Address field (show only if Pickup is selected) -->
-                @if($pickup_option === 'Pickup')
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <label for="address" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Full Address</label>
-                        <input type="text" id="address" wire:model="address" placeholder="Street address, building, etc." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
-                        @error('address') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
-                    </div>
-                    <div>
-                        <label for="city" class="block text-sm font-bold text-gray-800 mb-2 ml-1">City</label>
-                        <input type="text" id="city" wire:model="city" placeholder="e.g., Quezon City, Manila" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
-                        @error('city') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-                @endif
-            </section>
 
             <!-- Service Details -->
             <section>
