@@ -2,12 +2,13 @@
     x-data="{ 
         mobileMenuOpen: false, 
         scrolled: false, 
-        isHomePage: false,
-        get isSolid() { return true }
+        isHelpPage: {{ request()->is('help*') ? 'true' : 'false' }},
+        get isSolid() { return !this.isHelpPage || this.scrolled || this.mobileMenuOpen }
     }"
     @scroll.window="scrolled = (window.scrollY > 50)"
     id="main-header"
-    class="fixed top-0 w-full z-50 transition-all duration-300 bg-[#020617]/90 backdrop-blur-md border-b border-white/5 shadow-sm">
+    class="fixed top-0 w-full z-50 transition-all duration-300 {{ request()->is('help*') ? 'bg-transparent border-b border-transparent' : 'bg-[#020617]/90 backdrop-blur-md border-b border-white/5 shadow-sm' }}"
+    :class="isSolid ? 'bg-[#020617]/90 backdrop-blur-md border-b border-white/5 shadow-sm' : 'bg-transparent border-b border-transparent'">
     <nav aria-label="Help Navigation" class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-12 gap-6 items-center h-20">
 
         <div class="col-span-8 lg:col-span-3 flex items-center">

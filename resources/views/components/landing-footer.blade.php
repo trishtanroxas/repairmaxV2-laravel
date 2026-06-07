@@ -32,42 +32,48 @@
                 </div>
             </div>
 
-            <div class="col-span-1 text-center">
-                <h3 class="text-sm font-semibold text-gray-100 tracking-wider uppercase mb-4">Platform</h3>
-                <ul class="space-y-3 text-sm">
-                    <li><a href="/services" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Services</a></li>
-                    <li><a href="/about-us" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">About Us</a></li>
-                    <li><a href="/help/faqs" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">FAQ</a></li>
-                    <li><a href="/help/track" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Track Status</a></li>
-                </ul>
+            <div class="col-span-1 text-center md:text-right">
+                <div class="inline-block text-center md:text-left">
+                    <h3 class="text-sm font-semibold text-gray-100 tracking-wider uppercase mb-4">Platform</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="/services" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Services</a></li>
+                        <li><a href="/about-us" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">About Us</a></li>
+                        <li><a href="/help/faqs" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">FAQ</a></li>
+                        <li><a href="/help/track" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Track Status</a></li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="col-span-1 text-center">
-                <h3 class="text-sm font-semibold text-gray-100 tracking-wider uppercase mb-4">Account</h3>
-                <ul class="space-y-3 text-sm">
-                    <li>
-                        <a href="{{ route('login') }}" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Log In</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('register') }}" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Register</a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">My Tickets</a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Billing</a>
-                    </li>
-                </ul>
+            <div class="col-span-1 text-center md:text-right">
+                <div class="inline-block text-center md:text-left">
+                    <h3 class="text-sm font-semibold text-gray-100 tracking-wider uppercase mb-4">Account</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li>
+                            <a href="{{ route('login') }}" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Log In</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('register') }}" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Register</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">My Tickets</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Billing</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="col-span-2 text-center lg:col-span-1">
-                <h3 class="text-sm font-semibold text-gray-100 tracking-wider uppercase mb-4">Legal</h3>
-                <ul class="space-y-3 text-sm">
-                    <li><a href="/legal-policy#privacy" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Privacy Policy</a></li>
-                    <li><a href="/legal-policy#terms" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Terms of Service</a></li>
-                    <li><a href="/legal-policy#refund" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Refund Policy</a></li>
-                    <li><a href="/legal-policy#warranty" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Warranty Info</a></li>
-                </ul>
+            <div class="col-span-2 text-center md:text-right lg:col-span-1">
+                <div class="inline-block text-center md:text-left">
+                    <h3 class="text-sm font-semibold text-gray-100 tracking-wider uppercase mb-4">Legal</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="/legal-policy#privacy" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Privacy Policy</a></li>
+                        <li><a href="/legal-policy#terms" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Terms of Service</a></li>
+                        <li><a href="/legal-policy#refund" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Refund Policy</a></li>
+                        <li><a href="/legal-policy#warranty" class="hover:text-gray-100 hover:underline underline-offset-4 transition-all duration-300">Warranty Info</a></li>
+                    </ul>
+                </div>
             </div>
 
         </div>

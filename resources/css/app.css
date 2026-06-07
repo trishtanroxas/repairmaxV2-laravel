@@ -34,8 +34,44 @@
     --animate-fade-in: fadeIn 0.2s ease-out forwards;
     --animate-fade-out: fadeOut 0.2s ease-in forwards;
     --animate-scale-in: scaleIn 0.2s ease-out forwards;
+    --animate-fade-in-up: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    --animate-fade-in-left: fadeInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    --animate-fade-in-right: fadeInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
     /* Custom Keyframes */
+    @keyframes fadeInLeft {
+        0% {
+            transform: translateX(-40px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInRight {
+        0% {
+            transform: translateX(40px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInUp {
+        0% {
+            transform: translateY(16px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
     @keyframes slideInRight {
         0% {
             transform: translateX(100%);
