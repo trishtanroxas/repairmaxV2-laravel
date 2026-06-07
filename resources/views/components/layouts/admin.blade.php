@@ -11,26 +11,281 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+    
+    <!-- Cropper.js -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
     <style>
         .no-transition * {
             transition: none !important;
         }
+        [x-cloak] { display: none !important; }
+
+        /* Scoped Dark Mode overrides for all Admin Dashboard Views */
+        body.dark {
+            color: #cbd5e1 !important; /* text-gray-300 */
+        }
+        /* Convert generic white cards to glassmorphism (excluding modals) */
+        body.dark .bg-white:not(aside):not(aside *):not(header):not(header *):not(.absolute):not(.fixed):not(.modal-content):not(.modal-content *) {
+            background-color: rgba(255, 255, 255, 0.03) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #e2e8f0 !important;
+        }
+        body.dark .bg-gray-50:not(.modal-content):not(.modal-content *),
+        body.dark .bg-gray-50\/30:not(.modal-content):not(.modal-content *),
+        body.dark .bg-gray-50\/50:not(.modal-content):not(.modal-content *) {
+            background-color: rgba(255, 255, 255, 0.02) !important;
+            border-color: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        /* Solid modal styles in dark mode to remove glassy/see-thru effect */
+        body.dark .modal-content {
+            background-color: #191e2e !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        body.dark .modal-content .bg-white {
+            background-color: #191e2e !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        body.dark .modal-content .bg-gray-50,
+        body.dark .modal-content .bg-gray-50\/30,
+        body.dark .modal-content .bg-gray-50\/50 {
+            background-color: #121622 !important; /* Slightly darker solid #191e2e */
+            border-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        /* Buttons inside modal */
+        body.dark .modal-content .bg-white.border {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+        }
+        body.dark .modal-content .bg-white.border:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        body.dark .modal-content .text-gray-900,
+        body.dark .modal-content .text-gray-800,
+        body.dark .modal-content .text-gray-700 {
+            color: #ffffff !important;
+        }
+        body.dark .modal-content .text-gray-500,
+        body.dark .modal-content .text-gray-400 {
+            color: #94a3b8 !important; /* highly visible grey */
+        }
+        /* Text overrides */
+        body.dark .text-gray-900,
+        body.dark .text-gray-800,
+        body.dark .text-gray-750,
+        body.dark .text-gray-700 {
+            color: #ffffff !important;
+        }
+        body.dark .text-gray-650,
+        body.dark .text-gray-600,
+        body.dark .text-gray-550,
+        body.dark .text-gray-500,
+        body.dark .text-gray-455 {
+            color: #94a3b8 !important; /* text-gray-400 */
+        }
+        body.dark .text-gray-400 {
+            color: #cbd5e1 !important; /* text-gray-300 */
+        }
+        /* Borders */
+        body.dark .border-brand-200,
+        body.dark .border-brand-100,
+        body.dark .border-brand-250,
+        body.dark .border-gray-250,
+        body.dark .border-gray-200,
+        body.dark .border-gray-100,
+        body.dark .divide-brand-100,
+        body.dark .divide-brand-200,
+        body.dark .border-t,
+        body.dark .border-b,
+        body.dark .divide-y,
+        body.dark .divide-y > * {
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        /* Buttons styling */
+        body.dark .bg-gray-900 {
+            background-color: #1e293b !important;
+            color: #ffffff !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        body.dark .bg-gray-900:hover {
+            background-color: #2b3a55 !important;
+        }
+        body.dark .bg-gray-100 {
+            background-color: rgba(255, 255, 255, 0.06) !important;
+            color: #ffffff !important;
+            border-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        body.dark .bg-gray-100:hover {
+            background-color: rgba(255, 255, 255, 0.12) !important;
+        }
+        /* Badge colors */
+        body.dark .bg-blue-50 {
+            background-color: rgba(59, 130, 246, 0.1) !important;
+            color: #60a5fa !important;
+        }
+        body.dark .bg-green-50 {
+            background-color: rgba(16, 185, 129, 0.1) !important;
+            color: #34d399 !important;
+        }
+        body.dark .bg-orange-50 {
+            background-color: rgba(249, 115, 22, 0.1) !important;
+            color: #fb923c !important;
+        }
+        body.dark .bg-purple-50 {
+            background-color: rgba(139, 92, 246, 0.1) !important;
+            color: #c084fc !important;
+        }
+        body.dark .bg-amber-50 {
+            background-color: rgba(245, 158, 11, 0.1) !important;
+            color: #fbbf24 !important;
+        }
+        /* Inputs & forms styling */
+        body.dark input,
+        body.dark select,
+        body.dark textarea {
+            background-color: rgba(255, 255, 255, 0.02) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+        }
+        body.dark input:focus,
+        body.dark select:focus,
+        body.dark textarea:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
+        }
+        body.dark input::placeholder,
+        body.dark textarea::placeholder {
+            color: #475569 !important;
+        }
+        /* Dropdowns list in select */
+        body.dark select option {
+            background-color: #0b0f19 !important;
+            color: #ffffff !important;
+        }
+        /* Labels */
+        body.dark label {
+            color: #cbd5e1 !important;
+        }
+        /* Table rows hover and headers */
+        body.dark thead.bg-gray-50,
+        body.dark tr.bg-gray-50 {
+            background-color: rgba(255, 255, 255, 0.04) !important;
+        }
+        body.dark tr.hover\:bg-gray-50:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
     </style>
 </head>
 
-<body class="font-sans antialiased text-gray-800 bg-gray-50 no-transition">
-    <div x-data="{ 
-            sidebarOpen: false, 
-            sidebarCollapsed: localStorage.getItem('sidebar-collapsed') === 'true' 
-        }"
-        x-init="$watch('sidebarCollapsed', value => localStorage.setItem('sidebar-collapsed', value))"
+<body class="font-sans antialiased no-transition"
+    :class="darkMode ? 'bg-[#020617] text-gray-300 dark' : 'bg-gray-50 text-gray-800'"
+    x-data="{ 
+        darkMode: localStorage.getItem('theme') !== 'light',
+        logoutModal: false,
+        isLoggingOut: false,
+        triggerLogout() {
+            this.logoutModal = false;
+            this.isLoggingOut = true;
+            setTimeout(() => {
+                window.location.href = '{{ route('logout') }}';
+            }, 1500);
+        },
+        toggleTheme() {
+            this.darkMode = !this.darkMode;
+            localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', this.darkMode);
+            const body = document.body;
+            if (this.darkMode) {
+                body.classList.add('bg-[#020617]', 'text-gray-300', 'dark');
+                body.classList.remove('bg-gray-50', 'text-gray-800');
+            } else {
+                body.classList.remove('bg-[#020617]', 'text-gray-300', 'dark');
+                body.classList.add('bg-gray-50', 'text-gray-800');
+            }
+        },
+        currentToast: null,
+        show: false,
+        timeout: null,
+        addToast(message, type = 'success') {
+            if (this.show) {
+                this.show = false;
+                setTimeout(() => {
+                    this.currentToast = { message, type };
+                    this.show = true;
+                    this.resetTimeout();
+                }, 450);
+            } else {
+                this.currentToast = { message, type };
+                this.show = true;
+                this.resetTimeout();
+            }
+        },
+        resetTimeout() {
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => { this.show = false }, 5000);
+        }
+    }"
+    @toast.window="addToast($event.detail.message || $event.detail[0].message, $event.detail.type || $event.detail[0].type)">
+    <script>
+        // Inline script to prevent theme flashing on load
+        (function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            const body = document.body;
+            if (theme === 'dark') {
+                body.classList.add('bg-[#020617]', 'text-gray-300', 'dark');
+                document.documentElement.classList.add('dark');
+            } else {
+                body.classList.remove('bg-[#020617]', 'text-gray-300', 'dark');
+                body.classList.add('bg-gray-50', 'text-gray-800');
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+
+    <!-- Toast Container -->
+    <div class="fixed top-10 left-1/2 -translate-x-1/2 z-[100] flex flex-col pointer-events-none w-full max-w-sm px-4">
+        <div x-show="show"
+            x-transition:enter="transition ease-out duration-500"
+            x-transition:enter-start="opacity-0 -translate-y-10 scale-95"
+            x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+            x-transition:leave="transition ease-in duration-400"
+            x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+            x-transition:leave-end="opacity-0 -translate-y-10 scale-95"
+            :class="{
+                'bg-gray-900': currentToast?.type === 'success',
+                'bg-red-600': currentToast?.type === 'error',
+                'bg-blue-600': currentToast?.type === 'info',
+                'bg-yellow-500': currentToast?.type === 'warning'
+            }"
+            class="pointer-events-auto w-full px-5 py-4 rounded-[1.25rem] text-white flex items-center justify-between gap-4 shadow-none border-none">
+            <template x-if="currentToast">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-[22px]" x-text="currentToast.type === 'success' ? 'check_circle' : (currentToast.type === 'error' ? 'error' : 'info')"></span>
+                    <span class="text-sm font-bold" x-text="currentToast.message"></span>
+                </div>
+            </template>
+            <button @click="show = false" class="p-0 bg-transparent border-none shadow-none opacity-50 hover:opacity-100 transition-opacity">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
+    </div>
+
+    <div x-data="{ sidebarOpen: false }"
         @resize.window="if(window.innerWidth >= 1024) sidebarOpen = false"
         class="min-h-screen flex flex-col">
 
+        <!-- Mobile Sidebar Backdrop -->
         <div x-show="sidebarOpen"
             x-transition:enter="transition-opacity ease-linear duration-300"
             x-transition:enter-start="opacity-0"
@@ -39,33 +294,30 @@
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
             @click="sidebarOpen = false"
-            class="fixed inset-0 bg-gray-900/60 backdrop-blur-md lg:hidden z-30" style="display: none;"></div>
+            class="fixed inset-0 bg-gray-955/40 dark:bg-[#020617]/80 backdrop-blur-md lg:hidden z-30" style="display: none;"></div>
 
-        <aside :class="{ 
-                'translate-x-0': sidebarOpen, 
-                '-translate-x-full': !sidebarOpen, 
-                'lg:-translate-x-full': sidebarCollapsed, 
-                'lg:translate-x-0': !sidebarCollapsed 
-            }"
-            class="fixed left-0 top-0 h-screen w-64 bg-gray-900 border-r border-gray-800 transition-transform duration-300 ease-in-out z-40 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.1)] lg:shadow-none">
+        <!-- Sidebar Container (Fixed at w-64, no collapsible) -->
+        <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+            class="fixed left-0 top-0 h-screen w-64 bg-white dark:bg-[#020617] transition-transform duration-300 ease-in-out z-40 flex flex-col lg:translate-x-0">
 
-            <div class="h-20 flex items-center justify-between px-6 bg-gray-900 border-b border-gray-800 shrink-0">
-                <a href="/" class="hover:opacity-80 transition-colors flex items-center gap-2">
-                    <img src="{{ asset('img/logo-r-white.png') }}" alt="Repairmax Logo" class="h-8 w-auto">
-                    <span class="font-[Montserrat] text-lg font-bold tracking-tight text-white">Repairmax</span>
-                    <span class="text-[10px] text-blue-500 font-mono uppercase border border-blue-500 rounded px-1.5 py-0.5">Admin</span>
-                </a>
+            <div class="h-20 flex items-center justify-between px-6 bg-white dark:bg-[#020617] shrink-0">
+                <div class="flex items-center gap-2.5 select-none">
+                    <img x-show="darkMode" src="{{ asset('img/logo-r-white.png') }}" alt="Repairmax Logo" class="h-8 w-auto">
+                    <img x-show="!darkMode" x-cloak src="{{ asset('img/logo-r-blue.png') }}" alt="Repairmax Logo" class="h-8 w-auto">
+                    <span class="font-[Montserrat] text-lg font-bold tracking-tight text-gray-900 dark:text-white">Repairmax</span>
+                    <span class="text-[9px] text-blue-500 font-mono uppercase border border-blue-500/30 rounded px-1.5 py-0.5 font-bold shrink-0">Admin</span>
+                </div>
 
-                <button @click="sidebarOpen = false" class="lg:hidden text-gray-400 hover:text-white focus:outline-none bg-transparent border-0 p-0 shadow-none hover:shadow-none hover:translate-y-0 active:scale-100">
+                <button @click="sidebarOpen = false" class="lg:hidden text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none bg-transparent border-0 p-0 shadow-none">
                     <span class="material-symbols-outlined text-[24px]">close</span>
                 </button>
             </div>
 
+            <!-- Navigation Links -->
             <nav id="sidebar-nav" class="flex-1 overflow-y-auto py-6 space-y-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 <div class="mb-6">
                     <h3 class="px-6 py-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Main</h3>
                     <x-sidebar.link href="/admin/dashboard" icon="dashboard" :active="request()->is('admin/dashboard')">Dashboard</x-sidebar.link>
-                    <x-sidebar.link href="/admin/profile" icon="person" :active="request()->is('admin/profile')">Profile</x-sidebar.link>
                 </div>
 
                 <div class="mb-6">
@@ -92,13 +344,7 @@
                     <x-sidebar.link href="/admin/user-management" icon="group" :active="request()->is('admin/user-management')">User Management</x-sidebar.link>
                 </div>
 
-                <div class="mb-6">
-                    <h3 class="px-6 py-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Notifications</h3>
-                    <x-sidebar.link href="{{ route('admin.notifications') }}" icon="notifications" :active="request()->routeIs('admin.notifications')">
-                        Notifications
-                        @livewire('notification-badge', ['type' => 'admin'])
-                    </x-sidebar.link>
-                </div>
+
 
                 <div class="mb-6">
                     <h3 class="px-6 py-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Communications</h3>
@@ -117,61 +363,186 @@
                 </div>
             </nav>
 
-            <div class="shrink-0 p-4 border-t border-gray-800 bg-gray-900">
-                @auth
-                <div class="flex items-center justify-between mb-4 px-2">
-                    <div class="flex items-center gap-3 overflow-hidden">
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Admin') }}&background=2563eb&color=ffffff&bold=true"
-                            alt="Profile"
-                            class="w-10 h-10 rounded-[1.25rem] border border-gray-600 object-cover shadow-sm bg-blue-600 shrink-0">
-                        <div class="flex flex-col overflow-hidden">
-                            <span class="text-sm font-semibold text-gray-100 leading-tight truncate">
-                                {{ auth()->user()->first_name ?? auth()->user()->name ?? 'Admin User' }}
-                            </span>
-                            <span class="text-xs text-blue-400 capitalize truncate font-mono tracking-tighter">
-                                {{ auth()->user()->role ?? 'Administrator' }}
-                            </span>
-                        </div>
-                    </div>
-
-
-                </div>
-                @endauth
-
-                <a href="{{ route('logout') }}" class="flex items-center gap-3 px-3 py-2.5 text-red-400 hover:text-white hover:bg-red-500/20 rounded-[1.25rem] transition-all duration-200 group">
-                    <span class="material-symbols-outlined text-[22px]">logout</span>
-                    <span class="font-medium text-sm">Logout</span>
-                </a>
-            </div>
-
         </aside>
 
-        <header :class="{ 'lg:left-0': sidebarCollapsed, 'lg:left-64': !sidebarCollapsed }"
-            class="fixed top-0 right-0 left-0 bg-gray-50/90 backdrop-blur-md z-20 transition-all duration-300 h-20 flex items-center">
-            <div class="flex items-center px-4 md:px-8 w-full">
-
-                <button @click="window.innerWidth >= 1024 ? sidebarCollapsed = !sidebarCollapsed : sidebarOpen = !sidebarOpen"
-                    class="inline-flex items-center justify-center w-10 h-10 bg-transparent hover:bg-gray-200/50 rounded-[1.25rem] transition-colors text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 shrink-0">
-                    <span class="material-symbols-outlined text-[26px]"
-                        x-text="(window.innerWidth >= 1024 ? !sidebarCollapsed : sidebarOpen) ? 'menu_open' : 'menu'">
-                    </span>
+        <!-- Top Bar Header -->
+        <header class="fixed top-0 right-0 left-0 lg:left-64 bg-white/90 dark:bg-[#020617]/90 backdrop-blur-md z-20 h-20 flex items-center dark:border-none">
+            <div class="relative flex items-center px-4 md:px-8 w-full h-full">
+ 
+                <!-- Mobile Toggle Hamburger Button -->
+                <button @click="sidebarOpen = !sidebarOpen"
+                    class="lg:hidden inline-flex items-center justify-center w-10 h-10 bg-transparent hover:bg-gray-100 dark:hover:bg-white/5 rounded-[1.25rem] transition-colors text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 shrink-0">
+                    <span class="material-symbols-outlined text-[26px]">menu</span>
                 </button>
-
-                <div class="ml-4 font-medium text-gray-600 truncate hidden sm:block">
-                    {{ $title ?? '' }}
+ 
+                <!-- Header Page Title -->
+                <div class="ml-4 font-[Montserrat] text-base font-extrabold text-gray-900 dark:text-white tracking-tight truncate hidden min-[450px]:block">
+                    {{ str_replace(' | Repairmax', '', $title ?? 'Admin Dashboard') }}
                 </div>
 
+                <!-- Search Bar -->
+                <div class="absolute left-1/2 lg:left-[calc(50%-128px)] -translate-x-1/2 w-full max-w-[180px] min-[400px]:max-w-[240px] sm:max-w-sm md:max-w-md z-10">
+                    <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-450 dark:text-gray-500 text-[20px] pointer-events-none">search</span>
+                    <input type="text" 
+                        placeholder="Search appointments..." 
+                        class="w-full pl-10 pr-4 py-2 bg-gray-50 hover:bg-gray-100/70 dark:bg-white/5 dark:hover:bg-white/10 text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-none transition-all placeholder:text-gray-450 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                        onkeydown="if(event.key === 'Enter') { window.location.href = '{{ route('admin.appointment') }}?search=' + encodeURIComponent(this.value); }">
+                </div>
+ 
+                <!-- Upper UI Controls -->
+                <div class="ml-auto flex items-center gap-3 z-20">
+                    @auth
+                    <!-- Theme Toggle Button -->
+                    <button @click="toggleTheme()" class="inline-flex items-center justify-center p-2 rounded-xl text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 transition-all bg-transparent border-0 shadow-none shrink-0">
+                        <span class="material-symbols-outlined text-[24px]" x-text="darkMode ? 'light_mode' : 'dark_mode'"></span>
+                    </button>
+ 
+                    <!-- Admin Notification Bell -->
+                    <a href="{{ route('admin.notifications') }}" class="relative inline-flex items-center justify-center p-2 rounded-xl text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 transition-all group shrink-0 mr-1 bg-transparent border-0 shadow-none">
+                        <span class="material-symbols-outlined text-[24px]">notifications</span>
+                        <div class="absolute top-1.5 right-1.5">
+                            @livewire('notification-badge', ['type' => 'admin'])
+                        </div>
+                    </a>
+ 
+                    <!-- Admin Dropdown Menu -->
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" @click.outside="open = false" class="flex items-center gap-3 p-1.5 hover:bg-gray-100 dark:hover:bg-white/5 rounded-xl transition-all focus:outline-none group bg-transparent border-0 shadow-none">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->first_name ?? auth()->user()->name ?? 'Admin') }}&background=2563eb&color=ffffff&bold=true"
+                                alt="Profile"
+                                class="w-9 h-9 rounded-full border border-gray-700/50 object-cover shadow-sm bg-gray-900 shrink-0 group-hover:border-gray-500 transition-colors">
+                            <div class="hidden sm:flex flex-col text-left">
+                                <span class="text-sm font-semibold text-gray-700 dark:text-gray-200 leading-tight group-hover:text-gray-900 dark:group-hover:text-white transition-colors truncate max-w-[120px]">
+                                    {{ auth()->user()->first_name ?? auth()->user()->name ?? 'Admin' }}
+                                </span>
+                                <span class="text-[11px] text-gray-400 capitalize truncate">
+                                    {{ auth()->user()->role ?? 'Administrator' }}
+                                </span>
+                            </div>
+                            <span class="material-symbols-outlined text-[18px] text-gray-455 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">keyboard_arrow_down</span>
+                        </button>
+ 
+                        <!-- Dropdown Menu Options -->
+                        <div x-show="open"
+                            x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute right-0 mt-2 w-56 rounded-xl bg-white dark:bg-[#020617] border border-gray-200 dark:border-white/10 shadow-2xl py-1.5 z-50"
+                            style="display: none;">
+                            
+                            <!-- Info Header -->
+                            <div class="px-4 py-2.5 border-b border-gray-100 dark:border-white/5 flex flex-col text-left">
+                                <span class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ auth()->user()->first_name ?? auth()->user()->name ?? 'Admin' }}</span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ auth()->user()->email }}</span>
+                            </div>
+ 
+                            <!-- Option Links -->
+                            <a href="/admin/profile#personal-info" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-650 dark:text-gray-300 hover:text-gray-950 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-[18px] text-gray-400 dark:text-gray-455">badge</span>
+                                Personal Information
+                            </a>
+                            <a href="/admin/profile#edit-profile" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-650 dark:text-gray-300 hover:text-gray-955 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-[18px] text-gray-400 dark:text-gray-455">manage_accounts</span>
+                                Edit Profile
+                            </a>
+                            <a href="/admin/profile#change-password" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-650 dark:text-gray-300 hover:text-gray-955 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-[18px] text-gray-400 dark:text-gray-455">lock</span>
+                                Change Password
+                            </a>
+                            <a href="/admin/settings" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-650 dark:text-gray-300 hover:text-gray-955 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-[18px] text-gray-400 dark:text-gray-455">settings</span>
+                                System Settings
+                            </a>
+                        </div>
+                    </div>
+ 
+                    <!-- Dedicated Logout Trigger Button -->
+                    <button @click="logoutModal = true" 
+                        class="inline-flex items-center justify-center p-2 rounded-xl text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-all bg-transparent border-0 shadow-none shrink-0 ml-1.5 cursor-pointer" 
+                        title="Logout">
+                        <span class="material-symbols-outlined text-[24px]">logout</span>
+                    </button>
+                    @endauth
+                </div>
+ 
             </div>
         </header>
 
-        <main :class="{ 'lg:ml-0': sidebarCollapsed, 'lg:ml-64': !sidebarCollapsed }"
-            class="pt-20 transition-all duration-300 flex-1 flex flex-col">
+        <!-- Main Display Slots -->
+        <main class="lg:ml-64 pt-20 flex-1 flex flex-col">
+            <div class="flex-1 flex flex-col border-t border-gray-200/80 lg:border-l lg:rounded-tl-[1.5rem] bg-gray-50 dark:border-white/15 dark:bg-[#020617]">
+                <div class="w-full px-4 sm:px-6 lg:px-8 py-8 flex-1 text-gray-700 dark:text-gray-300">
+                    {{ $slot }}
+                </div>
+            </div>
+        </main>
+    </div>
 
-            <div class="w-full px-4 sm:px-6 lg:px-8 py-8 flex-1">
-                {{ $slot }}
+    <!-- ===== LOGOUT CONFIRMATION MODAL ===== -->
+    <div x-show="logoutModal"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-md"
+        x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0">
+        <div class="fixed inset-0" @click="logoutModal = false"></div>
+        <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-md w-full relative overflow-hidden flex flex-col transform transition-all"
+            @click.outside="logoutModal = false"
+            x-transition:enter="ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+            x-transition:leave-end="opacity-0 scale-95 translate-y-4">
+            
+            <div class="px-8 pt-10 pb-6 flex flex-col items-center text-center bg-white relative border-b border-gray-50">
+                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mb-5 shadow-sm border border-red-100/50">
+                    <span class="material-symbols-outlined text-[32px] leading-none">logout</span>
+                </div>
+                <h3 class="text-2xl font-black text-gray-900 tracking-tighter font-[Montserrat]">Sign Out?</h3>
+                <p class="text-sm text-gray-400 font-medium mt-2">Are you sure you want to end your current session and log out of the Admin panel?</p>
             </div>
 
-        </main>
+            <div class="p-6 bg-gray-50 flex gap-3">
+                <button type="button" @click="logoutModal = false" 
+                    class="flex-1 py-4 bg-white border border-gray-200 text-gray-700 font-bold rounded-[1.25rem] hover:bg-gray-50 transition-all text-sm">
+                    Cancel
+                </button>
+                <button type="button" @click="triggerLogout()" 
+                    class="flex-1 py-4 bg-red-600 text-white font-bold rounded-[1.25rem] hover:bg-red-700 transition-all shadow-lg shadow-red-200 dark:shadow-none text-sm">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fullscreen Logout Loading Overlay -->
+    <div x-show="isLoggingOut"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        class="fixed inset-0 z-[9999] flex flex-col items-center justify-center transition-colors duration-300"
+        :class="darkMode ? 'bg-[#020617]' : 'bg-gray-50'"
+        x-cloak
+        style="display: none;">
+        <div class="relative flex items-center justify-center">
+            <!-- Subtle outer ring -->
+            <div class="absolute h-32 w-32 rounded-full border border-blue-500/10"></div>
+            <!-- Spinning loader ring -->
+            <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-r-2 border-transparent border-t-blue-500 border-r-blue-500"></div>
+            <!-- Centered logo (Blue version) -->
+            <img src="{{ asset('img/logo-r-blue.png') }}" class="absolute h-12 w-auto animate-pulse" alt="Logo">
+        </div>
+        <p class="mt-6 text-sm font-bold tracking-wider uppercase transition-colors duration-300"
+           :class="darkMode ? 'text-gray-400' : 'text-gray-500'">
+            Logging out...
+        </p>
     </div>
 
     @livewireScripts
@@ -180,7 +551,7 @@
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.body.classList.remove('no-transition');
-            }, 100);
+            }, 50);
         });
 
         document.addEventListener('DOMContentLoaded', () => {

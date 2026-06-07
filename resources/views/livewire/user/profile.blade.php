@@ -65,7 +65,7 @@
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0">
 
-            <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-md w-full p-10 text-center transform transition-all" 
+            <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-md w-full p-10 text-center transform transition-all" 
                 @click.outside="deleteModal = false"
                 x-transition:enter="ease-out duration-300"
                 x-transition:enter-start="opacity-0 scale-95 translate-y-4"
@@ -102,7 +102,7 @@
             x-transition:leave-end="opacity-0"
             @keydown.escape.window="cropperModal = false; destroyCropper()">
 
-            <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-2xl w-full my-auto overflow-hidden flex flex-col max-h-[90vh] transform transition-all" 
+            <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-2xl w-full my-auto overflow-hidden flex flex-col max-h-[90vh] transform transition-all" 
                 @click.outside="cropperModal = false; destroyCropper()"
                 x-transition:enter="ease-out duration-300"
                 x-transition:enter-start="opacity-0 scale-95 translate-y-10"
@@ -135,11 +135,11 @@
         </div>
 
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Account Settings</h1>
-            <p class="text-gray-500 mt-1">Manage your personal information and profile photo.</p>
+            <h1 class="text-3xl font-[Montserrat] font-extrabold text-gray-900 dark:text-white tracking-tight">Account Settings</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-1 font-medium">Manage your personal information and profile photo.</p>
         </div>
 
-        <div class="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 md:p-10 mb-8">
+        <div id="edit-profile" class="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 md:p-10 mb-8">
             <div class="flex flex-col lg:flex-row gap-10">
 
                 <div class="lg:w-1/4 flex flex-col items-center shrink-0 lg:pt-10">
@@ -198,7 +198,7 @@
                 <div class="lg:w-3/4">
                     <form wire:submit="updateProfile" class="space-y-8">
 
-                        <div>
+                        <div id="personal-info">
                             <h3 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 mb-6 flex items-center gap-2">
                                 <span class="material-symbols-outlined text-gray-400">person</span>
                                 Personal Details
@@ -553,7 +553,7 @@
         </div>
 
         <!-- Password Update Section -->
-        <div class="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 md:p-10 mb-8"
+        <div id="change-password" class="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 md:p-10 mb-8"
             x-data="{ 
                 showCurrent: false,
                 showNew: false,

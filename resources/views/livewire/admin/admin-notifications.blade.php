@@ -79,7 +79,7 @@
                             str_contains(strtolower($notification->title), 'message') || str_contains(strtolower($notification->title), 'inquiry') => 'bg-indigo-50 text-indigo-600 border border-indigo-100',
                             str_contains(strtolower($notification->title), 'inventory') => 'bg-amber-50 text-amber-600 border border-amber-100',
                             str_contains(strtolower($notification->title), 'user') => 'bg-purple-50 text-purple-600 border border-purple-100',
-                            default => 'bg-gray-50 text-gray-600 border border-gray-150'
+                            default => 'bg-gray-50 text-gray-600 border border-gray-200'
                         };
                     @endphp
                     <div 
@@ -148,7 +148,7 @@
                 <!-- Header -->
                 <div class="px-6 py-5 border-b border-gray-100 bg-gray-50/40 flex justify-between items-center shrink-0">
                     <div class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-gray-400 bg-white p-2 rounded-xl border border-gray-150">info</span>
+                        <span class="material-symbols-outlined text-gray-400 bg-white p-2 rounded-xl border border-gray-200">info</span>
                         <div>
                             <h2 class="text-base font-bold text-gray-900 leading-snug">{{ $selectedNotification->title }}</h2>
                             <p class="text-xs text-gray-400 mt-0.5">Received {{ $selectedNotification->created_at->format('M d, Y \a\t h:i A') }} ({{ $selectedNotification->created_at->diffForHumans() }})</p>
@@ -270,7 +270,7 @@
                                             <span class="text-[10px] uppercase font-mono font-bold text-gray-400 block tracking-wider">Inquiry Subject</span>
                                             <span class="font-bold text-gray-900 mt-1 block">{{ $relatedDetails->subject }}</span>
                                         </div>
-                                        <div class="md:col-span-2 bg-gray-50 border border-gray-150 rounded-xl p-4 mt-2">
+                                        <div class="md:col-span-2 bg-gray-50 border border-gray-200 rounded-xl p-4 mt-2">
                                             <span class="text-[10px] uppercase font-mono font-bold text-gray-400 block tracking-wider mb-2">Message Body</span>
                                             <p class="text-gray-700 leading-relaxed whitespace-pre-wrap text-sm">{{ $relatedDetails->message }}</p>
                                         </div>

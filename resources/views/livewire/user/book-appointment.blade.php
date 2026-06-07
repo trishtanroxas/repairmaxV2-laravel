@@ -11,7 +11,7 @@
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0">
         <div class="fixed inset-0" @click="infoModal = false"></div>
-        <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-2xl w-full relative overflow-hidden flex flex-col max-h-[90vh] transform transition-all"
+        <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-2xl w-full relative overflow-hidden flex flex-col max-h-[90vh] transform transition-all"
             x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0 scale-95 translate-y-4"
             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
@@ -75,7 +75,7 @@
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0">
         <div class="fixed inset-0" @click="calendarModal = false"></div>
-        <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-4xl w-full relative overflow-hidden flex flex-col max-h-[92vh] transform transition-all"
+        <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-4xl w-full relative overflow-hidden flex flex-col max-h-[92vh] transform transition-all"
             x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0 scale-95 translate-y-10"
             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
@@ -211,7 +211,7 @@
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0">
     <div class="fixed inset-0" @click="reviewModal = false"></div>
-    <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-2xl w-full relative overflow-hidden flex flex-col max-h-[90vh] transform transition-all"
+    <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-2xl w-full relative overflow-hidden flex flex-col max-h-[90vh] transform transition-all"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
         x-transition:enter-end="opacity-100 scale-100 translate-y-0"
@@ -412,23 +412,27 @@
         </div>
     </div>
 </div>
-
 <div class="mb-8">
     <div class="flex items-center gap-3">
-        <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Book a Repair</h1>
+        <h1 class="text-3xl font-[Montserrat] font-extrabold text-gray-900 dark:text-white tracking-tight">Book a Repair</h1>
         <button type="button" @click="infoModal = true"
             class="p-0 bg-transparent text-gray-300 hover:text-blue-600 transition-all transform hover:scale-110 active:scale-95 outline-none ring-0 focus:ring-0 focus:outline-none flex items-center justify-center -translate-y-1"
             title="View Guidelines">
             <span class="material-symbols-outlined text-[28px] leading-none">info</span>
         </button>
     </div>
-    <p class="text-gray-500 mt-2 font-medium">Provide details about your device and schedule a drop-off time.</p>
+    <p class="text-gray-500 dark:text-gray-400 mt-2 font-medium">Provide details about your device and schedule a drop-off time.</p>
 </div>
 
 <!-- ===== BOOKING SUMMARY (top, full-width) ===== -->
 <div class="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 mb-6">
-    <div class="mb-6 pb-3 border-b border-gray-100">
-        <h3 class="font-bold text-gray-900">Booking Summary</h3>
+    <div class="mb-6 pb-3 border-b border-gray-100 flex items-center gap-2">
+        <h2 class="text-lg font-bold text-gray-900">Booking Summary</h2>
+        <button type="button" @click="infoModal = true"
+            class="p-0 bg-transparent text-gray-300 hover:text-blue-600 transition-all transform hover:scale-110 active:scale-95 outline-none ring-0 focus:ring-0 focus:outline-none flex items-center justify-center"
+            title="View Guidelines">
+            <span class="material-symbols-outlined text-[20px] leading-none">info</span>
+        </button>
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm mb-5">
@@ -787,16 +791,16 @@
 
                 <!-- Shop Address Card (Drop-off only) -->
                 @if($pickup_option === 'Drop-off')
-                <div x-data="{ showMap: false }" class="mt-4 p-5 bg-blue-500/10 border border-blue-500/20 rounded-[1.25rem] flex flex-col gap-4 animate-fade-in mb-6">
+                <div x-data="{ showMap: false }" class="mt-4 p-5 bg-blue-50 border border-blue-200 dark:bg-blue-950/20 dark:border-blue-500/20 rounded-[1.25rem] flex flex-col gap-4 mb-6">
                     <div class="flex items-start justify-between gap-3">
                         <div class="flex items-start gap-3">
-                            <span class="material-symbols-outlined text-blue-400 text-[20px] shrink-0 mt-0.5">pin_drop</span>
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-[20px] shrink-0 mt-0.5">pin_drop</span>
                             <div>
-                                <h4 class="text-xs font-bold text-blue-400 uppercase tracking-wider mb-0.5">Shop Drop-off Location</h4>
-                                <p class="text-xs text-blue-300 font-medium leading-relaxed">Commonwealth Ave. Cor. IBP Road (Litex Junction), Quezon City, Metro Manila, Philippines</p>
+                                <h4 class="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wider mb-0.5">Shop Drop-off Location</h4>
+                                <p class="text-xs text-blue-600 dark:text-blue-300 font-medium leading-relaxed">Commonwealth Ave. Cor. IBP Road (Litex Junction), Quezon City, Metro Manila, Philippines</p>
                             </div>
                         </div>
-                        <button type="button" @click="showMap = !showMap" class="text-xs font-black text-blue-300 hover:text-blue-400 flex items-center gap-1 bg-blue-500/20 hover:bg-blue-500/30 px-3 py-1.5 rounded-lg transition-all shrink-0 border-none outline-none focus:outline-none cursor-pointer">
+                        <button type="button" @click="showMap = !showMap" class="text-xs font-black text-blue-700 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-400 flex items-center gap-1 bg-blue-100 hover:bg-blue-200 dark:bg-blue-500/20 dark:hover:bg-blue-500/30 px-3 py-1.5 rounded-lg transition-all shrink-0 border-none outline-none focus:outline-none cursor-pointer">
                             <span class="material-symbols-outlined text-[16px]" x-show="!showMap">map</span>
                             <span class="material-symbols-outlined text-[16px]" x-show="showMap" x-cloak>close</span>
                             <span x-text="showMap ? 'Hide Map' : 'Show Map'">Show Map</span>
@@ -804,7 +808,7 @@
                     </div>
                     
                     <!-- Map Container -->
-                    <div x-show="showMap" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-[300px]" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 max-h-[300px]" x-transition:leave-end="opacity-0 max-h-0" class="overflow-hidden rounded-xl border border-blue-500/20 shadow-sm w-full h-[250px]">
+                    <div x-show="showMap" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-[300px]" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 max-h-[300px]" x-transition:leave-end="opacity-0 max-h-0" class="overflow-hidden rounded-xl border border-blue-200 dark:border-blue-500/20 shadow-sm w-full h-[250px]">
                         <iframe class="w-full h-full border-none" src="https://maps.google.com/maps?q=Commonwealth%20Ave.%20Cor.%20IBP%20Road%20(Litex%20Junction),%20Quezon%20City,%20Metro%20Manila,%20Philippines&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
@@ -812,16 +816,16 @@
 
                 <!-- Geomap address locator (Pickup only) -->
                 @if($pickup_option === 'Pickup')
-                <div x-data="pickupMapComponent($wire)" class="mt-4 p-5 bg-blue-500/10 border border-blue-500/20 rounded-[1.25rem] flex flex-col gap-4 animate-fade-in mb-6">
+                <div x-data="pickupMapComponent($wire)" class="mt-4 p-5 bg-blue-50 border border-blue-200 dark:bg-blue-950/20 dark:border-blue-500/20 rounded-[1.25rem] flex flex-col gap-4 mb-6">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-blue-400">pin_drop</span>
-                            <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">Locate Pickup Address on Map</span>
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">pin_drop</span>
+                            <span class="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wider">Locate Pickup Address on Map</span>
                         </div>
-                        <span class="text-[9px] font-black text-blue-300 bg-blue-500/20 px-2 py-0.5 rounded uppercase">Draggable Marker</span>
+                        <span class="text-[9px] font-black text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-500/20 px-2 py-0.5 rounded uppercase">Draggable Marker</span>
                     </div>
-                    <div id="pickup-map" class="w-full h-[250px] rounded-xl border border-blue-500/20 shadow-sm overflow-hidden" wire:ignore></div>
-                    <p class="text-[10px] text-gray-400 font-medium leading-relaxed">
+                    <div id="pickup-map" class="w-full h-[250px] rounded-xl border border-blue-200 dark:border-blue-500/20 shadow-sm overflow-hidden" wire:ignore></div>
+                    <p class="text-[10px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
                         Drag the marker or click on the map to set your exact location. This will automatically fill in your Barangay, Street and City inputs below.
                     </p>
                 </div>

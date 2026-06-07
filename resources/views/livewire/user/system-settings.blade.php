@@ -1,13 +1,11 @@
 <div class="w-full" x-data="{ deleteModal: false }">
-
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 tracking-tight flex items-center gap-2">
+        <h1 class="text-3xl font-[Montserrat] font-extrabold text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
             <span class="material-symbols-outlined text-[32px] text-gray-400">settings</span>
             System Settings
         </h1>
-        <p class="text-gray-500 mt-1">Manage your notifications, security preferences, and privacy.</p>
+        <p class="text-gray-500 dark:text-gray-400 mt-1 font-medium">Manage your notifications, security preferences, and privacy.</p>
     </div>
-
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         <!-- Notifications (Large Box) -->
@@ -96,7 +94,7 @@
                     </a>
                 </div>
 
-                <div class="pt-6 border-t border-gray-100">
+                <div id="two-factor" class="pt-6 border-t border-gray-100">
                     <p class="text-sm font-bold text-gray-800 mb-1">2FA Security</p>
                     <p class="text-xs text-gray-500 mb-4">Add an extra layer of protection.</p>
                     <button class="w-full py-3 bg-gray-900 text-white text-sm font-bold rounded-xl hover:bg-black transition-all shadow-lg shadow-gray-200">
@@ -134,7 +132,7 @@
         </div>
 
         <!-- Privacy (Bottom Wide Box) -->
-        <div class="lg:col-span-3 bg-gray-900 rounded-3xl shadow-xl p-8 md:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative group">
+        <div class="lg:col-span-2 bg-gray-900 rounded-3xl shadow-xl p-8 md:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative group">
             <div class="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all duration-700"></div>
             
             <div class="relative z-10 text-center md:text-left">
@@ -169,6 +167,47 @@
                 </div>
             </div>
         </div>
+
+        <!-- Login Activity / Devices (Square Box) -->
+        <div id="login-activity" class="bg-white rounded-3xl border border-gray-200 shadow-sm p-8 md:p-10 transition-all hover:shadow-md flex flex-col">
+            <h3 class="text-xl font-black text-gray-900 mb-8 flex items-center gap-4">
+                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[28px]">devices</span>
+                </div>
+                Login Activity
+            </h3>
+            
+            <div class="space-y-5 flex-1">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Sessions</p>
+                
+                <!-- Current Session -->
+                <div class="flex items-start gap-3.5">
+                    <span class="material-symbols-outlined text-[22px] text-green-500 mt-0.5">desktop_windows</span>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-1.5 font-sans">
+                            <p class="text-sm font-bold text-gray-800">Windows PC</p>
+                            <span class="px-1.5 py-0.5 text-[9px] font-extrabold bg-green-50 text-green-600 rounded uppercase tracking-wider">Current</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-0.5">Chrome • Active Now</p>
+                    </div>
+                </div>
+
+                <!-- Mock Other Session -->
+                <div class="flex items-start gap-3.5 pt-4 border-t border-gray-100">
+                    <span class="material-symbols-outlined text-[22px] text-gray-400 mt-0.5">smartphone</span>
+                    <div class="flex-1">
+                        <p class="text-sm font-bold text-gray-800">iPhone 15</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Safari • 2 hours ago</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-100">
+                <button class="w-full py-3 bg-gray-100 text-gray-700 hover:bg-gray-200 text-sm font-bold rounded-xl transition-all border border-gray-200">
+                    Sign Out Other Devices
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- ===== DELETE ACCOUNT MODAL ===== -->
@@ -182,7 +221,7 @@
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0">
         <div class="fixed inset-0" @click="deleteModal = false"></div>
-        <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-md w-full relative overflow-hidden flex flex-col transform transition-all"
+        <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-md w-full relative overflow-hidden flex flex-col transform transition-all"
             x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0 scale-95 translate-y-4"
             x-transition:enter-end="opacity-100 scale-100 translate-y-0"

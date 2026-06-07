@@ -1,9 +1,8 @@
 <div class="w-full max-w-4xl mx-auto">
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Send Support Message</h1>
-        <p class="text-gray-500 mt-1">Contact our support team directly with any questions or issues.</p>
+        <h1 class="text-3xl font-[Montserrat] font-extrabold text-gray-900 dark:text-white tracking-tight">Send Support Message</h1>
+        <p class="text-gray-500 dark:text-gray-400 mt-1 font-medium">Contact our support team directly with any questions or issues.</p>
     </div>
-
     <!-- Send Message Form -->
     <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 mb-8">
         <h2 class="text-xl font-bold text-gray-900 mb-6">Create New Support Message</h2>

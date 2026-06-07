@@ -156,7 +156,7 @@
             </div>
         @endif
 
-        <div class="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 md:p-10 mb-8">
+        <div id="edit-profile" class="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 md:p-10 mb-8">
             <div class="flex flex-col lg:flex-row gap-10">
 
                 <!-- Left Column: Profile Card -->
@@ -227,7 +227,7 @@
                 <div class="lg:w-3/4">
                     <form wire:submit="saveChanges" class="space-y-8">
 
-                        <div>
+                        <div id="personal-info">
                             <h3 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 mb-6 flex items-center gap-2">
                                 <span class="material-symbols-outlined text-gray-400">person</span>
                                 Professional Details
@@ -292,7 +292,7 @@
         </div>
 
         <!-- Security Section -->
-        <div class="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 md:p-10 mb-8"
+        <div id="change-password" class="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 md:p-10 mb-8"
             x-data="{ 
                 showCurrent: false,
                 showNew: false,

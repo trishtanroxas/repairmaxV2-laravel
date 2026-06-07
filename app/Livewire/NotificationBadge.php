@@ -44,7 +44,7 @@ class NotificationBadge extends Component
         return <<<'HTML'
         <div wire:poll.30s="updateUnreadCount" class="inline-block">
             @if($unreadCount > 0)
-                <span class="ml-auto inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-black text-white bg-red-500 rounded-full border border-gray-900 shadow-sm">
+                <span class="inline-flex items-center justify-center min-w-[14px] h-[14px] px-0.5 text-[8px] font-black text-white bg-red-500 rounded-full border border-white dark:border-[#020617] shadow-sm">
                     {{ $unreadCount > 99 ? '99+' : $unreadCount }}
                 </span>
             @endif

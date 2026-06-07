@@ -5,14 +5,21 @@ namespace App\Livewire\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Appointment;
+use Livewire\Attributes\Lazy;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Carbon\Carbon;
 
 #[Layout('layouts.user')]
 #[Title('Upcoming Appointments | Repairmax')]
+#[Lazy]
 class UpcomingAppointments extends Component
 {
+    public function placeholder()
+    {
+        return view('livewire.user.upcoming-appointments-placeholder');
+    }
+
     public $selectedAppointment = null;
     public $showRescheduleModal = false;
     public $showEditModal = false;

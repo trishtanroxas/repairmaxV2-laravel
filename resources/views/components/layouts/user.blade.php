@@ -24,140 +24,197 @@
         }
         [x-cloak] { display: none !important; }
 
+
+
         /* Scoped Dark Mode overrides for all User Dashboard Views */
-        body.bg-\[\#020617\] {
+        body.dark {
             color: #cbd5e1 !important; /* text-gray-300 */
         }
-        /* Convert generic white cards to glassmorphism */
-        body.bg-\[\#020617\] .bg-white:not(aside):not(aside *):not(header):not(header *):not(.absolute):not(.fixed) {
+        /* Convert generic white cards to glassmorphism (excluding modals) */
+        body.dark .bg-white:not(aside):not(aside *):not(header):not(header *):not(.absolute):not(.fixed):not(.modal-content):not(.modal-content *) {
             background-color: rgba(255, 255, 255, 0.03) !important;
             backdrop-filter: blur(12px) !important;
             -webkit-backdrop-filter: blur(12px) !important;
             border-color: rgba(255, 255, 255, 0.1) !important;
             color: #e2e8f0 !important;
         }
-        body.bg-\[\#020617\] .bg-gray-50,
-        body.bg-\[\#020617\] .bg-gray-50\/30,
-        body.bg-\[\#020617\] .bg-gray-50\/50 {
+        body.dark .bg-gray-50:not(.modal-content):not(.modal-content *),
+        body.dark .bg-gray-50\/30:not(.modal-content):not(.modal-content *),
+        body.dark .bg-gray-50\/50:not(.modal-content):not(.modal-content *) {
             background-color: rgba(255, 255, 255, 0.02) !important;
             border-color: rgba(255, 255, 255, 0.05) !important;
         }
-        /* Text overrides */
-        body.bg-\[\#020617\] .text-gray-900,
-        body.bg-\[\#020617\] .text-gray-800,
-        body.bg-\[\#020617\] .text-gray-750,
-        body.bg-\[\#020617\] .text-gray-700 {
+
+        /* Solid modal styles in dark mode to remove glassy/see-thru effect */
+        body.dark .modal-content {
+            background-color: #191e2e !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        body.dark .modal-content .bg-white {
+            background-color: #191e2e !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        body.dark .modal-content .bg-gray-50,
+        body.dark .modal-content .bg-gray-50\/30,
+        body.dark .modal-content .bg-gray-50\/50 {
+            background-color: #121622 !important; /* Slightly darker solid #191e2e */
+            border-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        /* Buttons inside modal */
+        body.dark .modal-content .bg-white.border {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
             color: #ffffff !important;
         }
-        body.bg-\[\#020617\] .text-gray-650,
-        body.bg-\[\#020617\] .text-gray-600,
-        body.bg-\[\#020617\] .text-gray-550,
-        body.bg-\[\#020617\] .text-gray-500,
-        body.bg-\[\#020617\] .text-gray-455 {
+        body.dark .modal-content .bg-white.border:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        body.dark .modal-content .text-gray-900,
+        body.dark .modal-content .text-gray-800,
+        body.dark .modal-content .text-gray-700 {
+            color: #ffffff !important;
+        }
+        body.dark .modal-content .text-gray-500,
+        body.dark .modal-content .text-gray-400 {
+            color: #94a3b8 !important; /* highly visible grey */
+        }
+        /* Text overrides */
+        body.dark .text-gray-900,
+        body.dark .text-gray-800,
+        body.dark .text-gray-750,
+        body.dark .text-gray-700 {
+            color: #ffffff !important;
+        }
+        body.dark .text-gray-650,
+        body.dark .text-gray-600,
+        body.dark .text-gray-550,
+        body.dark .text-gray-500,
+        body.dark .text-gray-455 {
             color: #94a3b8 !important; /* text-gray-400 */
         }
-        body.bg-\[\#020617\] .text-gray-400 {
+        body.dark .text-gray-400 {
             color: #cbd5e1 !important; /* text-gray-300 */
         }
         /* Borders */
-        body.bg-\[\#020617\] .border-brand-200,
-        body.bg-\[\#020617\] .border-brand-100,
-        body.bg-\[\#020617\] .border-brand-250,
-        body.bg-\[\#020617\] .border-gray-250,
-        body.bg-\[\#020617\] .border-gray-200,
-        body.bg-\[\#020617\] .border-gray-100,
-        body.bg-\[\#020617\] .divide-brand-100,
-        body.bg-\[\#020617\] .divide-brand-200,
-        body.bg-\[\#020617\] .border-t,
-        body.bg-\[\#020617\] .border-b,
-        body.bg-\[\#020617\] .divide-y,
-        body.bg-\[\#020617\] .divide-y > * {
+        body.dark .border-brand-200,
+        body.dark .border-brand-100,
+        body.dark .border-brand-250,
+        body.dark .border-gray-250,
+        body.dark .border-gray-200,
+        body.dark .border-gray-100,
+        body.dark .divide-brand-100,
+        body.dark .divide-brand-200,
+        body.dark .border-t,
+        body.dark .border-b,
+        body.dark .divide-y,
+        body.dark .divide-y > * {
             border-color: rgba(255, 255, 255, 0.08) !important;
         }
         /* Buttons styling */
-        body.bg-\[\#020617\] .bg-gray-900 {
+        body.dark .bg-gray-900 {
             background-color: #1e293b !important;
             color: #ffffff !important;
             border-color: rgba(255, 255, 255, 0.1) !important;
         }
-        body.bg-\[\#020617\] .bg-gray-900:hover {
+        body.dark .bg-gray-900:hover {
             background-color: #2b3a55 !important;
         }
-        body.bg-\[\#020617\] .bg-gray-100 {
+        body.dark .bg-gray-100 {
             background-color: rgba(255, 255, 255, 0.06) !important;
             color: #ffffff !important;
             border-color: rgba(255, 255, 255, 0.05) !important;
         }
-        body.bg-\[\#020617\] .bg-gray-100:hover {
+        body.dark .bg-gray-100:hover {
             background-color: rgba(255, 255, 255, 0.12) !important;
         }
         /* Badge colors */
-        body.bg-\[\#020617\] .bg-blue-50 {
+        body.dark .bg-blue-50 {
             background-color: rgba(59, 130, 246, 0.1) !important;
             color: #60a5fa !important;
         }
-        body.bg-\[\#020617\] .bg-green-50 {
+        body.dark .bg-green-50 {
             background-color: rgba(16, 185, 129, 0.1) !important;
             color: #34d399 !important;
         }
-        body.bg-\[\#020617\] .bg-orange-50 {
+        body.dark .bg-orange-50 {
             background-color: rgba(249, 115, 22, 0.1) !important;
             color: #fb923c !important;
         }
-        body.bg-\[\#020617\] .bg-purple-50 {
+        body.dark .bg-purple-50 {
             background-color: rgba(139, 92, 246, 0.1) !important;
             color: #c084fc !important;
         }
-        body.bg-\[\#020617\] .bg-amber-50 {
+        body.dark .bg-amber-50 {
             background-color: rgba(245, 158, 11, 0.1) !important;
             color: #fbbf24 !important;
         }
         /* Inputs & forms styling */
-        body.bg-\[\#020617\] input,
-        body.bg-\[\#020617\] select,
-        body.bg-\[\#020617\] textarea {
+        body.dark input,
+        body.dark select,
+        body.dark textarea {
             background-color: rgba(255, 255, 255, 0.02) !important;
             border-color: rgba(255, 255, 255, 0.1) !important;
             color: #ffffff !important;
         }
-        body.bg-\[\#020617\] input:focus,
-        body.bg-\[\#020617\] select:focus,
-        body.bg-\[\#020617\] textarea:focus {
+        body.dark input:focus,
+        body.dark select:focus,
+        body.dark textarea:focus {
             border-color: #3b82f6 !important;
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
         }
-        body.bg-\[\#020617\] input::placeholder,
-        body.bg-\[\#020617\] textarea::placeholder {
+        body.dark input::placeholder,
+        body.dark textarea::placeholder {
             color: #475569 !important;
         }
         /* Dropdowns list in select */
-        body.bg-\[\#020617\] select option {
+        body.dark select option {
             background-color: #0b0f19 !important;
             color: #ffffff !important;
         }
         /* Labels */
-        body.bg-\[\#020617\] label {
+        body.dark label {
             color: #cbd5e1 !important;
         }
         /* Table rows hover and headers */
-        body.bg-\[\#020617\] thead.bg-gray-50,
-        body.bg-\[\#020617\] tr.bg-gray-50 {
+        body.dark thead.bg-gray-50,
+        body.dark tr.bg-gray-50 {
             background-color: rgba(255, 255, 255, 0.04) !important;
         }
-        body.bg-\[\#020617\] tr.hover\:bg-gray-50:hover {
+        body.dark tr.hover\:bg-gray-50:hover {
             background-color: rgba(255, 255, 255, 0.05) !important;
         }
     </style>
 </head>
 
-<body class="font-sans antialiased no-transition transition-colors duration-300"
+<body class="font-sans antialiased no-transition"
     :class="darkMode ? 'bg-[#020617] text-gray-300 dark' : 'bg-gray-50 text-gray-800'"
     x-data="{ 
         darkMode: localStorage.getItem('theme') !== 'light',
+        logoutModal: false,
+        isLoggingOut: false,
+        triggerLogout() {
+            this.logoutModal = false;
+            this.isLoggingOut = true;
+            setTimeout(() => {
+                window.location.href = '{{ route('logout') }}';
+            }, 1500);
+        },
         toggleTheme() {
             this.darkMode = !this.darkMode;
             localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
             document.documentElement.classList.toggle('dark', this.darkMode);
+            const body = document.body;
+            if (this.darkMode) {
+                body.classList.add('bg-[#020617]', 'text-gray-300', 'dark');
+                body.classList.remove('bg-gray-50', 'text-gray-800');
+            } else {
+                body.classList.remove('bg-[#020617]', 'text-gray-300', 'dark');
+                body.classList.add('bg-gray-50', 'text-gray-800');
+            }
         },
         currentToast: null,
         show: false,
@@ -247,7 +304,7 @@
             }"
             class="fixed left-0 top-0 h-screen w-64 bg-white dark:bg-[#020617] transition-transform duration-300 ease-in-out z-40 flex flex-col lg:translate-x-0">
 
-            <div class="h-20 flex items-center justify-between px-6 bg-white dark:bg-[#020617] shrink-0 border-b border-gray-200/80 dark:border-none">
+            <div class="h-20 flex items-center justify-between px-6 bg-white dark:bg-[#020617] shrink-0">
                 <div class="flex items-center gap-2.5 select-none">
                     <img x-show="darkMode" src="{{ asset('img/logo-r-white.png') }}" alt="Repairmax Logo" class="h-8 w-auto">
                     <img x-show="!darkMode" x-cloak src="{{ asset('img/logo-r-blue.png') }}" alt="Repairmax Logo" class="h-8 w-auto">
@@ -272,9 +329,74 @@
                     <x-sidebar.link href="/user/appointment-history" icon="history" :active="request()->is('user/appointment-history')">History</x-sidebar.link>
                 </div>
 
-                <div class="mb-6">
+                <div class="mb-6" x-data="{ servicesOpen: {{ request()->routeIs('user.services') ? 'true' : 'false' }} }">
                     <h3 class="px-6 py-2 text-xs font-bold text-gray-500 mb-1">Services</h3>
-                    <x-sidebar.link href="{{ route('user.services') }}" icon="handyman" :active="request()->routeIs('user.services')">Services</x-sidebar.link>
+                    
+                    <div class="relative flex items-center justify-between mx-3.5 rounded-xl group transition-all duration-300
+                        {{ request()->routeIs('user.services') 
+                           ? 'bg-blue-600/10 text-blue-600 dark:text-blue-400 font-bold' 
+                           : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-white/5' }}">
+                        
+                        <!-- Main Link -->
+                        <a href="{{ route('user.services') }}" class="flex-1 flex items-center gap-3.5 px-4 py-3">
+                            <span class="material-symbols-outlined text-[20px] transition-transform duration-300 group-hover:scale-105 {{ request()->routeIs('user.services') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500' }}">
+                                handyman
+                            </span>
+                            <span class="text-sm font-medium truncate">Services</span>
+                        </a>
+
+                        <!-- Dropdown Arrow Button -->
+                        <button @click.prevent="servicesOpen = !servicesOpen" 
+                            class="px-3.5 py-3 hover:text-gray-955 dark:hover:text-white transition-all flex items-center justify-center bg-transparent shadow-none hover:shadow-none hover:translate-y-0 active:scale-100 cursor-pointer">
+                            <span class="material-symbols-outlined text-[18px] transition-transform duration-300" :class="servicesOpen ? 'rotate-180' : ''">
+                                keyboard_arrow_down
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Dropdown Items -->
+                    <div x-show="servicesOpen" 
+                         x-transition:enter="transition ease-out duration-150" 
+                         x-transition:enter-start="opacity-0 -translate-y-1" 
+                         x-transition:enter-end="opacity-100 translate-y-0"
+                         x-cloak 
+                         class="mt-1 space-y-1 pl-12 pr-3.5">
+                        <a href="{{ route('user.services') }}?selectedCategory=screen" 
+                            class="flex items-center py-2 text-[13px] font-medium transition-all
+                            {{ request()->query('selectedCategory') === 'screen' 
+                               ? 'text-blue-600 dark:text-blue-400 font-bold' 
+                               : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200' }}">
+                            Screen & Display
+                        </a>
+                        <a href="{{ route('user.services') }}?selectedCategory=power" 
+                            class="flex items-center py-2 text-[13px] font-medium transition-all
+                            {{ request()->query('selectedCategory') === 'power' 
+                               ? 'text-blue-600 dark:text-blue-400 font-bold' 
+                               : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200' }}">
+                            Power & Charging
+                        </a>
+                        <a href="{{ route('user.services') }}?selectedCategory=audio" 
+                            class="flex items-center py-2 text-[13px] font-medium transition-all
+                            {{ request()->query('selectedCategory') === 'audio' 
+                               ? 'text-blue-600 dark:text-blue-400 font-bold' 
+                               : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200' }}">
+                            Audio & Sound
+                        </a>
+                        <a href="{{ route('user.services') }}?selectedCategory=software" 
+                            class="flex items-center py-2 text-[13px] font-medium transition-all
+                            {{ request()->query('selectedCategory') === 'software' 
+                               ? 'text-blue-600 dark:text-blue-400 font-bold' 
+                               : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200' }}">
+                            Software & Systems
+                        </a>
+                        <a href="{{ route('user.services') }}?selectedCategory=hardware" 
+                            class="flex items-center py-2 text-[13px] font-medium transition-all
+                            {{ request()->query('selectedCategory') === 'hardware' 
+                               ? 'text-blue-600 dark:text-blue-400 font-bold' 
+                               : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200' }}">
+                            Hardware & Modules
+                        </a>
+                    </div>
                 </div>
 
                 <div class="mb-6">
@@ -288,20 +410,24 @@
         </aside>
 
         <header class="fixed top-0 right-0 left-0 lg:left-64 bg-white/90 dark:bg-[#020617]/90 backdrop-blur-md z-20 h-20 flex items-center dark:border-none">
-            <div class="flex items-center px-4 md:px-8 w-full">
+            <div class="relative flex items-center px-4 md:px-8 w-full h-full">
  
                 <button @click="sidebarOpen = !sidebarOpen"
                     class="lg:hidden inline-flex items-center justify-center w-10 h-10 bg-transparent hover:bg-gray-100 dark:hover:bg-white/5 rounded-[1.25rem] transition-colors text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 shrink-0">
                     <span class="material-symbols-outlined text-[26px]">menu</span>
                 </button>
  
-                <!-- Page Title -->
-                <div class="ml-4 lg:ml-0 font-bold text-gray-900 dark:text-white text-lg tracking-tight truncate">
-                    {{ $title ?? 'Dashboard' }}
+                <!-- Search Bar -->
+                <div class="absolute left-1/2 lg:left-[calc(50%-128px)] -translate-x-1/2 w-full max-w-[180px] min-[400px]:max-w-[240px] sm:max-w-sm md:max-w-md z-10">
+                    <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-450 dark:text-gray-500 text-[20px] pointer-events-none">search</span>
+                    <input type="text" 
+                        placeholder="Search repairs, services..." 
+                        class="w-full pl-10 pr-4 py-2 bg-gray-50 hover:bg-gray-100/70 dark:bg-white/5 dark:hover:bg-white/10 text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-none transition-all placeholder:text-gray-450 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                        onkeydown="if(event.key === 'Enter') { window.location.href = '{{ route('user.services') }}?search=' + encodeURIComponent(this.value); }">
                 </div>
  
                 <!-- User UI Dropdown -->
-                <div class="ml-auto flex items-center gap-3">
+                <div class="ml-auto flex items-center gap-3 z-20">
                     @auth
                     <!-- Theme Toggle Button -->
                     <button @click="toggleTheme()" class="inline-flex items-center justify-center p-2 rounded-xl text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 transition-all bg-transparent border-0 shadow-none hover:shadow-none hover:translate-y-0 active:scale-100 shrink-0">
@@ -356,24 +482,35 @@
                             </div>
  
                             <!-- Links -->
-                            <a href="/user/profile" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                                <span class="material-symbols-outlined text-[18px] text-gray-400 dark:text-gray-400">person</span>
-                                Profile
+                            <a href="/user/profile#personal-info" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-650 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-[18px] text-gray-400 dark:text-gray-450">badge</span>
+                                Personal Information
                             </a>
-                            <a href="/user/system-settings" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                                <span class="material-symbols-outlined text-[18px] text-gray-400 dark:text-gray-400">settings</span>
-                                Settings
+                            <a href="/user/profile#edit-profile" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-650 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-[18px] text-gray-400 dark:text-gray-455">manage_accounts</span>
+                                Edit Profile
                             </a>
-                            
-                            <div class="border-t border-gray-100 dark:border-white/5 my-1"></div>
- 
-                            <!-- Logout -->
-                            <a href="{{ route('logout') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:text-red-750 dark:hover:text-white hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors">
-                                <span class="material-symbols-outlined text-[18px]">logout</span>
-                                Logout
+                            <a href="/user/profile#change-password" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-650 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-[18px] text-gray-400 dark:text-gray-455">lock</span>
+                                Change Password
+                            </a>
+                            <a href="/user/system-settings#two-factor" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-650 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-[18px] text-gray-400 dark:text-gray-455">verified_user</span>
+                                Two-Factor Auth
+                            </a>
+                            <a href="/user/system-settings#login-activity" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-650 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-[18px] text-gray-400 dark:text-gray-455">devices</span>
+                                Login Activity / Devices
                             </a>
                         </div>
                     </div>
+
+                    <!-- Logout Button Beside User UI -->
+                    <button @click="logoutModal = true" 
+                        class="inline-flex items-center justify-center p-2 rounded-xl text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-all bg-transparent border-0 shadow-none hover:shadow-none hover:translate-y-0 active:scale-100 shrink-0 ml-1.5 cursor-pointer" 
+                        title="Logout">
+                        <span class="material-symbols-outlined text-[24px]">logout</span>
+                    </button>
                     @endauth
                 </div>
 
@@ -387,6 +524,70 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- ===== LOGOUT CONFIRMATION MODAL ===== -->
+    <div x-show="logoutModal"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-md"
+        x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0">
+        <div class="fixed inset-0" @click="logoutModal = false"></div>
+        <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-md w-full relative overflow-hidden flex flex-col transform transition-all"
+            @click.outside="logoutModal = false"
+            x-transition:enter="ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+            x-transition:leave-end="opacity-0 scale-95 translate-y-4">
+            
+            <div class="px-8 pt-10 pb-6 flex flex-col items-center text-center bg-white relative border-b border-gray-50">
+                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mb-5 shadow-sm border border-red-100/50">
+                    <span class="material-symbols-outlined text-[32px] leading-none">logout</span>
+                </div>
+                <h3 class="text-2xl font-black text-gray-900 tracking-tighter font-[Montserrat]">Sign Out?</h3>
+                <p class="text-sm text-gray-400 font-medium mt-2">Are you sure you want to end your current session and log out of Repairmax?</p>
+            </div>
+
+            <div class="p-6 bg-gray-50 flex gap-3">
+                <button type="button" @click="logoutModal = false" 
+                    class="flex-1 py-4 bg-white border border-gray-200 text-gray-700 font-bold rounded-[1.25rem] hover:bg-gray-50 transition-all text-sm">
+                    Cancel
+                </button>
+                <button type="button" @click="triggerLogout()" 
+                    class="flex-1 py-4 bg-red-600 text-white font-bold rounded-[1.25rem] hover:bg-red-700 transition-all shadow-lg shadow-red-200 dark:shadow-none text-sm">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fullscreen Logout Loading Overlay -->
+    <div x-show="isLoggingOut"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        class="fixed inset-0 z-[9999] flex flex-col items-center justify-center transition-colors duration-300"
+        :class="darkMode ? 'bg-[#020617]' : 'bg-gray-50'"
+        x-cloak
+        style="display: none;">
+        <div class="relative flex items-center justify-center">
+            <!-- Subtle outer ring -->
+            <div class="absolute h-32 w-32 rounded-full border border-blue-500/10"></div>
+            <!-- Spinning loader ring -->
+            <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-r-2 border-transparent border-t-blue-500 border-r-blue-500"></div>
+            <!-- Centered logo (Blue version) -->
+            <img src="{{ asset('img/logo-r-blue.png') }}" class="absolute h-12 w-auto animate-pulse" alt="Logo">
+        </div>
+        <p class="mt-6 text-sm font-bold tracking-wider uppercase transition-colors duration-300"
+           :class="darkMode ? 'text-gray-400' : 'text-gray-500'">
+            Logging out...
+        </p>
     </div>
 
     @livewireScripts

@@ -5,6 +5,7 @@ namespace App\Livewire\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Lazy;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use App\Models\Appointment;
@@ -12,8 +13,14 @@ use Illuminate\Support\Facades\DB;
 
 #[Layout('layouts.user')]
 #[Title('Appointment History | Repairmax')]
+#[Lazy]
 class AppointmentHistory extends Component
 {
+    public function placeholder()
+    {
+        return view('livewire.user.appointment-history-placeholder');
+    }
+
     use WithPagination;
 
     protected $listeners = ['appointmentCompleted' => 'refreshHistory'];

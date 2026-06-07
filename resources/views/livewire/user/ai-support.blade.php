@@ -1,13 +1,13 @@
 <div class="w-full" x-data="{ deleteModal: false, sessionToDelete: null }">
-
     <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900 tracking-tight flex items-center gap-2">
+            <h1 class="text-3xl font-[Montserrat] font-extrabold text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
                 AI Support Assistant
             </h1>
-            <p class="text-gray-500 mt-1">Get instant answers, troubleshoot issues, or create support tickets.</p>
+            <p class="text-gray-500 dark:text-gray-400 mt-1 font-medium">Get instant answers, troubleshoot issues, or create support tickets.</p>
         </div>
     </div>
+
 
     <div class="flex flex-col lg:flex-row gap-6">
 

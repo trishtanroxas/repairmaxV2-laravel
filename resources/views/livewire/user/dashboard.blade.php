@@ -37,7 +37,7 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
 
-        <div class="bg-white p-5 rounded-2xl border border-brand-200 shadow-sm flex items-center gap-4 hover:-translate-y-0.5 transition-all duration-300">
+        <div class="bg-white p-5 rounded-2xl border border-brand-200 shadow-sm flex items-center gap-4 hover:-translate-y-0.5 transition-transform duration-300">
             <div class="w-12 h-12 flex items-center justify-center bg-blue-50 text-blue-600 rounded-xl shrink-0">
                 <span class="material-symbols-outlined text-[24px]">calendar_today</span>
             </div>
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="bg-white p-5 rounded-2xl border border-brand-200 shadow-sm flex items-center gap-4 hover:-translate-y-0.5 transition-all duration-300">
+        <div class="bg-white p-5 rounded-2xl border border-brand-200 shadow-sm flex items-center gap-4 hover:-translate-y-0.5 transition-transform duration-300">
             <div class="w-12 h-12 flex items-center justify-center bg-green-50 text-green-600 rounded-xl shrink-0">
                 <span class="material-symbols-outlined text-[24px]">task_alt</span>
             </div>
@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <div class="bg-white p-5 rounded-2xl border border-brand-200 shadow-sm flex items-center gap-4 hover:-translate-y-0.5 transition-all duration-300">
+        <div class="bg-white p-5 rounded-2xl border border-brand-200 shadow-sm flex items-center gap-4 hover:-translate-y-0.5 transition-transform duration-300">
             <div class="w-12 h-12 flex items-center justify-center bg-orange-50 text-orange-600 rounded-xl shrink-0">
                 <span class="material-symbols-outlined text-[24px]">build</span>
             </div>
@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <div class="bg-white p-5 rounded-2xl border border-brand-200 shadow-sm flex items-center gap-4 hover:-translate-y-0.5 transition-all duration-300">
+        <div class="bg-white p-5 rounded-2xl border border-brand-200 shadow-sm flex items-center gap-4 hover:-translate-y-0.5 transition-transform duration-300">
             <div class="w-12 h-12 flex items-center justify-center bg-purple-50 text-purple-600 rounded-xl shrink-0">
                 <span class="material-symbols-outlined text-[24px]">pending_actions</span>
             </div>

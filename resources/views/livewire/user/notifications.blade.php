@@ -1,30 +1,31 @@
 <div class="w-full">
     <!-- Header Section -->
-    <div class="mb-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900 tracking-tight flex items-center gap-2">
+            <h1 class="text-3xl font-[Montserrat] font-extrabold text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
                 <span class="material-symbols-outlined text-[36px] text-blue-600">notifications</span>
                 Notifications
                 @if($unreadCount > 0)
                 <span class="ml-2 inline-flex items-center justify-center px-2.5 py-1 text-xs font-black text-white bg-red-500 rounded-full animate-pulse">{{ $unreadCount }} Unread</span>
                 @endif
             </h1>
-            <p class="text-gray-500 mt-1">Review status updates, appointment confirmations, and support messages in your inbox.</p>
+            <p class="text-gray-500 dark:text-gray-400 mt-1 font-medium">Review status updates, appointment confirmations, and support messages in your inbox.</p>
         </div>
+    </div>
 
-        <div class="flex flex-wrap gap-3 w-full lg:w-auto">
-            <button wire:click="markAllAsRead"
-                class="flex-1 lg:flex-none justify-center bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-5 py-3 rounded-xl font-bold shadow-sm transition-all duration-200 flex items-center gap-2 text-sm shrink-0">
-                <span class="material-symbols-outlined text-[20px] text-green-500">done_all</span>
-                Mark All Read
-            </button>
-            <button wire:click="deleteAllNotifications"
-                onclick="return confirm('Are you sure you want to delete all notifications? This action cannot be undone.')"
-                class="flex-1 lg:flex-none justify-center bg-red-50 border border-red-200 text-red-700 hover:bg-red-100 px-5 py-3 rounded-xl font-bold shadow-sm transition-all duration-200 flex items-center gap-2 text-sm shrink-0">
-                <span class="material-symbols-outlined text-[20px]">delete_sweep</span>
-                Delete All
-            </button>
-        </div>
+    <!-- Action Controls -->
+    <div class="mb-6 flex justify-end gap-3">
+        <button wire:click="markAllAsRead"
+            class="justify-center bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-xl font-bold shadow-sm transition-all duration-200 flex items-center gap-2 text-sm shrink-0">
+            <span class="material-symbols-outlined text-[20px] text-green-500">done_all</span>
+            Mark All Read
+        </button>
+        <button wire:click="deleteAllNotifications"
+            onclick="return confirm('Are you sure you want to delete all notifications? This action cannot be undone.')"
+            class="justify-center bg-red-50 border border-red-200 text-red-700 hover:bg-red-100 px-4 py-2 rounded-xl font-bold shadow-sm transition-all duration-200 flex items-center gap-2 text-sm shrink-0">
+            <span class="material-symbols-outlined text-[20px]">delete_sweep</span>
+            Delete All
+        </button>
     </div>
 
     @if (session()->has('success'))
@@ -77,7 +78,7 @@
                 str_contains(strtolower($notification->title), 'appointment') => 'bg-blue-50 text-blue-600 border border-blue-100',
                 str_contains(strtolower($notification->title), 'completed') => 'bg-emerald-50 text-emerald-600 border border-emerald-100',
                 str_contains(strtolower($notification->title), 'message') || str_contains(strtolower($notification->title), 'inquiry') => 'bg-indigo-50 text-indigo-600 border border-indigo-100',
-                default => 'bg-gray-50 text-gray-600 border border-gray-150'
+                default => 'bg-gray-50 text-gray-600 border border-gray-200'
                 };
                 @endphp
                 <div
@@ -145,7 +146,7 @@
             <!-- Header -->
             <div class="px-6 py-5 border-b border-gray-100 bg-gray-50/40 flex justify-between items-center shrink-0">
                 <div class="flex items-center gap-3">
-                    <span class="material-symbols-outlined text-gray-400 bg-white p-2 rounded-xl border border-gray-150">info</span>
+                    <span class="material-symbols-outlined text-gray-400 bg-white p-2 rounded-xl border border-gray-200">info</span>
                     <div>
                         <h2 class="text-base font-bold text-gray-900 leading-snug">{{ $selectedNotification->title }}</h2>
                         <p class="text-xs text-gray-400 mt-0.5">Received {{ $selectedNotification->created_at->format('M d, Y \a\t h:i A') }} ({{ $selectedNotification->created_at->diffForHumans() }})</p>
@@ -251,7 +252,7 @@
                                 <span class="text-[10px] uppercase font-mono font-bold text-gray-400 block tracking-wider">Inquiry Subject</span>
                                 <span class="font-bold text-gray-900 mt-1 block">{{ $relatedDetails->subject }}</span>
                             </div>
-                            <div class="md:col-span-2 bg-gray-50 border border-gray-150 rounded-xl p-4 mt-2">
+                            <div class="md:col-span-2 bg-gray-50 border border-gray-200 rounded-xl p-4 mt-2">
                                 <span class="text-[10px] uppercase font-mono font-bold text-gray-400 block tracking-wider mb-2">Message Body</span>
                                 <p class="text-gray-700 leading-relaxed whitespace-pre-wrap text-sm">{{ $relatedDetails->message }}</p>
                             </div>

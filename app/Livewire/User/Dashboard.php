@@ -4,14 +4,21 @@ namespace App\Livewire\User;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Lazy;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use App\Models\Appointment;
 
 #[Layout('layouts.user')]
 #[Title('My Dashboard | Repairmax')]
+#[Lazy]
 class Dashboard extends Component
 {
+
+    public function placeholder()
+    {
+        return view('livewire.user.dashboard-placeholder');
+    }
 
 
     public function render()
