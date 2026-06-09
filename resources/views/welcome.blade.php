@@ -1,7 +1,7 @@
 {{-- Welcome to Repairmax Home --}}
 <x-layouts.landing title="Repairmax | Home">
 
-    <section id="intro" class="relative w-full min-h-screen flex items-center overflow-hidden pt-32 lg:pt-36 pb-20 bg-[#020617]">
+    <section id="intro" class="relative w-full min-h-screen flex items-center overflow-hidden pt-24 lg:pt-28 pb-20 bg-[#020617]">
         <!-- Premium Radial Glow Effects -->
         <div class="absolute top-0 right-1/4 w-150 h-150 bg-blue-900/15 rounded-full blur-[130px] pointer-events-none"></div>
         <div class="absolute bottom-32 left-1/4 w-125 h-125 bg-indigo-900/10 rounded-full blur-[120px] pointer-events-none"></div>
@@ -542,7 +542,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
                 
                 <!-- Left Side: Labels and Navigation -->
-                <div class="lg:col-span-5 text-left space-y-8">
+                <div class="lg:col-span-5 text-left space-y-8 fade-in-left">
                     <div class="space-y-4">
                         <span class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-blue-500/10 text-blue-400 border border-blue-500/20 inline-block">
                             What We Fix
@@ -590,7 +590,7 @@
                 </div>
 
                 <!-- Right Side: Single Card Display & Navigation -->
-                <div class="lg:col-span-7 flex flex-col items-center lg:items-end">
+                <div class="lg:col-span-7 flex flex-col items-center lg:items-end fade-in-right">
                     <!-- Card Display -->
                     <div class="relative w-full max-w-lg min-h-120 flex items-center justify-center">
                         <template x-for="(service, index) in services" :key="service.id">
@@ -669,13 +669,13 @@
         <div class="absolute top-1/2 left-1/4 -translate-y-1/2 w-125 h-125 bg-blue-900/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div class="absolute top-1/2 right-1/4 -translate-y-1/2 w-125 h-125 bg-indigo-900/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-8 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-8 relative z-10 fade-in-element">
             <h2 class="text-xs font-bold text-blue-500 uppercase tracking-[0.2em] mb-4">Customer Success</h2>
             <h3 class="text-3xl md:text-5xl font-black text-white tracking-tight">Trusted by the best.</h3>
         </div>
 
         <!-- Infinite Scroll Container -->
-        <div class="relative flex overflow-hidden group py-12">
+        <div class="relative flex overflow-hidden group py-12 fade-in-element">
             <!-- Doubled items for seamless loop -->
             <div class="flex animate-marquee whitespace-nowrap">
                 <!-- Original Set -->
@@ -848,7 +848,7 @@
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-blue-900/10 rounded-full blur-[130px] pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="relative bg-white/3 backdrop-blur-md border border-white/10 rounded-[4rem] p-12 md:p-24 overflow-hidden">
+            <div class="relative bg-white/3 backdrop-blur-md border border-white/10 rounded-[4rem] p-12 md:p-24 overflow-hidden fade-in-element">
 
                 <div class="relative z-10 max-w-4xl mx-auto text-center">
                     <h2 class="text-4xl md:text-7xl font-black text-white mb-8 leading-[1.1] tracking-tighter text-balance">

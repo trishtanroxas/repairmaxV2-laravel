@@ -1,5 +1,5 @@
 <x-layouts.landing title="Our Services | Repairmax">
-    <main class="relative pt-32 lg:pt-40 pb-16 md:pb-24 overflow-hidden" 
+    <main class="relative pt-24 lg:pt-28 pb-16 md:pb-24 overflow-hidden" 
           x-data="{
 
                search: '',

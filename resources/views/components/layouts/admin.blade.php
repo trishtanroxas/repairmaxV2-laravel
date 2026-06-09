@@ -112,6 +112,15 @@
         body.dark .divide-y > * {
             border-color: rgba(255, 255, 255, 0.08) !important;
         }
+        body.dark .border-blue-100 {
+            border-color: rgba(59, 130, 246, 0.2) !important;
+        }
+        body.dark .border-blue-100\/50 {
+            border-color: rgba(59, 130, 246, 0.1) !important;
+        }
+        body.dark .border-blue-100\/80 {
+            border-color: rgba(59, 130, 246, 0.16) !important;
+        }
         /* Buttons styling */
         body.dark .bg-gray-900 {
             background-color: #1e293b !important;

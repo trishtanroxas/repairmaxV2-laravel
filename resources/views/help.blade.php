@@ -1,7 +1,7 @@
 <x-layouts.landing title="Help & Support Center | Repairmax">
     <main class="relative pb-24 md:pb-32 overflow-hidden bg-[#020617]">
         <!-- Gradient Banner Header -->
-        <section class="w-full bg-gradient-to-b from-[#0f172a] via-[#12183a] to-[#020617] pt-32 lg:pt-40 pb-32 md:pb-40 relative overflow-hidden">
+        <section class="w-full bg-gradient-to-b from-[#0f172a] via-[#12183a] to-[#020617] pt-24 lg:pt-28 pb-32 md:pb-40 relative overflow-hidden">
             <!-- Glow Effects Inside Banner -->
             <div class="absolute top-0 left-1/4 -translate-x-1/2 w-125 h-125 bg-blue-600/8 rounded-full blur-[140px] pointer-events-none"></div>
             <div class="absolute bottom-0 right-1/4 translate-x-1/2 w-125 h-125 bg-indigo-600/8 rounded-full blur-[140px] pointer-events-none"></div>

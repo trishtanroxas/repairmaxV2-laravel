@@ -566,3 +566,344 @@
         font-weight: 700 !important;
     }
 }
+
+/* ==========================================================================
+   Global Dark Theme Overrides
+   ========================================================================== */
+.dark body, body.dark {
+    color: #cbd5e1 !important; /* text-gray-300 */
+}
+
+/* Convert generic white cards to glassmorphism (excluding modals) */
+.dark .bg-white:not(aside):not(aside *):not(header):not(header *):not(.absolute):not(.fixed):not(.modal-content):not(.modal-content *),
+body.dark .bg-white:not(aside):not(aside *):not(header):not(header *):not(.absolute):not(.fixed):not(.modal-content):not(.modal-content *) {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #e2e8f0 !important;
+}
+
+.dark .bg-gray-50:not(.modal-content):not(.modal-content *),
+.dark .bg-gray-50\/30:not(.modal-content):not(.modal-content *),
+.dark .bg-gray-50\/50:not(.modal-content):not(.modal-content *),
+body.dark .bg-gray-50:not(.modal-content):not(.modal-content *),
+body.dark .bg-gray-50\/30:not(.modal-content):not(.modal-content *),
+body.dark .bg-gray-50\/50:not(.modal-content):not(.modal-content *) {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Solid modal styles in dark mode to remove glassy/see-thru effect */
+.dark .modal-content, body.dark .modal-content {
+    background-color: #191e2e !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+.dark .modal-content .bg-white, body.dark .modal-content .bg-white {
+    background-color: #191e2e !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+.dark .modal-content .bg-gray-50,
+.dark .modal-content .bg-gray-50\/30,
+.dark .modal-content .bg-gray-50\/50,
+body.dark .modal-content .bg-gray-50,
+body.dark .modal-content .bg-gray-50\/30,
+body.dark .modal-content .bg-gray-50\/50 {
+    background-color: #121622 !important; /* Slightly darker solid #191e2e */
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Buttons inside modal */
+.dark .modal-content .bg-white.border, body.dark .modal-content .bg-white.border {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+.dark .modal-content .bg-white.border:hover, body.dark .modal-content .bg-white.border:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .modal-content .text-gray-900,
+.dark .modal-content .text-gray-800,
+.dark .modal-content .text-gray-700,
+body.dark .modal-content .text-gray-900,
+body.dark .modal-content .text-gray-800,
+body.dark .modal-content .text-gray-700 {
+    color: #ffffff !important;
+}
+
+.dark .modal-content .text-gray-500,
+.dark .modal-content .text-gray-400,
+body.dark .modal-content .text-gray-500,
+body.dark .modal-content .text-gray-400 {
+    color: #94a3b8 !important; /* highly visible grey */
+}
+
+/* Text overrides */
+.dark .text-gray-900,
+.dark .text-gray-800,
+.dark .text-gray-750,
+.dark .text-gray-700,
+body.dark .text-gray-900,
+body.dark .text-gray-800,
+body.dark .text-gray-750,
+body.dark .text-gray-700 {
+    color: #ffffff !important;
+}
+
+.dark .text-gray-650,
+.dark .text-gray-600,
+.dark .text-gray-550,
+.dark .text-gray-500,
+.dark .text-gray-455,
+body.dark .text-gray-650,
+body.dark .text-gray-600,
+body.dark .text-gray-550,
+body.dark .text-gray-500,
+body.dark .text-gray-455 {
+    color: #94a3b8 !important; /* text-gray-400 */
+}
+
+.dark .text-gray-400, body.dark .text-gray-400 {
+    color: #cbd5e1 !important; /* text-gray-300 */
+}
+
+/* Borders */
+.dark .border-brand-200,
+.dark .border-brand-100,
+.dark .border-brand-250,
+.dark .border-gray-250,
+.dark .border-gray-200,
+.dark .border-gray-100,
+.dark .divide-brand-100,
+.dark .divide-brand-200,
+.dark .border-t,
+.dark .border-b,
+.dark .divide-y,
+.dark .divide-y > *,
+body.dark .border-brand-200,
+body.dark .border-brand-100,
+body.dark .border-brand-250,
+body.dark .border-gray-250,
+body.dark .border-gray-200,
+body.dark .border-gray-100,
+body.dark .divide-brand-100,
+body.dark .divide-brand-200,
+body.dark .border-t,
+body.dark .border-b,
+body.dark .divide-y,
+body.dark .divide-y > * {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark .border-blue-100, body.dark .border-blue-100 {
+    border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+.dark .border-blue-100\/50, body.dark .border-blue-100\/50 {
+    border-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.dark .border-blue-100\/80, body.dark .border-blue-100\/80 {
+    border-color: rgba(59, 130, 246, 0.16) !important;
+}
+
+/* Buttons styling */
+.dark .bg-gray-900, body.dark .bg-gray-900 {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .bg-gray-900:hover, body.dark .bg-gray-900:hover {
+    background-color: #2b3a55 !important;
+}
+
+.dark .bg-gray-100, body.dark .bg-gray-100 {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .bg-gray-100:hover, body.dark .bg-gray-100:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Badge colors */
+.dark .bg-blue-50, body.dark .bg-blue-50 {
+    background-color: rgba(59, 130, 246, 0.1) !important;
+    color: #60a5fa !important;
+}
+
+.dark .bg-green-50, body.dark .bg-green-50 {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    color: #34d399 !important;
+}
+
+.dark .bg-orange-50, body.dark .bg-orange-50 {
+    background-color: rgba(249, 115, 22, 0.1) !important;
+    color: #fb923c !important;
+}
+
+.dark .bg-purple-50, body.dark .bg-purple-50 {
+    background-color: rgba(139, 92, 246, 0.1) !important;
+    color: #c084fc !important;
+}
+
+.dark .bg-amber-50, body.dark .bg-amber-50 {
+    background-color: rgba(245, 158, 11, 0.1) !important;
+    color: #fbbf24 !important;
+}
+
+/* Inputs & forms styling */
+.dark input,
+.dark select,
+.dark textarea,
+body.dark input,
+body.dark select,
+body.dark textarea {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus,
+body.dark input:focus,
+body.dark select:focus,
+body.dark textarea:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder,
+body.dark input::placeholder,
+body.dark textarea::placeholder {
+    color: #475569 !important;
+}
+
+/* Dropdowns list in select */
+.dark select option, body.dark select option {
+    background-color: #0b0f19 !important;
+    color: #ffffff !important;
+}
+
+/* Labels */
+.dark label, body.dark label {
+    color: #cbd5e1 !important;
+}
+
+/* Table rows hover and headers */
+.dark thead.bg-gray-50,
+.dark tr.bg-gray-50,
+body.dark thead.bg-gray-50,
+body.dark tr.bg-gray-50 {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+.dark tr.hover\:bg-gray-50:hover,
+body.dark tr.hover\:bg-gray-50:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Color overrides for dark mode readability */
+.dark .text-blue-900, body.dark .text-blue-900 { color: #93c5fd !important; }
+.dark .text-blue-800, body.dark .text-blue-800 { color: #60a5fa !important; }
+.dark .text-blue-700, body.dark .text-blue-700 { color: #60a5fa !important; }
+.dark .text-blue-600, body.dark .text-blue-600 { color: #60a5fa !important; }
+
+.dark .text-indigo-900, body.dark .text-indigo-900 { color: #c7d2fe !important; }
+.dark .text-indigo-800, body.dark .text-indigo-800 { color: #818cf8 !important; }
+.dark .text-indigo-700, body.dark .text-indigo-700 { color: #818cf8 !important; }
+.dark .text-indigo-600, body.dark .text-indigo-600 { color: #818cf8 !important; }
+
+.dark .text-green-900, body.dark .text-green-900 { color: #a7f3d0 !important; }
+.dark .text-green-800, body.dark .text-green-800 { color: #34d399 !important; }
+.dark .text-green-700, body.dark .text-green-700 { color: #34d399 !important; }
+.dark .text-green-600, body.dark .text-green-600 { color: #34d399 !important; }
+
+.dark .text-amber-900, body.dark .text-amber-900 { color: #fde68a !important; }
+.dark .text-amber-800, body.dark .text-amber-800 { color: #fcd34d !important; }
+.dark .text-amber-700, body.dark .text-amber-700 { color: #fcd34d !important; }
+.dark .text-amber-600, body.dark .text-amber-600 { color: #fbbf24 !important; }
+
+.dark .text-orange-900, body.dark .text-orange-900 { color: #fed7aa !important; }
+.dark .text-orange-800, body.dark .text-orange-800 { color: #fb923c !important; }
+.dark .text-orange-700, body.dark .text-orange-700 { color: #fb923c !important; }
+.dark .text-orange-600, body.dark .text-orange-600 { color: #fb923c !important; }
+
+.dark .text-red-900, body.dark .text-red-900 { color: #fecaca !important; }
+.dark .text-red-800, body.dark .text-red-800 { color: #f87171 !important; }
+.dark .text-red-700, body.dark .text-red-700 { color: #f87171 !important; }
+.dark .text-red-600, body.dark .text-red-600 { color: #f87171 !important; }
+
+/* Border overrides for alert banners and containers in dark mode */
+.dark .border-blue-200, body.dark .border-blue-200 { border-color: rgba(59, 130, 246, 0.2) !important; }
+.dark .border-amber-100, body.dark .border-amber-100 { border-color: rgba(245, 158, 11, 0.25) !important; }
+.dark .border-amber-200, body.dark .border-amber-200 { border-color: rgba(245, 158, 11, 0.25) !important; }
+.dark .border-red-200, body.dark .border-red-200 { border-color: rgba(239, 68, 68, 0.25) !important; }
+.dark .border-emerald-200, body.dark .border-emerald-200 { border-color: rgba(16, 185, 129, 0.25) !important; }
+.dark .border-green-200, body.dark .border-green-200 { border-color: rgba(16, 185, 129, 0.25) !important; }
+
+/* Additional alert background overrides in dark mode */
+.dark .bg-red-50, body.dark .bg-red-50 { background-color: rgba(239, 68, 68, 0.1) !important; color: #f87171 !important; }
+.dark .bg-emerald-50, body.dark .bg-emerald-50 { background-color: rgba(16, 185, 129, 0.1) !important; color: #34d399 !important; }
+.dark .bg-blue-200, body.dark .bg-blue-200 { background-color: rgba(59, 130, 246, 0.15) !important; }
+
+/* Translucent blue backgrounds for modals and cards */
+.dark .bg-blue-50\/30, body.dark .bg-blue-50\/30 { background-color: rgba(59, 130, 246, 0.08) !important; }
+.dark .bg-blue-50\/50, body.dark .bg-blue-50\/50 { background-color: rgba(59, 130, 246, 0.12) !important; }
+.dark .border-blue-100\/50, body.dark .border-blue-100\/50 { border-color: rgba(59, 130, 246, 0.15) !important; }
+
+/* Emerald text color mapping (similar to green) */
+.dark .text-emerald-900, body.dark .text-emerald-900 { color: #a7f3d0 !important; }
+.dark .text-emerald-800, body.dark .text-emerald-800 { color: #34d399 !important; }
+.dark .text-emerald-700, body.dark .text-emerald-700 { color: #34d399 !important; }
+.dark .text-emerald-600, body.dark .text-emerald-600 { color: #34d399 !important; }
+
+/* =============================================
+   Scroll-Triggered Entrance Animations
+   ============================================= */
+
+/* Base hidden state — applied before element enters viewport */
+.fade-in-element,
+.fade-in-left,
+.fade-in-right {
+    opacity: 0;
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-in-element {
+    transform: translateY(32px);
+}
+
+.fade-in-left {
+    transform: translateX(-40px);
+}
+
+.fade-in-right {
+    transform: translateX(40px);
+}
+
+/* Visible state — added by IntersectionObserver when in viewport */
+.fade-in-element.visible,
+.fade-in-left.visible,
+.fade-in-right.visible {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+/* Staggered children delay utility */
+.fade-in-element:nth-child(1) { transition-delay: 0ms; }
+.fade-in-element:nth-child(2) { transition-delay: 100ms; }
+.fade-in-element:nth-child(3) { transition-delay: 200ms; }
+.fade-in-element:nth-child(4) { transition-delay: 300ms; }

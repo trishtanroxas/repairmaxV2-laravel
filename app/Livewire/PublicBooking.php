@@ -30,10 +30,17 @@ class PublicBooking extends Component
     
     // Pickup and Address details
     public $address        = '';
+    public $barangay       = '';
     public $pickup_option  = 'Drop-off'; // Default to Drop-off at Shop
     public $other_details  = '';
     public $create_account = false;
     public $additional_fee = 0; // Fee for pickup service
+
+    // Alternative Address details
+    public $alt_address      = '';
+    public $alt_barangay     = '';
+    public $alt_city         = '';
+    public $use_same_address = true;
 
     // Device and booking details
     public $device_brand   = '';
@@ -60,6 +67,7 @@ class PublicBooking extends Component
 
     public function mount()
     {
+        $this->use_same_address = true;
         $this->pref_date = date('Y-m-d');
         $this->generateTrackingCode();
         $this->generateAvailableDays();
@@ -271,19 +279,23 @@ class PublicBooking extends Component
         $rules = [
             'first_name'     => 'required|string|max:255',
             'last_name'      => 'required|string|max:255',
-            'email'          => 'required|email|max:255',
+            'email'          => 'required|email|max:255|unique:users,email,' . (Auth::id() ?? 'NULL') . ',id',
             'phone'          => 'required|string|max:20',
-            'city'           => $this->pickup_option === 'Pickup' ? 'required|string|exists:supported_cities,name' : 'nullable|string|exists:supported_cities,name',
+            'city'           => 'required|string|exists:supported_cities,name',
+            'barangay'       => 'required|string|max:255',
+            'alt_city'       => 'required|string|exists:supported_cities,name',
+            'alt_barangay'   => 'required|string|max:255',
+            'alt_address'    => 'required|string|max:500',
             'device_brand'   => 'required|string',
             'device_model'   => 'required|string|max:255',
             'fault_category' => 'required|string',
             'description'    => 'required|string|max:1000',
-            'photos.*'       => 'nullable|file|mimes:jpeg,jpg,png|max:2048', // 2MB Max (JPEG, JPG, PNG)
-            'video'          => 'nullable|file|mimes:mp4,webm|max:102400', // 100MB Max (MP4, WEBM)
+            'photos.*'       => 'nullable|file|mimes:jpeg,jpg,png|max:2048',
+            'video'          => 'nullable|file|mimes:mp4,webm|max:102400',
             'pref_date'      => 'required|date|after_or_equal:today',
             'pref_time'      => 'required',
             'pickup_option'  => 'required|string|in:Drop-off,Pickup',
-            'address'        => $this->pickup_option === 'Pickup' ? 'required|string|max:500' : 'nullable|string|max:500',
+            'address'        => 'required|string|max:500',
             'other_details'  => 'nullable|string|max:1000',
         ];
 
@@ -309,6 +321,12 @@ class PublicBooking extends Component
 
     public function prepareReview()
     {
+        if ($this->use_same_address) {
+            $this->alt_address = $this->address;
+            $this->alt_barangay = $this->barangay;
+            $this->alt_city = $this->city;
+        }
+
         try {
             $this->validate();
             $this->showReviewModal = true;
@@ -320,6 +338,12 @@ class PublicBooking extends Component
 
     public function submit()
     {
+        if ($this->use_same_address) {
+            $this->alt_address = $this->address;
+            $this->alt_barangay = $this->barangay;
+            $this->alt_city = $this->city;
+        }
+
         try {
             $this->validate();
             $this->showReviewModal = false;
@@ -334,7 +358,11 @@ class PublicBooking extends Component
         $user->last_name = $this->last_name;
         $user->phone = $this->phone;
         $user->address = $this->address;
+        $user->barangay = $this->barangay;
         $user->city = $this->city;
+        $user->alt_address = $this->alt_address;
+        $user->alt_barangay = $this->alt_barangay;
+        $user->alt_city = $this->alt_city;
         if (!$user->exists) {
             $user->role = $this->create_account ? 'user' : 'guest';
             $user->is_verified = false;
@@ -367,7 +395,10 @@ class PublicBooking extends Component
         // Construct full description incorporating new pickup and address details securely
         $fullDescription = "Issue Description:\n" . $this->description;
         $fullDescription .= "\n\nService Method:\n" . ($this->pickup_option === 'Pickup' ? 'Home Pickup & Return' : 'Drop-off at Shop');
-        $fullDescription .= "\n\nPickup Address:\n" . $this->address . ", " . $this->city;
+        $fullDescription .= "\n\nPickup Address:\n" . $this->address . ", Brgy. " . $this->barangay . ", " . $this->city;
+        if ($this->alt_address) {
+            $fullDescription .= "\n\nAlternative Address:\n" . $this->alt_address . ", Brgy. " . $this->alt_barangay . ", " . $this->alt_city;
+        }
         if (!empty($this->other_details)) {
             $fullDescription .= "\n\nOther Details / Special Instructions:\n" . $this->other_details;
         }
@@ -391,7 +422,11 @@ class PublicBooking extends Component
         $appointment->status         = 'Pending';
         $appointment->service_method = $this->pickup_option;
         $appointment->address        = $this->address;
+        $appointment->barangay       = $this->barangay;
         $appointment->city           = $this->city;
+        $appointment->alt_address    = $this->alt_address;
+        $appointment->alt_barangay   = $this->alt_barangay;
+        $appointment->alt_city       = $this->alt_city;
         $appointment->additional_fee = $this->additional_fee;
         $appointment->quote          = $calculatedQuote;
         $appointment->booking_number = $trackingCode;

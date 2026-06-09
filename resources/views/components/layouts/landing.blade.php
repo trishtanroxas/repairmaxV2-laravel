@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth dark">
 
 <head>
     <meta charset="UTF-8">
@@ -63,25 +63,54 @@
     <x-ui.toast />
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const observerOptions = {
-                threshold: 0.05,
-                rootMargin: '0px 0px -40px 0px'
-            };
+        (function() {
+            let observer;
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
+            function initScrollAnimations() {
+                // If observer already exists, disconnect it to avoid duplicate bindings
+                if (observer) {
+                    observer.disconnect();
+                }
+
+                const observerOptions = {
+                    threshold: 0.05,
+                    rootMargin: '0px 0px -20px 0px'
+                };
+
+                observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                const elements = document.querySelectorAll('.fade-in-element, .fade-in-left, .fade-in-right');
+                elements.forEach(el => {
+                    if (!el.classList.contains('visible')) {
+                        observer.observe(el);
                     }
                 });
-            }, observerOptions);
+            }
 
-            document.querySelectorAll('.fade-in-element, .fade-in-left, .fade-in-right').forEach(el => {
-                observer.observe(el);
+            // Run on load with a slight delay to allow layout calculations to settle
+            if (document.readyState === 'complete') {
+                setTimeout(initScrollAnimations, 50);
+            } else {
+                window.addEventListener('load', () => {
+                    setTimeout(initScrollAnimations, 50);
+                });
+            }
+
+            // Support Livewire SPA page navigation or partial updates
+            document.addEventListener('livewire:navigated', () => {
+                setTimeout(initScrollAnimations, 50);
             });
-        });
+            document.addEventListener('livewire:load', () => {
+                setTimeout(initScrollAnimations, 50);
+            });
+        })();
     </script>
 
     @livewireScripts

@@ -8,8 +8,9 @@
     }"
     @scroll.window="scrolled = (window.scrollY > 50)"
     id="main-header"
-    class="fixed top-0 w-full z-50 transition-all duration-300 {{ request()->is('/') ? 'bg-transparent border-b border-transparent' : 'bg-[#020617]/90 backdrop-blur-md border-b border-white/5 shadow-sm' }}"
-    :class="isSolid ? 'bg-[#020617]/90 backdrop-blur-md border-b border-white/5 shadow-sm' : 'bg-transparent border-b border-transparent'">
+    class="fixed top-0 w-full z-50 transition-all duration-300"
+    :class="servicesMenuOpen ? 'shadow-2xl' : (isSolid ? 'backdrop-blur-md shadow-sm' : '')"
+    :style="servicesMenuOpen ? 'background-color: #020617;' : (isSolid ? 'background-color: rgba(2,6,23,0.92);' : 'background-color: transparent;')">
     <nav aria-label="Main Navigation" class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-12 gap-6 items-center h-20">
 
         @php
@@ -75,7 +76,7 @@
                                  x-transition:leave="transition ease-in duration-150"
                                  x-transition:leave-start="opacity-100 translate-y-0"
                                  x-transition:leave-end="opacity-0 -translate-y-3"
-                                 class="absolute left-0 right-0 w-full z-40 top-20 hidden lg:block bg-[#020617] border-b border-white/5 shadow-2xl"
+                                 class="absolute left-0 right-0 w-full z-40 top-20 hidden lg:block bg-[#020617] shadow-2xl"
                                  style="display: none;">
                                  
                                 <div class="max-w-7xl mx-auto px-8 py-10 grid grid-cols-12 gap-8 text-left">

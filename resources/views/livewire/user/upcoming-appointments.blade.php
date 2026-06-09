@@ -146,7 +146,7 @@
     <!-- Reschedule Modal -->
     @if($showRescheduleModal && $selectedAppointment)
     <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full border border-brand-100 overflow-hidden transform transition-all duration-300 scale-100">
+        <div class="bg-white modal-content rounded-3xl shadow-2xl max-w-2xl w-full border border-brand-100 overflow-hidden transform transition-all duration-300 scale-100">
             <div class="border-b border-brand-100 px-6 py-5 flex items-center justify-between bg-gray-50/50">
                 <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">Reschedule Appointment</h2>
                 <button
@@ -304,7 +304,7 @@
     <!-- Edit Modal -->
     @if($showEditModal && $selectedAppointment)
     <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-brand-100 overflow-hidden">
+        <div class="bg-white modal-content rounded-2xl shadow-2xl max-w-md w-full border border-brand-100 overflow-hidden">
             <div class="border-b border-brand-200 px-6 py-5 flex items-center justify-between bg-gray-50/50">
                 <h2 class="text-xl font-bold text-gray-900">Edit Appointment</h2>
                 <button

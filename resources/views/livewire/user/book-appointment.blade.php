@@ -173,7 +173,7 @@
                             @click="calendarModal = false"
                             @endif
                             class="w-full h-11 rounded-[1.25rem] border-2 text-[10px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5
-                                                {{ $isSelected ? 'bg-blue-500 border-blue-500 text-white shadow-lg shadow-blue-200'
+                                                {{ $isSelected ? 'bg-blue-500 border-blue-500 text-white shadow-lg shadow-blue-500/20'
                                                     : ($isFull ? 'bg-red-50 border-red-100 text-red-300 cursor-not-allowed'
                                                     : 'bg-gray-50 border-gray-100 text-gray-400 hover:bg-green-50 hover:border-green-300 hover:text-green-600 cursor-pointer') }}">
                             @if($isSelected)
@@ -235,9 +235,9 @@
         <!-- Modal Content (Scrollable) -->
         <div class="p-8 overflow-y-auto space-y-6">
             <!-- Reference Codes Grid (Logistics vs Substance) -->
-            <div class="bg-blue-50/30 border border-blue-100/50 rounded-[1.25rem] p-4 text-left">
-                <span class="text-[9px] uppercase font-black tracking-widest text-blue-600 block">Ticket Number</span>
-                <span class="text-sm md:text-base font-black text-blue-900 mt-1 block font-mono">{{ $tracking_code }}</span>
+            <div class="bg-blue-50/30 dark:bg-blue-500/10 border border-blue-100/50 dark:border-blue-500/20 rounded-[1.25rem] p-4 text-left">
+                <span class="text-[9px] uppercase font-black tracking-widest text-blue-600 dark:text-blue-400 block">Ticket Number</span>
+                <span class="text-sm md:text-base font-black text-blue-900 dark:text-blue-300 mt-1 block font-mono">{{ $tracking_code }}</span>
             </div>
 
             <!-- Personal details section -->
@@ -328,8 +328,8 @@
             </div>
 
             <!-- Financial Overview section -->
-            <div class="bg-blue-50/40 rounded-3xl p-5 border border-blue-100/80">
-                <h4 class="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-4 flex items-center gap-1.5">
+            <div class="bg-[#121622] rounded-3xl p-5 border border-white/5">
+                <h4 class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-[16px]">payments</span> Financial Overview
                 </h4>
                 
@@ -340,9 +340,9 @@
                 @endphp
 
                 <div class="space-y-3 text-sm">
-                    <div class="flex justify-between items-center text-gray-600">
+                    <div class="flex justify-between items-center text-gray-400">
                         <span>Base Service Price ({{ $fault_category === 'Other' ? ($custom_service ?: 'Custom Service') : $fault_category }})</span>
-                        <span class="font-bold text-gray-900">
+                        <span class="font-bold text-white">
                             @if($fault_category === 'Other')
                                 Quote after inspection
                             @elseif($basePrice)
@@ -353,9 +353,9 @@
                         </span>
                     </div>
 
-                    <div class="flex justify-between items-center text-gray-600">
+                    <div class="flex justify-between items-center text-gray-400">
                         <span>Service Method ({{ $pickup_option === 'Pickup' ? 'Home Pickup' : 'Shop Drop-off' }})</span>
-                        <span class="font-bold text-gray-900">
+                        <span class="font-bold text-white">
                             @if($pickup_option === 'Pickup')
                                 ₱{{ number_format($pickupFee, 2) }}
                             @else
@@ -364,17 +364,17 @@
                         </span>
                     </div>
 
-                    <div class="flex justify-between items-center text-gray-600 border-b border-blue-100/50 pb-3">
+                    <div class="flex justify-between items-center text-gray-400 border-b border-white/5 pb-3">
                         <span class="flex items-center gap-1">
                             Diagnostic Fee 
-                            <span class="text-[10px] font-black text-blue-500 bg-blue-100/80 px-1.5 py-0.5 rounded uppercase" title="Charged only if you decline repair after diagnostic check">Conditional</span>
+                            <span class="text-[10px] font-black text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded uppercase" title="Charged only if you decline repair after diagnostic check">Conditional</span>
                         </span>
-                        <span class="font-bold text-gray-900">₱150.00</span>
+                        <span class="font-bold text-white">₱150.00</span>
                     </div>
 
                     <div class="flex justify-between items-center pt-1">
-                        <span class="text-base font-black text-gray-900">Estimated Total</span>
-                        <span class="text-lg font-black text-blue-700">
+                        <span class="text-base font-black text-white">Estimated Total</span>
+                        <span class="text-lg font-black text-blue-400">
                             @if($fault_category === 'Other')
                                 ₱{{ number_format($pickupFee, 2) }} + Diagnostic / Quote
                             @elseif($basePrice)
@@ -387,9 +387,9 @@
                 </div>
 
                 <!-- Warning Disclaimer Label -->
-                <div class="mt-5 p-3.5 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2.5">
-                    <span class="material-symbols-outlined text-amber-600 text-[18px] shrink-0 mt-0.5 animate-pulse">warning</span>
-                    <div class="text-xs text-amber-800 leading-relaxed font-semibold">
+                <div class="mt-5 p-3.5 bg-amber-50 dark:bg-amber-500/10 border border-amber-100 dark:border-amber-500/20 rounded-xl flex items-start gap-2.5">
+                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-[18px] shrink-0 mt-0.5 animate-pulse">warning</span>
+                    <div class="text-xs text-amber-800 dark:text-amber-300 leading-relaxed font-semibold font-sans">
                         <strong class="font-black uppercase tracking-wider block mb-1">Pricing Notice (Subject to Final Inspection)</strong>
                         This estimated total is not complete. The final cost will be determined after a technical diagnostic check of your device's actual condition. Additional fees may apply for secondary issues (e.g. internal hardware damages, bloated battery, water exposure) discovered during the repair process.
                     </div>
@@ -437,13 +437,13 @@
 
     <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm mb-5">
         <!-- Ticket Number -->
-        <div class="bg-blue-50 rounded-xl p-3 border border-blue-100">
-            <p class="text-[10px] font-black text-blue-500 uppercase tracking-wider mb-1">Ticket Number</p>
-            <p class="font-bold text-blue-700 text-xs leading-snug font-mono">
+        <div class="bg-blue-50 dark:bg-blue-500/10 rounded-xl p-3 border border-blue-100 dark:border-blue-500/20">
+            <p class="text-[10px] font-black text-blue-500 dark:text-blue-400 uppercase tracking-wider mb-1">Ticket Number</p>
+            <p class="font-bold text-blue-700 dark:text-blue-300 text-xs leading-snug font-mono">
                 @if($pref_date)
                     {{ $tracking_code }}
                 @else
-                    <span class="text-blue-300 font-normal italic">Select a date</span>
+                    <span class="text-blue-300 dark:text-blue-500/50 font-normal italic">Select a date</span>
                 @endif
             </p>
         </div>
@@ -712,7 +712,7 @@
                                 </button>
                             </div>
                             @else
-                            <label class="w-full h-full flex flex-col items-center justify-center border-2 border-dashed border-blue-200 rounded-[1.25rem] bg-blue-50/10 hover:bg-white hover:border-blue-400 transition-all cursor-pointer group hover:shadow-lg transform hover:-translate-y-0.5">
+                            <label class="w-full h-full flex flex-col items-center justify-center border-2 border-dashed border-blue-200 dark:border-white/10 rounded-[1.25rem] bg-[#0d1527]/50 hover:bg-[#0d1527]/80 hover:border-blue-400 transition-all cursor-pointer group hover:shadow-lg transform hover:-translate-y-0.5">
                                 <input type="file" wire:model="video" class="hidden" accept="video/mp4,video/webm">
                                 <span class="material-symbols-outlined text-[32px] leading-none text-blue-400 group-hover:text-blue-500 transition-colors">videocam</span>
                                 <span class="text-[9px] font-black text-blue-500 mt-1.5 uppercase tracking-wider text-center px-1">Upload Video</span>
@@ -737,7 +737,7 @@
                                 </button>
                             </div>
                             @else
-                            <label class="w-full h-full flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-[1.25rem] bg-gray-50/50 hover:bg-white hover:border-blue-400 transition-all cursor-pointer group hover:shadow-lg transform hover:-translate-y-0.5">
+                            <label class="w-full h-full flex flex-col items-center justify-center border-2 border-dashed border-gray-200 dark:border-white/10 rounded-[1.25rem] bg-[#0d1527]/50 hover:bg-[#0d1527]/80 hover:border-blue-400 transition-all cursor-pointer group hover:shadow-lg transform hover:-translate-y-0.5">
                                 <input type="file" wire:model="photos.{{ $i }}" class="hidden" accept="image/jpeg,image/png,image/jpg">
                                 <span class="material-symbols-outlined text-[28px] leading-none text-gray-300 group-hover:text-blue-400 transition-colors">add_a_photo</span>
                                 <span class="text-[9px] font-black text-gray-400 mt-1.5 group-hover:text-blue-500 uppercase tracking-wider">Photo Slot {{ $i + 1 }}</span>
@@ -769,8 +769,10 @@
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                     <!-- Option 1: Drop-off -->
-                    <label class="flex items-center gap-3.5 p-4 rounded-2xl border-2 cursor-pointer transition-all hover:bg-gray-50/50
-                        {{ $pickup_option === 'Drop-off' ? 'border-blue-500 bg-blue-50/10' : 'border-gray-200 bg-gray-50/30' }}">
+                    <label class="flex items-center gap-3.5 p-4 rounded-2xl border-2 cursor-pointer transition-all
+                        {{ $pickup_option === 'Drop-off'
+                            ? 'border-blue-500 bg-blue-50/40 dark:bg-blue-500/10 dark:hover:bg-blue-500/15'
+                            : 'border-gray-200 bg-slate-50/30 hover:bg-slate-100/50 dark:border-white/10 dark:bg-white/3 dark:hover:bg-white/8' }}">
                         <input type="radio" wire:model.live="pickup_option" value="Drop-off" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
                         <div>
                             <p class="text-sm font-bold text-gray-900">Drop-off at Shop</p>
@@ -779,8 +781,10 @@
                     </label>
 
                     <!-- Option 2: Home Pickup -->
-                    <label class="flex items-center gap-3.5 p-4 rounded-2xl border-2 cursor-pointer transition-all hover:bg-gray-50/50
-                        {{ $pickup_option === 'Pickup' ? 'border-blue-500 bg-blue-50/10' : 'border-gray-200 bg-gray-50/30' }}">
+                    <label class="flex items-center gap-3.5 p-4 rounded-2xl border-2 cursor-pointer transition-all
+                        {{ $pickup_option === 'Pickup'
+                            ? 'border-blue-500 bg-blue-50/40 dark:bg-blue-500/10 dark:hover:bg-blue-500/15'
+                            : 'border-gray-200 bg-slate-50/30 hover:bg-slate-100/50 dark:border-white/10 dark:bg-white/3 dark:hover:bg-white/8' }}">
                         <input type="radio" wire:model.live="pickup_option" value="Pickup" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
                         <div>
                             <p class="text-sm font-bold text-gray-900">Home Pickup & Return</p>
@@ -837,26 +841,33 @@
                     <div class="col-span-1 md:col-span-3 mb-2 relative">
                         <label class="block text-sm font-bold text-gray-800 mb-2 ml-1">Search Address (Auto-fill)</label>
                         <div class="relative">
-                            <input type="text" x-model="query" @input.debounce.500ms="search" placeholder="Type to search for your address..." class="w-full px-4 py-3 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium">
-                            <div x-show="loading" class="absolute right-4 top-1/2 -translate-y-1/2">
+                            <input type="text" x-model="query" @input.debounce.500ms="search" @input="searched = false; results = []" placeholder="Type to search for your address..." class="w-full px-4 py-3 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium">
+                            <div x-show="loading" x-cloak class="absolute right-4 top-1/2 -translate-y-1/2">
                                 <span class="material-symbols-outlined animate-spin text-blue-500">progress_activity</span>
                             </div>
                         </div>
-                        <div x-show="results.length > 0" @click.away="results = []" class="absolute z-[200] w-full mt-1 bg-white border border-gray-200 rounded-[1.25rem] shadow-lg max-h-60 overflow-y-auto">
-                            <template x-for="result in results" :key="result.place_id">
-                                <div @click="select(result)" class="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-gray-50 last:border-0 transition-colors">
-                                    <p class="text-sm font-bold text-gray-900 truncate" x-text="result.display_name"></p>
-                                </div>
-                            </template>
+                        <div x-show="results.length > 0 || (searched && results.length === 0 && query.length >= 3)" @click.away="results = []; searched = false" class="absolute z-[200] w-full mt-1 bg-white dark:bg-[#0f172a] border border-gray-200 dark:border-white/10 rounded-[1.25rem] shadow-lg max-h-60 overflow-y-auto">
+                            <div x-show="results.length > 0">
+                                <template x-for="result in results" :key="result.place_id">
+                                    <div @click="select(result)" class="px-4 py-3 hover:bg-blue-50 dark:hover:bg-white/5 cursor-pointer border-b border-gray-50 dark:border-white/5 last:border-0 transition-colors">
+                                        <p class="text-sm font-bold text-gray-900 dark:text-white truncate" x-text="result.display_name"></p>
+                                    </div>
+                                </template>
+                            </div>
+                            <div x-show="searched && results.length === 0 && query.length >= 3" class="px-4 py-4.5 text-gray-500 dark:text-gray-400 text-xs font-semibold leading-relaxed text-center">
+                                <span class="material-symbols-outlined text-[20px] text-gray-400 dark:text-gray-500 mb-1 block">sentiment_dissatisfied</span>
+                                No addresses found. <br>
+                                Please enter your address manually below or select it on the map.
+                            </div>
                         </div>
                     </div>
 
-                    <div class="md:col-span-2">
-                        <label for="address" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Street Address & Barangay <span class="text-red-500">*</span></label>
-                        <input type="text" id="address" wire:model="address" placeholder="Enter Street name, Building, House No., Barangay..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                    <div>
+                        <label for="address" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Street Address <span class="text-red-500">*</span></label>
+                        <input type="text" id="address" wire:model="address" placeholder="Enter Street name, Building, House No..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
                         @error('address') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                     </div>
-                    <div class="md:col-span-1">
+                    <div>
                         <label for="city" class="block text-sm font-bold text-gray-800 mb-2 ml-1">City / Municipality <span class="text-red-500">*</span></label>
                         <div class="relative w-full">
                             <select id="city" wire:model.live="city" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" required>
@@ -873,6 +884,61 @@
                             <span class="text-xs font-bold text-green-600 block mt-2 ml-1 animate-fade-in">Free Shipping</span>
                         @endif
                         @error('city') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label for="barangay" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Barangay <span class="text-red-500">*</span></label>
+                        <div class="relative w-full">
+                            <select id="barangay" wire:model="barangay" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" required :disabled="!$wire.city">
+                                <option value="" disabled selected>Select Barangay...</option>
+                                <template x-for="b in barangays" :key="b">
+                                    <option :value="b" x-text="b" :selected="$wire.barangay === b"></option>
+                                </template>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[20px]">unfold_more</span>
+                        </div>
+                        @error('barangay') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Alternate Address Toggle -->
+                    <div class="col-span-1 md:col-span-3 mt-2 flex items-center gap-3">
+                        <input type="checkbox" id="use_same_address" wire:model.live="use_same_address" class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer">
+                        <label for="use_same_address" class="text-sm font-bold text-gray-700 cursor-pointer select-none">Alternative address is the same as current address</label>
+                    </div>
+
+                    <!-- Alternative Address Fields -->
+                    <div class="col-span-1 md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6 mt-4 pt-4 border-t border-gray-100" x-show="!$wire.use_same_address" x-transition>
+                        <h4 class="col-span-1 md:col-span-3 text-xs font-black text-gray-700 uppercase tracking-wider mb-1">Alternative Address</h4>
+                        <div>
+                            <label for="alt_address" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Street Address <span class="text-red-500">*</span></label>
+                            <input type="text" id="alt_address" wire:model="alt_address" placeholder="Enter Street name, Building, House No..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" :required="!$wire.use_same_address">
+                            @error('alt_address') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
+                            <label for="alt_city" class="block text-sm font-bold text-gray-800 mb-2 ml-1">City / Municipality <span class="text-red-500">*</span></label>
+                            <div class="relative w-full">
+                                <select id="alt_city" wire:model.live="alt_city" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" :required="!$wire.use_same_address">
+                                    <option value="" disabled selected>Select City...</option>
+                                    @foreach($this->cities as $c)
+                                        <option value="{{ $c->name }}">{{ $c->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[20px]">unfold_more</span>
+                            </div>
+                            @error('alt_city') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
+                            <label for="alt_barangay" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Barangay <span class="text-red-500">*</span></label>
+                            <div class="relative w-full">
+                                <select id="alt_barangay" wire:model="alt_barangay" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" :required="!$wire.use_same_address" :disabled="!$wire.alt_city">
+                                    <option value="" disabled selected>Select Barangay...</option>
+                                    <template x-for="b in altBarangays" :key="b">
+                                        <option :value="b" x-text="b" :selected="$wire.alt_barangay === b"></option>
+                                    </template>
+                                </select>
+                                <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[20px]">unfold_more</span>
+                            </div>
+                            @error('alt_barangay') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
+                        </div>
                     </div>
                 </div>
                 
@@ -908,7 +974,7 @@
                         @disabled($day['slots_left'] <=0)
                         class="flex flex-col items-center justify-center py-4 px-2 rounded-[1.25rem] border-2 transition-all transform active:scale-95 relative
                                             {{ $pref_date === $day['full']
-                                                ? 'border-blue-500 bg-blue-500 shadow-xl shadow-blue-200'
+                                                ? 'border-blue-500 bg-blue-500 shadow-xl shadow-blue-500/25'
                                                 : ($day['slots_left'] <= 0
                                                     ? 'border-red-100 bg-red-50 cursor-not-allowed opacity-50'
                                                     : 'border-gray-100 bg-gray-50/50 hover:bg-white hover:border-gray-300 hover:scale-[1.03] shadow-sm cursor-pointer') }}">
@@ -972,12 +1038,12 @@
                         @disabled($isFull)
                         class="py-4 px-2 rounded-[1.25rem] border-2 font-black text-sm transition-all flex items-center justify-center gap-2 outline-none
                                                     {{ $isSelected
-                                                        ? 'border-blue-500 bg-white text-blue-700 shadow-lg ring-4 ring-blue-50/50 scale-[1.02]'
+                                                        ? 'border-blue-500 dark:border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-500/25 dark:shadow-blue-900/30 ring-4 ring-blue-500/10 dark:ring-0 scale-[1.02]'
                                                         : ($isFull
-                                                            ? 'border-red-100 bg-red-50 text-red-300 cursor-not-allowed opacity-50'
-                                                            : 'border-gray-100 bg-gray-50/50 text-gray-500 hover:bg-white hover:border-gray-300 hover:scale-[1.02] cursor-pointer') }}">
+                                                            ? 'border-red-100 dark:border-red-500/20 bg-red-50 dark:bg-red-950/10 text-red-300 dark:text-red-400/40 cursor-not-allowed opacity-50'
+                                                            : 'border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/3 text-gray-500 dark:text-gray-300 hover:bg-white dark:hover:bg-white/5 hover:border-gray-300 dark:hover:border-white/20 hover:scale-[1.02] cursor-pointer') }}">
                         @if($isSelected)
-                        <span class="w-2 h-2 rounded-full bg-blue-500 inline-block animate-pulse"></span>
+                        <span class="w-2 h-2 rounded-full bg-white inline-block animate-pulse"></span>
                         @endif
                         {{ $slot }}
                     </button>
@@ -991,7 +1057,7 @@
 
     <!-- Submit -->
     <div class="pt-6 border-t border-gray-100 flex justify-end">
-        <button type="submit" class="flex items-center justify-center gap-2 bg-gray-900 text-white hover:bg-black w-full sm:w-auto px-10 py-4 text-base rounded-[1.25rem] font-bold transition-all shadow-lg hover:shadow-gray-200 disabled:opacity-70" wire:loading.attr="disabled">
+        <button type="submit" class="flex items-center justify-center gap-2 bg-gray-900 text-white hover:bg-black w-full sm:w-auto px-10 py-4 text-base rounded-[1.25rem] font-bold transition-all shadow-lg hover:shadow-none disabled:opacity-70" wire:loading.attr="disabled">
             <span class="material-symbols-outlined text-[20px] leading-none" wire:loading.remove wire:target="prepareReview">rate_review</span>
             <span class="material-symbols-outlined text-[20px] animate-spin leading-none" wire:loading wire:target="prepareReview">progress_activity</span>
             Review Details
@@ -1038,6 +1104,7 @@
                         }
                     }, 150);
                 }
+            });
         });
         
         function addressSearch(wire) {
@@ -1045,21 +1112,123 @@
                 query: '',
                 results: [],
                 loading: false,
+                searched: false,
+                barangays: [],
+                altBarangays: [],
+                get useSameAddress() {
+                    return wire.get('use_same_address');
+                },
+                async init() {
+                    this.$watch('$wire.city', async (newCity) => {
+                        this.barangays = await this.loadBarangays(newCity);
+                        if (this.useSameAddress) {
+                            this.syncAddresses();
+                        }
+                    });
+
+                    this.$watch('$wire.alt_city', async (newCity) => {
+                        if (!this.useSameAddress) {
+                            this.altBarangays = await this.loadBarangays(newCity);
+                        }
+                    });
+
+                    this.$watch('$wire.address', () => { if (this.useSameAddress) this.syncAddresses(); });
+                    this.$watch('$wire.barangay', (value) => {
+                        if (value && !this.barangays.includes(value)) {
+                            this.barangays.push(value);
+                        }
+                        if (this.useSameAddress) this.syncAddresses();
+                    });
+
+                    this.$watch('$wire.use_same_address', (val) => {
+                        if (val) {
+                            this.syncAddresses();
+                        }
+                    });
+                    
+                    if (wire.get('city')) {
+                        this.barangays = await this.loadBarangays(wire.get('city'));
+                    }
+                    if (wire.get('barangay')) {
+                        const b = wire.get('barangay');
+                        if (b && !this.barangays.includes(b)) {
+                            this.barangays.push(b);
+                        }
+                    }
+                    if (wire.get('alt_city')) {
+                        this.altBarangays = await this.loadBarangays(wire.get('alt_city'));
+                    }
+                    if (wire.get('alt_barangay')) {
+                        const ab = wire.get('alt_barangay');
+                        if (ab && !this.altBarangays.includes(ab)) {
+                            this.altBarangays.push(ab);
+                        }
+                    }
+                    if (this.useSameAddress) {
+                        this.syncAddresses();
+                    }
+                },
+                async getCityCode(cityName) {
+                    try {
+                        const response = await fetch('https://psgc.gitlab.io/api/regions/130000000/cities-municipalities/');
+                        const cities = await response.json();
+                        const normalizedInput = cityName.toLowerCase().replace(/city of|city/g, '').trim();
+                        const found = cities.find(c => {
+                            const normalizedName = c.name.toLowerCase().replace(/city of|city/g, '').trim();
+                            return normalizedName === normalizedInput;
+                        });
+                        return found ? found.code : null;
+                    } catch (e) {
+                        console.error('Error fetching city code:', e);
+                        return null;
+                    }
+                },
+                async loadBarangays(cityName) {
+                    if (!cityName) return [];
+                    const cityCode = await this.getCityCode(cityName);
+                    if (!cityCode) return [];
+                    try {
+                        const response = await fetch(`https://psgc.gitlab.io/api/cities-municipalities/${cityCode}/barangays/`);
+                        const list = await response.json();
+                        return list.map(b => b.name).sort((a, b) => a.localeCompare(b));
+                    } catch (e) {
+                        console.error('Error loading barangays:', e);
+                        return [];
+                    }
+                },
+                syncAddresses() {
+                    wire.set('alt_address', wire.get('address'));
+                    wire.set('alt_barangay', wire.get('barangay'));
+                    wire.set('alt_city', wire.get('city'));
+                    this.altBarangays = this.barangays;
+                },
                 async search() {
                     if (this.query.length < 3) {
                         this.results = [];
+                        this.loading = false;
+                        this.searched = false;
                         return;
                     }
                     this.loading = true;
+                    this.searched = false;
                     try {
-                        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(this.query)}&countrycodes=ph&limit=5&addressdetails=1`);
+                        const selectedCity = wire.get('city');
+                        let searchQuery = this.query;
+                        if (selectedCity) {
+                            searchQuery += ', ' + selectedCity;
+                        }
+                        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&countrycodes=ph&limit=5&addressdetails=1`);
                         this.results = await response.json();
-                    } catch(e) {}
+                    } catch(e) {
+                        this.results = [];
+                    }
                     this.loading = false;
+                    this.searched = true;
                 },
                 select(result) {
                     this.query = result.display_name;
                     this.results = [];
+                    this.searched = false;
                     
                     const addr = result.address || {};
                     const barangay = addr.quarter || addr.suburb || addr.neighbourhood || addr.village || addr.hamlet || '';
@@ -1069,10 +1238,6 @@
                     let streetAddress = '';
                     if (houseNumber) streetAddress += houseNumber + ' ';
                     if (road) streetAddress += road;
-                    if (barangay) {
-                        if (streetAddress) streetAddress += ', ';
-                        streetAddress += 'Brgy. ' + barangay;
-                    }
                     
                     const city = addr.city || addr.town || addr.municipality || addr.province || '';
                     
@@ -1081,6 +1246,12 @@
                     }
                     if (city) {
                         wire.set('city', city);
+                    }
+                    if (barangay) {
+                        if (!this.barangays.includes(barangay)) {
+                            this.barangays.push(barangay);
+                        }
+                        wire.set('barangay', barangay);
                     }
                     
                     window.dispatchEvent(new CustomEvent('location-selected', { detail: { lat: result.lat, lng: result.lon } }));
@@ -1108,6 +1279,12 @@
                     } else {
                         this.initMap();
                     }
+                    
+                    this.$watch('$wire.city', (value) => {
+                        if (value && this.map && this.marker) {
+                            this.centerMapOnCity(value);
+                        }
+                    });
                     
                     window.addEventListener('location-selected', (e) => {
                         if (this.map && this.marker) {
@@ -1145,6 +1322,19 @@
                         });
                     }, 300);
                 },
+                async centerMapOnCity(cityName) {
+                    try {
+                        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cityName)}&countrycodes=ph&limit=1`);
+                        const data = await response.json();
+                        if (data && data.length > 0) {
+                            const latlng = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+                            this.map.setView(latlng, 14);
+                            this.marker.setLatLng(latlng);
+                        }
+                    } catch (e) {
+                        console.error('Error centering map on city:', e);
+                    }
+                },
                 async geocodePosition(latlng) {
                     try {
                         const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1&countrycodes=ph`);
@@ -1158,10 +1348,6 @@
                             let streetAddress = '';
                             if (houseNumber) streetAddress += houseNumber + ' ';
                             if (road) streetAddress += road;
-                            if (barangay) {
-                                if (streetAddress) streetAddress += ', ';
-                                streetAddress += 'Brgy. ' + barangay;
-                            }
                             
                             const city = addr.city || addr.town || addr.municipality || addr.province || '';
                             
@@ -1170,6 +1356,9 @@
                             }
                             if (city) {
                                 wire.set('city', city);
+                            }
+                            if (barangay) {
+                                wire.set('barangay', barangay);
                             }
                         }
                     } catch (error) {

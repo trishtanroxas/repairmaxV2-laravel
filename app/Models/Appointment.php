@@ -28,7 +28,11 @@ class Appointment extends Model
         'completed_at',
         'service_method',
         'address',
+        'barangay',
         'city',
+        'alt_address',
+        'alt_barangay',
+        'alt_city',
         'additional_fee'
     ];
 

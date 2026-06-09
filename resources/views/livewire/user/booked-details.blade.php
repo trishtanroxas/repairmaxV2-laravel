@@ -174,7 +174,21 @@
                         @if(!empty(trim($appointment->address ?? '')))
                             <div class="bg-gray-50 p-4 rounded-2xl border border-brand-100">
                                 <span class="text-[10px] uppercase font-mono font-bold text-gray-400 block tracking-wider mb-1">Pickup Address</span>
-                                <p class="font-semibold text-gray-800 text-sm leading-relaxed">{{ $appointment->address }}{{ $appointment->city ? ', ' . $appointment->city : '' }}</p>
+                                <p class="font-semibold text-gray-800 text-sm leading-relaxed">
+                                    {{ $appointment->address }}
+                                    @if($appointment->barangay), Brgy. {{ $appointment->barangay }}@endif
+                                    @if($appointment->city), {{ $appointment->city }}@endif
+                                </p>
+                                @if($appointment->alt_address && ($appointment->alt_address !== $appointment->address || $appointment->alt_barangay !== $appointment->barangay || $appointment->alt_city !== $appointment->city))
+                                    <div class="mt-2.5 pt-2.5 border-t border-gray-200/50">
+                                        <span class="text-[9px] uppercase font-mono font-bold text-gray-400 block tracking-wider mb-0.5">Alternative Address</span>
+                                        <p class="font-semibold text-gray-650 text-xs leading-relaxed">
+                                            {{ $appointment->alt_address }}
+                                            @if($appointment->alt_barangay), Brgy. {{ $appointment->alt_barangay }}@endif
+                                            @if($appointment->alt_city), {{ $appointment->alt_city }}@endif
+                                        </p>
+                                    </div>
+                                @endif
                             </div>
                         @else
                             <div class="bg-red-50/50 p-4 rounded-2xl border border-red-200/60">
@@ -343,7 +357,7 @@
     <!-- Edit Details Modal -->
     @if($showEditModal)
     <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-        <div class="bg-white rounded-[2rem] shadow-2xl max-w-md w-full border border-brand-100 overflow-hidden transform transition-all duration-300 scale-100">
+        <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-md w-full border border-brand-100 overflow-hidden transform transition-all duration-300 scale-100">
             <div class="border-b border-brand-200 px-6 py-5 flex items-center justify-between bg-gray-50/50">
                 <h2 class="text-xl font-bold text-gray-900">Edit Appointment</h2>
                 <button wire:click="closeModals()" class="text-gray-400 hover:text-gray-600 transition-colors">
@@ -401,7 +415,7 @@
     <!-- Reschedule Modal -->
     @if($showRescheduleModal)
     <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-        <div class="bg-white rounded-[2rem] shadow-2xl max-w-2xl w-full border border-brand-100 overflow-hidden transform transition-all duration-300 scale-100">
+        <div class="bg-white modal-content rounded-[2rem] shadow-2xl max-w-2xl w-full border border-brand-100 overflow-hidden transform transition-all duration-300 scale-100">
             <div class="border-b border-brand-200 px-6 py-5 flex items-center justify-between bg-gray-50/50">
                 <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">Reschedule Appointment</h2>
                 <button wire:click="closeModals()" class="text-gray-400 hover:text-gray-600 transition-colors">

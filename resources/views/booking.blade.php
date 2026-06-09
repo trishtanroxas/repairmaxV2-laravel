@@ -1,5 +1,5 @@
 <x-layouts.landing title="Book a Repair | Repairmax">
-    <main class="relative pt-32 lg:pt-40 pb-16 md:pb-24 overflow-hidden">
+    <main class="relative pt-24 lg:pt-28 pb-16 md:pb-24 overflow-hidden">
         <!-- Glow Effects -->
         <div class="absolute top-1/4 left-1/4 w-125 h-125 bg-blue-900/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div class="absolute bottom-1/4 right-1/4 w-125 h-125 bg-indigo-900/10 rounded-full blur-[120px] pointer-events-none"></div>

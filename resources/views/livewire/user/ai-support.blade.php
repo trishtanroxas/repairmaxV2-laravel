@@ -161,7 +161,7 @@
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0">
         <div class="fixed inset-0" @click="deleteModal = false"></div>
-        <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-md w-full relative overflow-hidden flex flex-col transform transition-all"
+        <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-md w-full relative overflow-hidden flex flex-col transform transition-all"
             x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0 scale-95 translate-y-4"
             x-transition:enter-end="opacity-100 scale-100 translate-y-0"

@@ -48,9 +48,16 @@ class BookAppointment extends Component
 
     // Pickup and Address details
     public $address        = '';
+    public $barangay       = '';
     public $pickup_option  = 'Drop-off'; // Default to Drop-off at Shop
     public $other_details  = '';
     public $additional_fee = 0;
+
+    // Alternative Address details
+    public $alt_address      = '';
+    public $alt_barangay     = '';
+    public $alt_city         = '';
+    public $use_same_address = true;
 
     public int $calendar_week_offset = 0;
     public ?int $selected_index  = null;
@@ -68,10 +75,19 @@ class BookAppointment extends Component
             $this->email      = $user->email ?? '';
             $this->phone      = $user->phone ?? '';
             $this->address    = $user->address ?? '';
+            $this->barangay   = $user->barangay ?? '';
             // Only pre-fill city if it's a recognized supported city; otherwise leave blank
             $userCity = $user->city ?? '';
             $supported = \App\Models\SupportedCity::where('is_active', true)->pluck('name')->toArray();
             $this->city = in_array($userCity, $supported) ? $userCity : '';
+
+            $this->alt_address  = $user->alt_address ?? '';
+            $this->alt_barangay = $user->alt_barangay ?? '';
+            $this->alt_city     = in_array($user->alt_city ?? '', $supported) ? $user->alt_city : '';
+            
+            if ($this->address && ($this->address !== $this->alt_address || $this->barangay !== $this->alt_barangay || $this->city !== $this->alt_city)) {
+                $this->use_same_address = false;
+            }
         }
         $this->calculateAdditionalFee();
         $this->pref_date = date('Y-m-d');
@@ -286,6 +302,10 @@ class BookAppointment extends Component
             'email'          => 'required|email|max:255|unique:users,email,' . Auth::id(),
             'phone'          => 'required|string|max:20',
             'city'           => 'required|string|exists:supported_cities,name',
+            'barangay'       => 'required|string|max:255',
+            'alt_city'       => 'required|string|exists:supported_cities,name',
+            'alt_barangay'   => 'required|string|max:255',
+            'alt_address'    => 'required|string|max:500',
             'device_brand'   => 'required|string',
             'device_model'   => 'required|string|max:255',
             'fault_category' => 'required|string',
@@ -321,6 +341,12 @@ class BookAppointment extends Component
 
     public function prepareReview()
     {
+        if ($this->use_same_address) {
+            $this->alt_address = $this->address;
+            $this->alt_barangay = $this->barangay;
+            $this->alt_city = $this->city;
+        }
+
         try {
             $this->validate();
             $this->showReviewModal = true;
@@ -332,6 +358,12 @@ class BookAppointment extends Component
 
     public function submit()
     {
+        if ($this->use_same_address) {
+            $this->alt_address = $this->address;
+            $this->alt_barangay = $this->barangay;
+            $this->alt_city = $this->city;
+        }
+
         try {
             $this->validate();
             $this->showReviewModal = false;
@@ -349,7 +381,11 @@ class BookAppointment extends Component
             $user->email      = $this->email;
             $user->phone      = $this->phone;
             $user->address    = $this->address;
+            $user->barangay   = $this->barangay;
             $user->city       = $this->city;
+            $user->alt_address = $this->alt_address;
+            $user->alt_barangay = $this->alt_barangay;
+            $user->alt_city   = $this->alt_city;
             $user->save();
         }
 
@@ -375,7 +411,10 @@ class BookAppointment extends Component
         // Construct full description incorporating new pickup and address details securely
         $fullDescription = "Issue Description:\n" . $this->description;
         $fullDescription .= "\n\nService Method:\n" . ($this->pickup_option === 'Pickup' ? 'Home Pickup & Return' : 'Drop-off at Shop');
-        $fullDescription .= "\n\nPickup Address:\n" . $this->address . ", " . $this->city;
+        $fullDescription .= "\n\nPickup Address:\n" . $this->address . ", Brgy. " . $this->barangay . ", " . $this->city;
+        if ($this->alt_address) {
+            $fullDescription .= "\n\nAlternative Address:\n" . $this->alt_address . ", Brgy. " . $this->alt_barangay . ", " . $this->alt_city;
+        }
         if (!empty($this->other_details)) {
             $fullDescription .= "\n\nOther Details / Special Instructions:\n" . $this->other_details;
         }
@@ -398,7 +437,11 @@ class BookAppointment extends Component
         $appointment->status         = 'Pending';
         $appointment->service_method = $this->pickup_option;
         $appointment->address        = $this->address;
+        $appointment->barangay       = $this->barangay;
         $appointment->city           = $this->city;
+        $appointment->alt_address    = $this->alt_address;
+        $appointment->alt_barangay   = $this->alt_barangay;
+        $appointment->alt_city       = $this->alt_city;
         $appointment->additional_fee = $this->additional_fee;
         $appointment->quote          = $calculatedQuote;
         $appointment->booking_number = $trackingCode;
