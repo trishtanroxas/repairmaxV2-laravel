@@ -207,12 +207,12 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="first_name_input" class="block text-sm font-bold text-gray-700 mb-2">First Name</label>
-                                    <input type="text" id="first_name_input" wire:model.live="first_name" wire:key="first_name_input" required class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
+                                    <input type="text" id="first_name_input" wire:model.live="first_name" wire:key="first_name_input" required class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                                     @error('first_name') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                                 </div>
                                 <div>
                                     <label for="last_name_input" class="block text-sm font-bold text-gray-700 mb-2">Last Name</label>
-                                    <input type="text" id="last_name_input" wire:model.live="last_name" wire:key="last_name_input" required class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
+                                    <input type="text" id="last_name_input" wire:model.live="last_name" wire:key="last_name_input" required class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                                     @error('last_name') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                                 </div>
                             </div>
@@ -225,7 +225,7 @@
                                 </div>
                                 <div>
                                     <label for="phone_input" class="block text-sm font-bold text-gray-700 mb-2">Phone Number</label>
-                                    <input type="text" id="phone_input" wire:model.blur="phone" wire:key="phone_input" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
+                                    <input type="text" id="phone_input" wire:model.blur="phone" wire:key="phone_input" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                                     @error('phone') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                                 </div>
                             </div>
@@ -233,7 +233,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                                 <div>
                                     <label for="birthdate_input" class="block text-sm font-bold text-gray-700 mb-2">Birthdate</label>
-                                    <input type="date" id="birthdate_input" wire:model.live="birthdate" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
+                                    <input type="date" id="birthdate_input" wire:model.live="birthdate" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                                     @error('birthdate') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                                 </div>
                                 <div class="grid grid-cols-2 gap-4">
@@ -243,7 +243,7 @@
                                     </div>
                                     <div>
                                         <label for="gender_input" class="block text-sm font-bold text-gray-700 mb-2">Gender</label>
-                                        <select id="gender_input" wire:model="gender" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
+                                        <select id="gender_input" wire:model="gender" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                                             <option value="">Select Gender</option>
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
@@ -256,7 +256,7 @@
 
                             <div class="mt-6">
                                 <label for="bio_input" class="block text-sm font-bold text-gray-700 mb-2">Short Bio</label>
-                                <textarea id="bio_input" wire:model="bio" rows="3" placeholder="Tell us about yourself..." class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 resize-none"></textarea>
+                                <textarea id="bio_input" wire:model="bio" rows="3" placeholder="Tell us about yourself..." class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25 resize-none"></textarea>
                                 @error('bio') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -269,24 +269,24 @@
 
                             <div class="mb-6">
                                 <label for="address_input" class="block text-sm font-bold text-gray-700 mb-2">Street Address</label>
-                                <input type="text" id="address_input" wire:model="address" placeholder="123 Main St" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
+                                <input type="text" id="address_input" wire:model="address" placeholder="123 Main St" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                                 @error('address') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div>
                                     <label for="city_input" class="block text-sm font-bold text-gray-700 mb-2">City</label>
-                                    <input type="text" id="city_input" wire:model="city" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
+                                    <input type="text" id="city_input" wire:model="city" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                                     @error('city') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                                 </div>
                                 <div>
                                     <label for="province_input" class="block text-sm font-bold text-gray-700 mb-2">Province</label>
-                                    <input type="text" id="province_input" wire:model="province" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
+                                    <input type="text" id="province_input" wire:model="province" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                                     @error('province') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                                 </div>
                                 <div>
                                     <label for="country_input" class="block text-sm font-bold text-gray-700 mb-2">Country</label>
-                                    <select id="country_input" wire:model="country" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
+                                    <select id="country_input" wire:model="country" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                                         <option value="">Select Country</option>
                                         <option value="AF">Afghanistan</option>
                                         <option value="AL">Albania</option>
@@ -596,7 +596,7 @@
                 <div class="relative">
                     <label for="current_password_input" class="block text-sm font-bold text-gray-700 mb-2">Current Password</label>
                     <div class="relative">
-                        <input :type="showCurrent ? 'text' : 'password'" id="current_password_input" wire:model="current_password" class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
+                        <input :type="showCurrent ? 'text' : 'password'" id="current_password_input" wire:model="current_password" class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                         <button type="button" @click="showCurrent = !showCurrent" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 bg-transparent border-none shadow-none">
                             <span class="material-symbols-outlined select-none text-xl" x-text="showCurrent ? 'visibility' : 'visibility_off'">visibility_off</span>
                         </button>
@@ -608,7 +608,7 @@
                     <div class="relative">
                         <label for="new_password_input" class="block text-sm font-bold text-gray-700 mb-2">New Password</label>
                         <div class="relative">
-                            <input :type="showNew ? 'text' : 'password'" id="new_password_input" wire:model="new_password" @input="pwd = $event.target.value" class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
+                            <input :type="showNew ? 'text' : 'password'" id="new_password_input" wire:model="new_password" @input="pwd = $event.target.value" class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                             <button type="button" @click="showNew = !showNew" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 bg-transparent border-none shadow-none">
                                 <span class="material-symbols-outlined select-none text-xl" x-text="showNew ? 'visibility' : 'visibility_off'">visibility_off</span>
                             </button>
@@ -618,7 +618,7 @@
                     <div class="relative">
                         <label for="confirm_password_input" class="block text-sm font-bold text-gray-700 mb-2">Confirm New Password</label>
                         <div class="relative">
-                            <input :type="showConfirm ? 'text' : 'password'" id="confirm_password_input" wire:model="confirm_password" class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
+                            <input :type="showConfirm ? 'text' : 'password'" id="confirm_password_input" wire:model="confirm_password" class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl bg-gray-50/50 focus:bg-white transition-all text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                             <button type="button" @click="showConfirm = !showConfirm" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 bg-transparent border-none shadow-none">
                                 <span class="material-symbols-outlined select-none text-xl" x-text="showConfirm ? 'visibility' : 'visibility_off'">visibility_off</span>
                             </button>

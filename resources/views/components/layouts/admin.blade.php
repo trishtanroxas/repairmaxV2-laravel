@@ -19,8 +19,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     <style>
-        .no-transition * {
+        .no-transition,
+        .no-transition *,
+        .no-transition *::before,
+        .no-transition *::after {
             transition: none !important;
+            animation: none !important;
         }
         [x-cloak] { display: none !important; }
 
@@ -211,6 +215,9 @@
             }, 1500);
         },
         toggleTheme() {
+            document.documentElement.classList.add('no-transition');
+            document.body.classList.add('no-transition');
+
             this.darkMode = !this.darkMode;
             localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
             document.documentElement.classList.toggle('dark', this.darkMode);
@@ -222,6 +229,13 @@
                 body.classList.remove('bg-[#020617]', 'text-gray-300', 'dark');
                 body.classList.add('bg-gray-50', 'text-gray-800');
             }
+
+            document.body.offsetHeight; // force reflow
+
+            setTimeout(() => {
+                document.documentElement.classList.remove('no-transition');
+                document.body.classList.remove('no-transition');
+            }, 50);
         },
         currentToast: null,
         show: false,
@@ -511,7 +525,7 @@
             x-transition:leave-end="opacity-0 scale-95 translate-y-4">
             
             <div class="px-8 pt-10 pb-6 flex flex-col items-center text-center bg-white relative border-b border-gray-50">
-                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mb-5 shadow-sm border border-red-100/50">
+                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mb-5 shadow-sm border border-red-200">
                     <span class="material-symbols-outlined text-[32px] leading-none">logout</span>
                 </div>
                 <h3 class="text-2xl font-black text-gray-900 tracking-tighter font-[Montserrat]">Sign Out?</h3>

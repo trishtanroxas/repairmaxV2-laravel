@@ -35,24 +35,30 @@
                     <h4 class="text-sm font-black text-gray-400 uppercase tracking-widest mb-6 px-1">What Happens Next?</h4>
                     <ul class="space-y-6">
                         <li class="flex gap-4 items-start">
-                            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold shadow-lg shadow-blue-200 shrink-0 mt-0.5">1</span>
-                            <div>
-                                <p class="font-bold text-gray-900">Reserve your Slot</p>
-                                <p class="text-sm text-gray-500 mt-1">Submit this form to reserve your drop-off time. You'll receive a unique tracking code (e.g., RM-XXXXX).</p>
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold shrink-0 text-center leading-none">1</span>
+                            <div class="flex-1">
+                                <div class="flex items-center min-h-8">
+                                    <h4 class="font-bold text-gray-900 leading-none mb-0">Reserve your Slot</h4>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2 leading-relaxed mb-0">Submit this form to reserve your drop-off time. You'll receive a unique tracking code (e.g., RM-XXXXX).</p>
                             </div>
                         </li>
                         <li class="flex gap-4 items-start">
-                            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold shadow-lg shadow-blue-200 shrink-0 mt-0.5">2</span>
-                            <div>
-                                <p class="font-bold text-gray-900">Drop-off Device</p>
-                                <p class="text-sm text-gray-500 mt-1">Visit our shop at the scheduled time. Bring your device and show your tracking code to our receptionist.</p>
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold shrink-0 text-center leading-none">2</span>
+                            <div class="flex-1">
+                                <div class="flex items-center min-h-8">
+                                    <h4 class="font-bold text-gray-900 leading-none mb-0">Drop-off Device</h4>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2 leading-relaxed mb-0">Visit our shop at the scheduled time. Bring your device and show your tracking code to our receptionist.</p>
                             </div>
                         </li>
                         <li class="flex gap-4 items-start">
-                            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold shadow-lg shadow-blue-200 shrink-0 mt-0.5">3</span>
-                            <div>
-                                <p class="font-bold text-gray-900">Professional Diagnostic</p>
-                                <p class="text-sm text-gray-500 mt-1">We'll run a quick diagnostic and provide a final, binding quote before starting any work.</p>
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold shrink-0 text-center leading-none">3</span>
+                            <div class="flex-1">
+                                <div class="flex items-center min-h-8">
+                                    <h4 class="font-bold text-gray-900 leading-none mb-0">Professional Diagnostic</h4>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2 leading-relaxed mb-0">We'll run a quick diagnostic and provide a final, binding quote before starting any work.</p>
                             </div>
                         </li>
                     </ul>
@@ -414,9 +420,9 @@
 </div>
 <div class="mb-8">
     <div class="flex items-center gap-3">
-        <h1 class="text-3xl font-[Montserrat] font-extrabold text-gray-900 dark:text-white tracking-tight">Book a Repair</h1>
+        <h1 class="text-3xl font-[Montserrat] font-extrabold text-gray-900 dark:text-white tracking-tight mb-0">Book a Repair</h1>
         <button type="button" @click="infoModal = true"
-            class="p-0 bg-transparent text-gray-300 hover:text-blue-600 transition-all transform hover:scale-110 active:scale-95 outline-none ring-0 focus:ring-0 focus:outline-none flex items-center justify-center -translate-y-1"
+            class="p-0 bg-transparent text-gray-300 hover:text-blue-600 transition-all transform hover:scale-110 active:scale-95 outline-none ring-0 focus:ring-0 focus:outline-none flex items-center justify-center"
             title="View Guidelines">
             <span class="material-symbols-outlined text-[28px] leading-none">info</span>
         </button>
@@ -427,7 +433,7 @@
 <!-- ===== BOOKING SUMMARY (top, full-width) ===== -->
 <div class="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 mb-6">
     <div class="mb-6 pb-3 border-b border-gray-100 flex items-center gap-2">
-        <h2 class="text-lg font-bold text-gray-900">Booking Summary</h2>
+        <h2 class="text-lg font-bold text-gray-900 mb-0">Booking Summary</h2>
         <button type="button" @click="infoModal = true"
             class="p-0 bg-transparent text-gray-300 hover:text-blue-600 transition-all transform hover:scale-110 active:scale-95 outline-none ring-0 focus:ring-0 focus:outline-none flex items-center justify-center"
             title="View Guidelines">
@@ -556,22 +562,22 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div>
                         <label for="first_name" class="block text-sm font-bold text-gray-800 mb-2 ml-1">First Name <span class="text-red-500">*</span></label>
-                        <input type="text" id="first_name" wire:model="first_name" placeholder="Jane" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                        <input type="text" id="first_name" wire:model="first_name" placeholder="Jane" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" required>
                         @error('first_name') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label for="last_name" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Last Name <span class="text-red-500">*</span></label>
-                        <input type="text" id="last_name" wire:model="last_name" placeholder="Doe" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                        <input type="text" id="last_name" wire:model="last_name" placeholder="Doe" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" required>
                         @error('last_name') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label for="email" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Email Address <span class="text-red-500">*</span></label>
-                        <input type="email" id="email" wire:model="email" placeholder="jane@example.com" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                        <input type="email" id="email" wire:model="email" placeholder="jane@example.com" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" required>
                         @error('email') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label for="phone" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Phone Number <span class="text-red-500">*</span></label>
-                        <input type="tel" id="phone" wire:model="phone" placeholder="(555) 123-4567" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                        <input type="tel" id="phone" wire:model="phone" placeholder="(555) 123-4567" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" required>
                         @error('phone') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                     </div>
                 </div>
@@ -587,7 +593,7 @@
                     @if($device_brand !== 'Other')
                         <div>
                             <label for="device_brand" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Brand</label>
-                            <select id="device_brand" wire:model.live="device_brand" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                            <select id="device_brand" wire:model.live="device_brand" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" required>
                                 <option value="" disabled selected>Select Brand</option>
                                 @foreach($this->brands as $brand)
                                     <option value="{{ $brand->name }}">{{ $brand->name }}</option>
@@ -598,7 +604,7 @@
                         </div>
                         <div>
                             <label for="device_model" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Exact Model</label>
-                            <select id="device_model" wire:model.live="device_model" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required {{ !$device_brand ? 'disabled' : '' }}>
+                            <select id="device_model" wire:model.live="device_model" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" required {{ !$device_brand ? 'disabled' : '' }}>
                                 <option value="" disabled selected>{{ !$device_brand ? 'Select brand first' : 'Select Model' }}</option>
                                 @foreach($this->models as $model)
                                     <option value="{{ $model->name }}">{{ $model->name }}</option>
@@ -619,12 +625,12 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="custom_brand" class="block text-xs font-bold text-gray-500 mb-2 ml-1">Custom Brand Name</label>
-                                    <input type="text" id="custom_brand" wire:model="custom_brand" placeholder="e.g., Nothing, Motorola..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                                    <input type="text" id="custom_brand" wire:model="custom_brand" placeholder="e.g., Nothing, Motorola..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" required>
                                     @error('custom_brand') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                                 </div>
                                 <div>
                                     <label for="custom_model" class="block text-xs font-bold text-gray-500 mb-2 ml-1">Exact Model Name</label>
-                                    <input type="text" id="custom_model" wire:model="custom_model" placeholder="e.g., Phone (2), Edge 40..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                                    <input type="text" id="custom_model" wire:model="custom_model" placeholder="e.g., Phone (2), Edge 40..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" required>
                                     @error('custom_model') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                                 </div>
                             </div>
@@ -636,7 +642,7 @@
                 @if($device_brand && $device_brand !== 'Other' && $device_model === 'Other')
                 <div class="mb-6">
                     <label for="custom_model_only" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Specify Your Model Name</label>
-                    <input type="text" id="custom_model_only" wire:model="custom_model" placeholder="e.g., iPhone 16 Pro Max, Galaxy S25 Ultra..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                    <input type="text" id="custom_model_only" wire:model="custom_model" placeholder="e.g., iPhone 16 Pro Max, Galaxy S25 Ultra..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" required>
                     @error('custom_model') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                 </div>
                 @endif
@@ -644,7 +650,7 @@
                 <!-- Fault Category with prices -->
                 <div>
                     <label for="fault_category" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Service / Issue Type</label>
-                    <select id="fault_category" wire:model.live="fault_category" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                    <select id="fault_category" wire:model.live="fault_category" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" required>
                         <option value="" disabled selected>Select the service or issue…</option>
                         @foreach($this->faultTypes as $fault)
                             <option value="{{ $fault->name }}">
@@ -658,7 +664,7 @@
                     @if($fault_category === 'Other')
                     <div class="mt-4 animate-fade-in">
                         <label for="custom_service" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Custom Service Name / Describe Issue</label>
-                        <input type="text" id="custom_service" wire:model.live="custom_service" placeholder="e.g. Broken hinge, Water damage repair, Custom housing mod..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                        <input type="text" id="custom_service" wire:model.live="custom_service" placeholder="e.g. Broken hinge, Water damage repair, Custom housing mod..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" required>
                         @error('custom_service') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                     </div>
                     @elseif($fault_category)
@@ -685,7 +691,7 @@
                 </h3>
                 <div class="mb-8">
                     <label for="description" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Describe the problem in detail</label>
-                    <textarea id="description" wire:model="description" rows="4" placeholder="How did it happen? Are there any secondary issues?" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium resize-none" required></textarea>
+                    <textarea id="description" wire:model="description" rows="4" placeholder="How did it happen? Are there any secondary issues?" class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium resize-none" required></textarea>
                     @error('description') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                 </div>
 
@@ -841,7 +847,7 @@
                     <div class="col-span-1 md:col-span-3 mb-2 relative">
                         <label class="block text-sm font-bold text-gray-800 mb-2 ml-1">Search Address (Auto-fill)</label>
                         <div class="relative">
-                            <input type="text" x-model="query" @input.debounce.500ms="search" @input="searched = false; results = []" placeholder="Type to search for your address..." class="w-full px-4 py-3 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium">
+                            <input type="text" x-model="query" @input.debounce.500ms="search" @input="searched = false; results = []" placeholder="Type to search for your address..." class="w-full px-4 py-3 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium">
                             <div x-show="loading" x-cloak class="absolute right-4 top-1/2 -translate-y-1/2">
                                 <span class="material-symbols-outlined animate-spin text-blue-500">progress_activity</span>
                             </div>
@@ -864,13 +870,13 @@
 
                     <div>
                         <label for="address" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Street Address <span class="text-red-500">*</span></label>
-                        <input type="text" id="address" wire:model="address" placeholder="Enter Street name, Building, House No..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" required>
+                        <input type="text" id="address" wire:model="address" placeholder="Enter Street name, Building, House No..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" required>
                         @error('address') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label for="city" class="block text-sm font-bold text-gray-800 mb-2 ml-1">City / Municipality <span class="text-red-500">*</span></label>
                         <div class="relative w-full">
-                            <select id="city" wire:model.live="city" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" required>
+                            <select id="city" wire:model.live="city" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium appearance-none cursor-pointer" required>
                                 <option value="" disabled selected>Select City...</option>
                                 @foreach($this->cities as $c)
                                     <option value="{{ $c->name }}">{{ $c->name }}</option>
@@ -888,7 +894,7 @@
                     <div>
                         <label for="barangay" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Barangay <span class="text-red-500">*</span></label>
                         <div class="relative w-full">
-                            <select id="barangay" wire:model="barangay" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" required :disabled="!$wire.city">
+                            <select id="barangay" wire:model="barangay" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium appearance-none cursor-pointer" required :disabled="!$wire.city">
                                 <option value="" disabled selected>Select Barangay...</option>
                                 <template x-for="b in barangays" :key="b">
                                     <option :value="b" x-text="b" :selected="$wire.barangay === b"></option>
@@ -910,13 +916,13 @@
                         <h4 class="col-span-1 md:col-span-3 text-xs font-black text-gray-700 uppercase tracking-wider mb-1">Alternative Address</h4>
                         <div>
                             <label for="alt_address" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Street Address <span class="text-red-500">*</span></label>
-                            <input type="text" id="alt_address" wire:model="alt_address" placeholder="Enter Street name, Building, House No..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium" :required="!$wire.use_same_address">
+                            <input type="text" id="alt_address" wire:model="alt_address" placeholder="Enter Street name, Building, House No..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium" :required="!$wire.use_same_address">
                             @error('alt_address') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                         </div>
                         <div>
                             <label for="alt_city" class="block text-sm font-bold text-gray-800 mb-2 ml-1">City / Municipality <span class="text-red-500">*</span></label>
                             <div class="relative w-full">
-                                <select id="alt_city" wire:model.live="alt_city" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" :required="!$wire.use_same_address">
+                                <select id="alt_city" wire:model.live="alt_city" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium appearance-none cursor-pointer" :required="!$wire.use_same_address">
                                     <option value="" disabled selected>Select City...</option>
                                     @foreach($this->cities as $c)
                                         <option value="{{ $c->name }}">{{ $c->name }}</option>
@@ -929,7 +935,7 @@
                         <div>
                             <label for="alt_barangay" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Barangay <span class="text-red-500">*</span></label>
                             <div class="relative w-full">
-                                <select id="alt_barangay" wire:model="alt_barangay" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium appearance-none cursor-pointer" :required="!$wire.use_same_address" :disabled="!$wire.alt_city">
+                                <select id="alt_barangay" wire:model="alt_barangay" class="w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium appearance-none cursor-pointer" :required="!$wire.use_same_address" :disabled="!$wire.alt_city">
                                     <option value="" disabled selected>Select Barangay...</option>
                                     <template x-for="b in altBarangays" :key="b">
                                         <option :value="b" x-text="b" :selected="$wire.alt_barangay === b"></option>
@@ -944,7 +950,7 @@
                 
                 <div class="mt-6">
                     <label for="other_details" class="block text-sm font-bold text-gray-800 mb-2 ml-1">Other Details / Instructions</label>
-                    <textarea id="other_details" wire:model="other_details" rows="2" placeholder="e.g. Call before coming, gate code is 1234, pickup after 2 PM..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-sm font-medium resize-none"></textarea>
+                    <textarea id="other_details" wire:model="other_details" rows="2" placeholder="e.g. Call before coming, gate code is 1234, pickup after 2 PM..." class="w-full px-4 py-3.5 border border-gray-200 rounded-[1.25rem] bg-gray-50/50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/20 transition-all text-sm font-medium resize-none"></textarea>
                     @error('other_details') <span class="text-xs text-red-500 mt-1 block ml-1">{{ $message }}</span> @enderror
                 </div>
             </section>

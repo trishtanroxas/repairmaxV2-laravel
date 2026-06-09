@@ -35,24 +35,30 @@
                     <h4 class="text-sm font-black text-gray-400 uppercase tracking-widest mb-6 px-1">What Happens Next?</h4>
                     <ul class="space-y-6">
                         <li class="flex gap-4 items-start">
-                            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold shadow-lg shadow-blue-200 shrink-0 mt-0.5">1</span>
-                            <div>
-                                <p class="font-bold text-gray-900">Reserve your Slot</p>
-                                <p class="text-sm text-gray-500 mt-1">Submit this form to reserve your drop-off time. You'll receive a unique tracking code (e.g., RM-XXXXX).</p>
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold shrink-0 text-center leading-none">1</span>
+                            <div class="flex-1">
+                                <div class="flex items-center min-h-8">
+                                    <h4 class="font-bold text-gray-900 leading-none mb-0">Reserve your Slot</h4>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2 leading-relaxed mb-0">Submit this form to reserve your drop-off time. You'll receive a unique tracking code (e.g., RM-XXXXX).</p>
                             </div>
                         </li>
                         <li class="flex gap-4 items-start">
-                            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold shadow-lg shadow-blue-200 shrink-0 mt-0.5">2</span>
-                            <div>
-                                <p class="font-bold text-gray-900">Drop-off Device</p>
-                                <p class="text-sm text-gray-500 mt-1">Visit our shop at the scheduled time. Bring your device and show your tracking code to our receptionist.</p>
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold shrink-0 text-center leading-none">2</span>
+                            <div class="flex-1">
+                                <div class="flex items-center min-h-8">
+                                    <h4 class="font-bold text-gray-900 leading-none mb-0">Drop-off Device</h4>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2 leading-relaxed mb-0">Visit our shop at the scheduled time. Bring your device and show your tracking code to our receptionist.</p>
                             </div>
                         </li>
                         <li class="flex gap-4 items-start">
-                            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold shadow-lg shadow-blue-200 shrink-0 mt-0.5">3</span>
-                            <div>
-                                <p class="font-bold text-gray-900">Professional Diagnostic</p>
-                                <p class="text-sm text-gray-500 mt-1">We'll run a quick diagnostic and provide a final, binding quote before starting any work.</p>
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold shrink-0 text-center leading-none">3</span>
+                            <div class="flex-1">
+                                <div class="flex items-center min-h-8">
+                                    <h4 class="font-bold text-gray-900 leading-none mb-0">Professional Diagnostic</h4>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2 leading-relaxed mb-0">We'll run a quick diagnostic and provide a final, binding quote before starting any work.</p>
                             </div>
                         </li>
                     </ul>
@@ -420,7 +426,7 @@
     <!-- ===== BOOKING SUMMARY (top, full-width) ===== -->
     <div class="bg-white/3 backdrop-blur-md border border-white/10 shadow-2xl rounded-3xl p-6 mb-6">
         <div class="mb-6 pb-3 border-b border-white/5 flex justify-between items-center">
-            <h3 class="font-bold text-white">Booking Summary</h3>
+            <h3 class="font-bold text-white mb-0">Booking Summary</h3>
             <button type="button" @click="infoModal = true"
                 class="p-0 bg-transparent text-gray-400 hover:text-blue-400 transition-all flex items-center gap-1.5 text-xs font-black uppercase tracking-wider outline-none ring-0">
                 <span class="material-symbols-outlined text-[18px]">info</span> Repair Guidelines

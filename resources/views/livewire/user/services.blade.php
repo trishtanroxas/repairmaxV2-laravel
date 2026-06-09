@@ -7,7 +7,7 @@
     <div class="bg-white dark:bg-white/3 border border-gray-200/80 dark:border-white/10 shadow-xl dark:shadow-2xl p-6 mb-8 space-y-6" style="border-radius: 2rem;">
         <div class="relative w-full max-w-xl mx-auto">
             <span class="absolute left-5 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-450 dark:text-gray-400 text-2xl">search</span>
-            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search for screen replacement, battery service..." class="w-full pl-13 pr-10 py-3.5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl focus:bg-white dark:focus:bg-white/10 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none text-sm font-semibold text-gray-900 dark:text-white shadow-inner">
+            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search for screen replacement, battery service..." class="w-full pl-13 pr-10 py-3.5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl focus:bg-white dark:focus:bg-white/10 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25 transition-all outline-none text-sm font-semibold text-gray-900 dark:text-white shadow-inner">
             @if($search)
                 <button type="button" wire:click="$set('search', '')" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-450 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white transition-colors">
                     <span class="material-symbols-outlined text-xl">close</span>

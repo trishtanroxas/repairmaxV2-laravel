@@ -114,7 +114,7 @@
                     <input type="text"
                         wire:model="newMessage"
                         placeholder="Type your message..."
-                        class="flex-1 px-4 py-3 bg-gray-50 border border-brand-200 rounded-xl focus:bg-white focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10 transition-all text-sm"
+                        class="flex-1 px-4 py-3 bg-gray-50 border border-brand-200 rounded-xl focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25 transition-all text-sm"
                         required>
 
                     <button type="submit" class="p-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 hover:shadow-md transition-all flex items-center justify-center focus:outline-none">
@@ -170,7 +170,7 @@
             x-transition:leave-end="opacity-0 scale-95 translate-y-4">
             
             <div class="px-8 pt-10 pb-6 flex flex-col items-center text-center bg-white relative">
-                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-[1.5rem] flex items-center justify-center mb-5 shadow-sm border border-red-100/50">
+                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-[1.5rem] flex items-center justify-center mb-5 shadow-sm border border-red-200">
                     <span class="material-symbols-outlined text-[32px] leading-none">delete_forever</span>
                 </div>
                 <h3 class="text-2xl font-black text-gray-900 tracking-tighter">Delete Conversation?</h3>

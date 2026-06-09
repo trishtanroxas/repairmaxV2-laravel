@@ -321,7 +321,7 @@
                         type="text"
                         wire:model="editDeviceBrand"
                         placeholder="e.g., Apple, Samsung"
-                        class="w-full px-4 py-2.5 border border-brand-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        class="w-full px-4 py-2.5 border border-brand-300 rounded-lg focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                 </div>
 
                 <div>
@@ -330,14 +330,14 @@
                         type="text"
                         wire:model="editDeviceModel"
                         placeholder="e.g., iPhone 14, Galaxy S23"
-                        class="w-full px-4 py-2.5 border border-brand-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        class="w-full px-4 py-2.5 border border-brand-300 rounded-lg focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                 </div>
 
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-2">Issue Category <span class="text-red-500">*</span></label>
                     <select
                         wire:model="editFaultCategory"
-                        class="w-full px-4 py-2.5 border border-brand-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        class="w-full px-4 py-2.5 border border-brand-300 rounded-lg focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25">
                         <option value="">Select issue category</option>
                         <option value="Screen">Screen</option>
                         <option value="Battery">Battery</option>
@@ -355,7 +355,7 @@
                         wire:model="editDescription"
                         placeholder="Describe the issue in detail..."
                         rows="3"
-                        class="w-full px-4 py-2.5 border border-brand-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"></textarea>
+                        class="w-full px-4 py-2.5 border border-brand-300 rounded-lg focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25 resize-none"></textarea>
                 </div>
             </div>
 

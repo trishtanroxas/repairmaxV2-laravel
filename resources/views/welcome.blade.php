@@ -16,7 +16,7 @@
                 <div class="lg:col-span-6 text-center lg:text-left space-y-8 fade-in-left">
 
 
-                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-semibold text-white tracking-tighter drop-shadow-2xl leading-[1.1] text-balance">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tighter drop-shadow-2xl leading-[1.1] text-balance">
                         We Fix Devices.<br>
                         <span class="bg-clip-text text-transparent bg-linear-to-r from-indigo-400 via-blue-400 to-cyan-400">
                             You Stay Connected.

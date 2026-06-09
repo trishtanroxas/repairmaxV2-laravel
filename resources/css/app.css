@@ -781,7 +781,7 @@ body.dark input:focus,
 body.dark select:focus,
 body.dark textarea:focus {
     border-color: #3b82f6 !important;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.35) !important;
 }
 
 .dark input::placeholder,
@@ -907,3 +907,56 @@ body.dark tr.hover\:bg-gray-50:hover {
 .fade-in-element:nth-child(2) { transition-delay: 100ms; }
 .fade-in-element:nth-child(3) { transition-delay: 200ms; }
 .fade-in-element:nth-child(4) { transition-delay: 300ms; }
+
+/* Force light theme for Chatbot container even in dark mode */
+.dark #chatbot-container, body.dark #chatbot-container {
+    color: #334155 !important;
+}
+.dark #chatbot-container .bg-white, body.dark #chatbot-container .bg-white {
+    background-color: #ffffff !important;
+    border-color: #f1f5f9 !important;
+    color: #0f172a !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.12) !important;
+}
+.dark #chatbot-container .bg-gray-50, body.dark #chatbot-container .bg-gray-50 {
+    background-color: #f8fafc !important;
+    border-color: #f1f5f9 !important;
+}
+.dark #chatbot-container .bg-gradient-to-b.from-blue-50\/20.to-white,
+body.dark #chatbot-container .bg-gradient-to-b.from-blue-50\/20.to-white {
+    background: linear-gradient(to bottom, rgba(239, 246, 255, 0.2), #ffffff) !important;
+}
+.dark #chatbot-container .text-gray-900, body.dark #chatbot-container .text-gray-900 {
+    color: #0f172a !important;
+}
+.dark #chatbot-container .text-gray-800, body.dark #chatbot-container .text-gray-800 {
+    color: #1e293b !important;
+}
+.dark #chatbot-container .text-gray-700, body.dark #chatbot-container .text-gray-700 {
+    color: #334155 !important;
+}
+.dark #chatbot-container .text-gray-600, body.dark #chatbot-container .text-gray-600 {
+    color: #475569 !important;
+}
+.dark #chatbot-container .text-gray-500, body.dark #chatbot-container .text-gray-500 {
+    color: #64748b !important;
+}
+.dark #chatbot-container .text-gray-400, body.dark #chatbot-container .text-gray-400 {
+    color: #94a3b8 !important;
+}
+.dark #chatbot-container .border-gray-100, body.dark #chatbot-container .border-gray-100 {
+    border-color: #f1f5f9 !important;
+}
+.dark #chatbot-container .divide-gray-100 > *, body.dark #chatbot-container .divide-gray-100 > * {
+    border-color: #f1f5f9 !important;
+}
+.dark #chatbot-container input[type="text"], body.dark #chatbot-container input[type="text"] {
+    background-color: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+    color: #334155 !important;
+}
+.dark #chatbot-container input[type="text"]::placeholder, body.dark #chatbot-container input[type="text"]::placeholder {
+    color: #94a3b8 !important;
+}

@@ -230,7 +230,7 @@
             x-transition:leave-end="opacity-0 scale-95 translate-y-4">
             
             <div class="px-8 pt-10 pb-6 flex flex-col items-center text-center bg-white relative">
-                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mb-5 shadow-sm border border-red-100/50">
+                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mb-5 shadow-sm border border-red-200">
                     <span class="material-symbols-outlined text-[32px] leading-none">warning</span>
                 </div>
                 <h3 class="text-2xl font-black text-gray-900 tracking-tighter">Delete Account?</h3>

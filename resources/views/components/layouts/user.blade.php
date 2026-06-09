@@ -19,10 +19,25 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     <style>
-        .no-transition * {
+        .no-transition,
+        .no-transition *,
+        .no-transition *::before,
+        .no-transition *::after {
             transition: none !important;
+            animation: none !important;
         }
         [x-cloak] { display: none !important; }
+
+        body.dark input:focus,
+        body.dark select:focus,
+        body.dark textarea:focus,
+        .dark input:focus,
+        .dark select:focus,
+        .dark textarea:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.35) !important;
+            outline: none !important;
+        }
     </style>
 </head>
 
@@ -40,6 +55,9 @@
             }, 1500);
         },
         toggleTheme() {
+            document.documentElement.classList.add('no-transition');
+            document.body.classList.add('no-transition');
+
             this.darkMode = !this.darkMode;
             localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
             document.documentElement.classList.toggle('dark', this.darkMode);
@@ -51,6 +69,13 @@
                 body.classList.remove('bg-[#020617]', 'text-gray-300', 'dark');
                 body.classList.add('bg-gray-50', 'text-gray-800');
             }
+
+            document.body.offsetHeight; // force reflow
+
+            setTimeout(() => {
+                document.documentElement.classList.remove('no-transition');
+                document.body.classList.remove('no-transition');
+            }, 50);
         },
         currentToast: null,
         show: false,
@@ -258,7 +283,7 @@
                     <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-450 dark:text-gray-500 text-[20px] pointer-events-none">search</span>
                     <input type="text" 
                         placeholder="Search repairs, services..." 
-                        class="w-full pl-10 pr-4 py-2 bg-gray-50 hover:bg-gray-100/70 dark:bg-white/5 dark:hover:bg-white/10 text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-none transition-all placeholder:text-gray-450 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                        class="w-full pl-10 pr-4 py-2 bg-gray-50 hover:bg-gray-100/70 dark:bg-white/5 dark:hover:bg-white/10 text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-none transition-all placeholder:text-gray-450 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:focus:!border-blue-500 dark:focus:!ring-2 dark:focus:!ring-blue-500/25"
                         onkeydown="if(event.key === 'Enter') { window.location.href = '{{ route('user.services') }}?search=' + encodeURIComponent(this.value); }">
                 </div>
  
@@ -383,7 +408,7 @@
             x-transition:leave-end="opacity-0 scale-95 translate-y-4">
             
             <div class="px-8 pt-10 pb-6 flex flex-col items-center text-center bg-white relative border-b border-gray-50">
-                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mb-5 shadow-sm border border-red-100/50">
+                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mb-5 shadow-sm border border-red-200">
                     <span class="material-symbols-outlined text-[32px] leading-none">logout</span>
                 </div>
                 <h3 class="text-2xl font-black text-gray-900 tracking-tighter font-[Montserrat]">Sign Out?</h3>

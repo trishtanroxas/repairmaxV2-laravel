@@ -14,7 +14,7 @@
                     type="text" 
                     wire:model="subject" 
                     placeholder="What is your issue about?" 
-                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25 transition-all focus:outline-none"
                 >
                 @error('subject') <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span> @enderror
             </div>
@@ -25,7 +25,7 @@
                     wire:model="message" 
                     placeholder="Please describe your issue in detail..." 
                     rows="6"
-                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"
+                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 dark:focus:!border-blue-500 dark:focus:!ring-4 dark:focus:!ring-blue-500/25 transition-all focus:outline-none resize-none"
                 ></textarea>
                 @error('message') <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span> @enderror
             </div>

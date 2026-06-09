@@ -109,24 +109,26 @@
 
         <!-- Tab 1: Home View -->
         <div x-show="activeTab === 'home'" class="flex-1 flex flex-col overflow-y-auto bg-gray-50 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
-            <!-- Premium Deep Charcoal & Slate Gradient Header -->
-            <div class="bg-gradient-to-br from-[#1e293b] via-[#0f172a] to-[#090d16] text-white px-7 pt-9 pb-16 rounded-b-[2.5rem] relative shadow-lg flex flex-col gap-3">
+            <!-- Premium White & Subtle Light Blue Header -->
+            <div class="bg-gradient-to-b from-blue-50/20 to-white px-7 pt-9 pb-12 rounded-b-[2.5rem] relative shadow-xs border-b border-gray-100 flex flex-col gap-3">
                 <div class="flex items-center justify-between">
-                    <span class="material-symbols-outlined text-white text-2xl bg-white/20 p-2 rounded-xl backdrop-blur-md">smart_toy</span>
-                    <button @click="isOpen = false" class="bg-transparent! border-none! shadow-none! p-0! text-white/80 hover:text-white transition-colors cursor-pointer flex items-center justify-center">
+                    <span class="material-symbols-outlined text-blue-600 text-2xl bg-blue-50 p-2 rounded-xl border border-blue-100/50">smart_toy</span>
+                    <button @click="isOpen = false" class="bg-transparent! border-none! shadow-none! p-0! text-gray-400 hover:text-gray-600 transition-colors cursor-pointer flex items-center justify-center">
                         <span class="material-symbols-outlined text-xl">close</span>
                     </button>
                 </div>
                 <div class="flex flex-col gap-1 mt-2">
-                    <h2 class="text-3xl font-extrabold text-white leading-tight">Hi there! 👋</h2>
-                    <p class="text-white/85 text-xs font-semibold leading-relaxed max-w-[90%]">
+                    <h2 class="text-3xl font-extrabold leading-tight">
+                        <span class="bg-clip-text text-transparent bg-linear-to-r from-indigo-600 via-blue-600 to-cyan-600">Hi there!</span> 👋
+                    </h2>
+                    <p class="text-gray-500 text-xs font-semibold leading-relaxed max-w-[90%]">
                         AI chat powered by Repairmax - how can we help you today?
                     </p>
                 </div>
             </div>
 
             <!-- Overlapping Floating Card Layout -->
-            <div class="px-6 -mt-10 flex flex-col gap-4 mb-6">
+            <div class="px-6 mt-6 flex flex-col gap-4 mb-6">
                 
                 <!-- Quick Actions List Card -->
                 <div class="bg-white border border-gray-100 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.03)] overflow-hidden">
@@ -175,19 +177,19 @@
 
         <!-- Tab 2: Chat View -->
         <div x-show="activeTab === 'chat'" class="flex-1 flex flex-col overflow-hidden bg-gray-50">
-            <!-- Slim Header with Brand Deep Charcoal Gradient -->
-            <div class="bg-gradient-to-r from-[#1e293b] to-[#0f172a] text-white p-4.5 flex items-center gap-3 shadow-md relative">
-                <button @click="activeTab = 'home'" class="bg-transparent! border-none! shadow-none! p-0! text-white/80 hover:text-white transition-colors cursor-pointer flex items-center justify-center">
+            <!-- Slim Header with Light Theme -->
+            <div class="bg-white border-b border-gray-100 p-4.5 flex items-center gap-3 relative shadow-xs">
+                <button @click="activeTab = 'home'" class="bg-transparent! border-none! shadow-none! p-0! text-gray-500 hover:text-gray-800 transition-colors cursor-pointer flex items-center justify-center">
                     <span class="material-symbols-outlined text-xl">arrow_back</span>
                 </button>
                 <div class="flex items-center gap-2.5">
-                    <span class="material-symbols-outlined text-white text-lg bg-white/20 p-1.5 rounded-lg backdrop-blur-sm">smart_toy</span>
+                    <span class="material-symbols-outlined text-blue-600 text-lg bg-blue-50 p-1.5 rounded-lg border border-blue-100/50">smart_toy</span>
                     <div class="flex flex-col">
-                        <span class="font-extrabold text-sm leading-tight text-white">Maxie</span>
-                        <span class="text-[9px] text-white/80 font-bold uppercase tracking-wider">Online | Assistant</span>
+                        <span class="font-extrabold text-sm leading-tight text-gray-900">Maxie</span>
+                        <span class="text-[9px] text-blue-600 font-extrabold uppercase tracking-wider">Online | Assistant</span>
                     </div>
                 </div>
-                <button @click="isOpen = false" class="bg-transparent! border-none! shadow-none! p-0! text-white/80 hover:text-white transition-colors cursor-pointer absolute right-4 flex items-center justify-center">
+                <button @click="isOpen = false" class="bg-transparent! border-none! shadow-none! p-0! text-gray-400 hover:text-gray-600 transition-colors cursor-pointer absolute right-4 flex items-center justify-center">
                     <span class="material-symbols-outlined text-xl">close</span>
                 </button>
             </div>
@@ -231,15 +233,15 @@
         <!-- Tab 3: Help View -->
         <div x-show="activeTab === 'help'" class="flex-1 flex flex-col overflow-hidden bg-gray-50">
             <!-- Slim Header -->
-            <div class="bg-gradient-to-r from-[#1e293b] to-[#0f172a] text-white p-4.5 flex items-center gap-3 shadow-md relative">
-                <button @click="activeTab = 'home'" class="bg-transparent! border-none! shadow-none! p-0! text-white/80 hover:text-white transition-colors cursor-pointer flex items-center justify-center">
+            <div class="bg-white border-b border-gray-100 p-4.5 flex items-center gap-3 relative shadow-xs">
+                <button @click="activeTab = 'home'" class="bg-transparent! border-none! shadow-none! p-0! text-gray-500 hover:text-gray-800 transition-colors cursor-pointer flex items-center justify-center">
                     <span class="material-symbols-outlined text-xl">arrow_back</span>
                 </button>
                 <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-white text-lg bg-white/20 p-1.5 rounded-lg backdrop-blur-sm">help</span>
-                    <span class="font-extrabold text-sm text-white">Help Center</span>
+                    <span class="material-symbols-outlined text-blue-600 text-lg bg-blue-50 p-1.5 rounded-lg border border-blue-100/50">help</span>
+                    <span class="font-extrabold text-sm text-gray-900">Help Center</span>
                 </div>
-                <button @click="isOpen = false" class="bg-transparent! border-none! shadow-none! p-0! text-white/80 hover:text-white transition-colors cursor-pointer absolute right-4 flex items-center justify-center">
+                <button @click="isOpen = false" class="bg-transparent! border-none! shadow-none! p-0! text-gray-400 hover:text-gray-600 transition-colors cursor-pointer absolute right-4 flex items-center justify-center">
                     <span class="material-symbols-outlined text-xl">close</span>
                 </button>
             </div>
