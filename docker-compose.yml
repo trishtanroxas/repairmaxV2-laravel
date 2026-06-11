@@ -25,7 +25,7 @@ services:
       postgres:
         condition: service_healthy
     ports:
-      - "5678:443"
+      - "5678:5678"
     environment:
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=postgres
@@ -34,12 +34,12 @@ services:
       - DB_POSTGRESDB_USER=n8n_user
       - DB_POSTGRESDB_PASSWORD=n8n_password
       - N8N_ENCRYPTION_KEY=repairmax_master_key_2026_xyz
-      - N8N_HOST=repairmax.n8n.app
-      - N8N_PORT=443
+      - N8N_HOST=n8n.repairmax.online
+      - N8N_PORT=5678
       - N8N_PROTOCOL=https
       - N8N_SECURE_COOKIE=true
-      - N8N_EDITOR_BASEURL=https://repairmax.n8n.app
-      - N8N_TRUSTED_HOSTS=repairmax.n8n.app,localhost,127.0.0.1
+      - N8N_EDITOR_BASEURL=https://n8n.repairmax.online
+      - N8N_TRUSTED_HOSTS=n8n.repairmax.online,localhost,127.0.0.1
       - GENERIC_TIMEZONE=Asia/Manila
       # - GOOGLE_APPLICATION_CREDENTIALS=/home/node/google-credentials.json
     volumes:
