@@ -136,6 +136,20 @@ class FaultTypeSeeder extends Seeder
         ];
 
         foreach ($services as $service) {
+            $lowerName = strtolower($service['name']);
+            $category = 'hardware'; // default
+            
+            if (str_contains($lowerName, 'screen') || str_contains($lowerName, 'glass') || str_contains($lowerName, 'lcd') || str_contains($lowerName, 'display')) {
+                $category = 'screen';
+            } elseif (str_contains($lowerName, 'battery') || str_contains($lowerName, 'charg') || str_contains($lowerName, 'power')) {
+                $category = 'power';
+            } elseif (str_contains($lowerName, 'audio') || str_contains($lowerName, 'speaker') || str_contains($lowerName, 'microphone') || str_contains($lowerName, 'earpiece') || str_contains($lowerName, 'jack')) {
+                $category = 'audio';
+            } elseif (str_contains($lowerName, 'software') || str_contains($lowerName, 'system') || str_contains($lowerName, 'boot') || str_contains($lowerName, 'data') || str_contains($lowerName, 'diagnostics') || str_contains($lowerName, 'firmware')) {
+                $category = 'software';
+            }
+
+            $service['category'] = $category;
             FaultType::create($service);
         }
     }
