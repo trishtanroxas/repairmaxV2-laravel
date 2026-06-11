@@ -18,14 +18,14 @@
             </h3>
 
             <div class="space-y-8 flex-1">
-                <div class="flex items-center justify-between group p-4 rounded-2xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100">
+                <div class="flex items-center justify-between group p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all border border-transparent hover:border-gray-100">
                     <div class="flex gap-4 items-center">
                         <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 group-hover:text-blue-500 transition-colors">
                             <span class="material-symbols-outlined">mail</span>
                         </div>
                         <div>
-                            <p class="text-base font-bold text-gray-800">Email Updates</p>
-                            <p class="text-sm text-gray-500">Receive emails regarding appointment status.</p>
+                            <p class="text-base font-bold text-gray-800 mb-0.5">Email Updates</p>
+                            <p class="text-sm text-gray-500 mb-0">Receive emails regarding appointment status.</p>
                         </div>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -34,14 +34,14 @@
                     </label>
                 </div>
 
-                <div class="flex items-center justify-between group p-4 rounded-2xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100">
+                <div class="flex items-center justify-between group p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all border border-transparent hover:border-gray-100">
                     <div class="flex gap-4 items-center">
                         <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 group-hover:text-blue-500 transition-colors">
                             <span class="material-symbols-outlined">sms</span>
                         </div>
                         <div>
-                            <p class="text-base font-bold text-gray-800">SMS Notifications</p>
-                            <p class="text-sm text-gray-500">Get text alerts when repairs are completed.</p>
+                            <p class="text-base font-bold text-gray-800 mb-0.5">SMS Notifications</p>
+                            <p class="text-sm text-gray-500 mb-0">Get text alerts when repairs are completed.</p>
                         </div>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -50,14 +50,14 @@
                     </label>
                 </div>
 
-                <div class="flex items-center justify-between group p-4 rounded-2xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100">
+                <div class="flex items-center justify-between group p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all border border-transparent hover:border-gray-100">
                     <div class="flex gap-4 items-center">
                         <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 group-hover:text-blue-500 transition-colors">
                             <span class="material-symbols-outlined">sell</span>
                         </div>
                         <div>
-                            <p class="text-base font-bold text-gray-800">Marketing & Offers</p>
-                            <p class="text-sm text-gray-500">Receive promotional emails and discounts.</p>
+                            <p class="text-base font-bold text-gray-800 mb-0.5">Marketing & Offers</p>
+                            <p class="text-sm text-gray-500 mb-0">Receive promotional emails and discounts.</p>
                         </div>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -88,7 +88,7 @@
             <div class="space-y-6">
                 <div>
                     <p class="text-sm font-bold text-gray-800 mb-3">Password</p>
-                    <a href="{{ route('user.profile') }}" class="flex items-center justify-between w-full p-3 bg-gray-50 hover:bg-gray-100 rounded-xl transition-all border border-gray-100 group">
+                    <a href="{{ route('user.profile') }}" class="flex items-center justify-between w-full p-3 bg-gray-50 dark:bg-white/3 hover:bg-gray-100 dark:hover:bg-white/8 rounded-xl transition-all border border-gray-100 dark:border-white/5 group">
                         <span class="text-xs font-bold text-gray-500">Change Password</span>
                         <span class="material-symbols-outlined text-[18px] text-gray-400 group-hover:translate-x-1 transition-transform">arrow_forward</span>
                     </a>
@@ -114,12 +114,12 @@
             </h3>
             
             <div class="space-y-6">
-                <a href="{{ route('user.profile') }}" class="block p-4 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-sm transition-all group">
-                    <p class="text-sm font-bold text-gray-800 flex items-center justify-between">
+                <a href="{{ route('user.profile') }}" class="block p-4 rounded-2xl bg-gray-50 dark:bg-white/3 border border-gray-100 dark:border-white/5 hover:bg-white dark:hover:bg-white/8 hover:shadow-sm transition-all group">
+                    <p class="text-sm font-bold text-gray-800 flex items-center justify-between mb-0.5">
                         Profile Info
                         <span class="material-symbols-outlined text-[16px] text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">edit</span>
                     </p>
-                    <p class="text-xs text-gray-500 mt-1">Update your personal details.</p>
+                    <p class="text-xs text-gray-500 mt-1 mb-0">Update your personal details.</p>
                 </a>
 
                 <div class="pt-6 border-t border-gray-100 flex flex-col items-center text-center">
@@ -143,11 +143,11 @@
                 <p class="text-gray-300 text-sm max-w-md">Your data privacy is our priority. Control how your repair history and diagnostic data are used.</p>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-6 relative z-10 w-full md:w-auto">
-                <div class="flex items-center gap-4 p-5 bg-white/5 rounded-2xl border border-white/10 flex-1 sm:flex-none group">
+            <div class="flex flex-col sm:flex-row items-stretch gap-6 relative z-10 w-full md:w-auto">
+                <div class="flex items-center gap-4 p-5 bg-white/5 rounded-2xl border border-white/10 flex-1 sm:w-56 group">
                     <div>
-                        <p class="text-sm font-bold text-white transition-colors">Share History</p>
-                        <p class="text-[11px] text-gray-400">For faster diagnostics</p>
+                        <p class="text-sm font-bold text-white transition-colors mb-0.5">Share History</p>
+                        <p class="text-[11px] text-gray-400 mb-0">For faster diagnostics</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-auto">
                         <input type="checkbox" wire:model="share_history" class="sr-only peer">
@@ -155,10 +155,10 @@
                     </label>
                 </div>
                 
-                <div class="flex items-center gap-4 p-5 bg-white/5 rounded-2xl border border-white/10 flex-1 sm:flex-none group">
+                <div class="flex items-center gap-4 p-5 bg-white/5 rounded-2xl border border-white/10 flex-1 sm:w-56 group">
                     <div>
-                        <p class="text-sm font-bold text-white transition-colors">Analytics</p>
-                        <p class="text-[10px] text-gray-400 font-medium">Service improvements</p>
+                        <p class="text-sm font-bold text-white transition-colors mb-0.5">Analytics</p>
+                        <p class="text-[10px] text-gray-400 font-medium mb-0">Service improvements</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-auto">
                         <input type="checkbox" wire:model="analytics_tracking" class="sr-only peer">
@@ -178,17 +178,17 @@
             </h3>
             
             <div class="space-y-5 flex-1">
-                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Sessions</p>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Active Sessions</p>
                 
                 <!-- Current Session -->
                 <div class="flex items-start gap-3.5">
                     <span class="material-symbols-outlined text-[22px] text-green-500 mt-0.5">desktop_windows</span>
                     <div class="flex-1">
                         <div class="flex items-center gap-1.5 font-sans">
-                            <p class="text-sm font-bold text-gray-800">Windows PC</p>
+                            <p class="text-sm font-bold text-gray-800 mb-0">Windows PC</p>
                             <span class="px-1.5 py-0.5 text-[9px] font-extrabold bg-green-50 text-green-600 rounded uppercase tracking-wider">Current</span>
                         </div>
-                        <p class="text-xs text-gray-500 mt-0.5">Chrome • Active Now</p>
+                        <p class="text-xs text-gray-500 mt-0.5 mb-0">Chrome • Active Now</p>
                     </div>
                 </div>
 
@@ -196,14 +196,14 @@
                 <div class="flex items-start gap-3.5 pt-4 border-t border-gray-100">
                     <span class="material-symbols-outlined text-[22px] text-gray-400 mt-0.5">smartphone</span>
                     <div class="flex-1">
-                        <p class="text-sm font-bold text-gray-800">iPhone 15</p>
-                        <p class="text-xs text-gray-500 mt-0.5">Safari • 2 hours ago</p>
+                        <p class="text-sm font-bold text-gray-800 mb-0">iPhone 15</p>
+                        <p class="text-xs text-gray-500 mt-0.5 mb-0">Safari • 2 hours ago</p>
                     </div>
                 </div>
             </div>
 
             <div class="mt-6 pt-4 border-t border-gray-100">
-                <button class="w-full py-3 bg-gray-100 text-gray-700 hover:bg-gray-200 text-sm font-bold rounded-full transition-all border border-gray-200">
+                <button class="w-full py-3 bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-gray-300 dark:hover:bg-white/10 text-sm font-bold rounded-full transition-all border border-gray-200 dark:border-white/10">
                     Sign Out Other Devices
                 </button>
             </div>
