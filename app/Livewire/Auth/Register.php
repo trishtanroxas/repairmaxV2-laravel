@@ -31,7 +31,16 @@ class Register extends Component
         return [
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
-            'email'      => 'required|email|unique:users,email',
+            'email'      => [
+                'required',
+                'email',
+                function ($attribute, $value, $fail) {
+                    $user = User::where('email', $value)->first();
+                    if ($user && $user->role !== 'guest') {
+                        $fail('The email has already been taken.');
+                    }
+                }
+            ],
             'password'   => [
                 'required',
                 Password::min(8)
@@ -46,16 +55,34 @@ class Register extends Component
     {
         $this->validate();
 
-        // 1. Create the user
-        User::create([
-            'first_name' => $this->first_name,
-            'last_name'  => $this->last_name,
-            'email'      => $this->email,
-            'password'   => Hash::make($this->password),
-        ]);
+        // 1. Create or upgrade the user
+        $user = User::where('email', $this->email)->first();
+
+        if ($user) {
+            // Upgrade guest account to regular user
+            $user->update([
+                'first_name' => $this->first_name,
+                'last_name'  => $this->last_name,
+                'password'   => Hash::make($this->password),
+                'role'       => 'user',
+            ]);
+        } else {
+            // Create a brand new user
+            User::create([
+                'first_name' => $this->first_name,
+                'last_name'  => $this->last_name,
+                'email'      => $this->email,
+                'password'   => Hash::make($this->password),
+                'role'       => 'user',
+            ]);
+        }
 
         // 🔥 2. Send the Branded HTML Welcome Email using the Mailable
-        Mail::to($this->email)->send(new WelcomeEmail($this->first_name));
+        try {
+            Mail::to($this->email)->send(new WelcomeEmail($this->first_name));
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Failed to send welcome email: ' . $e->getMessage());
+        }
 
         // 3. Trigger the success UI
         $this->isRegistered = true;

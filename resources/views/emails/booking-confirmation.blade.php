@@ -129,9 +129,9 @@
 
         <!-- Tracking Code -->
         <div class="tracking-box">
-            <div class="label">Your Tracking Code</div>
-            <div class="code">{{ $trackingCode }}</div>
-            <p style="margin: 10px 0; color: #666; font-size: 12px;">Use this code to check your repair status anytime</p>
+            <div class="label">Booking Reference Number</div>
+            <div class="code">{{ $appointment->booking_number ?: $trackingCode }}</div>
+            <p style="margin: 10px 0; color: #666; font-size: 12px;">Use this reference to track your repair status anytime</p>
         </div>
 
         <!-- Appointment Details -->
@@ -148,6 +148,16 @@
             <div class="info-row">
                 <span class="info-label">Issue Type:</span>
                 <span class="info-value">{{ $faultCategory }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Estimated Quote:</span>
+                <span class="info-value" style="color: #16a34a; font-weight: bold;">
+                    @if(is_numeric($appointment->quote) && (float)$appointment->quote > 0)
+                        ₱{{ number_format($appointment->quote, 2) }}
+                    @else
+                        Pending Diagnosis
+                    @endif
+                </span>
             </div>
             <div class="info-row">
                 <span class="info-label">Description:</span>

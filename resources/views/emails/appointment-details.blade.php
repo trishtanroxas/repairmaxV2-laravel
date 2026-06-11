@@ -246,6 +246,16 @@
                             </td>
                         </tr>
                     </table>
+                    <div class="detail-card" style="margin-top: 16px;">
+                        <div class="detail-label">Estimated Quote</div>
+                        <div class="detail-value" style="color: #16a34a; font-size: 18px;">
+                            @if(is_numeric($appointment->quote) && (float)$appointment->quote > 0)
+                                ₱{{ number_format($appointment->quote, 2) }}
+                            @else
+                                Pending Diagnosis
+                            @endif
+                        </div>
+                    </div>
                 </div>
 
                 <div class="attention-box">

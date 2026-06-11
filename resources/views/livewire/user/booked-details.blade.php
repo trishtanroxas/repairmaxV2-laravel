@@ -8,9 +8,14 @@
             <div>
                 <div class="flex items-center gap-2 flex-wrap">
                     <h1 class="text-2xl font-black text-gray-900 tracking-tight mb-0">Appointment Details</h1>
-                    <span class="font-mono text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-lg font-bold border border-brand-200">
-                        {{ $appointment->booking_number }}
+                    <span class="font-mono text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-lg font-bold border border-brand-200" title="Booking Reference">
+                        Ref: {{ $appointment->booking_number ?? 'N/A' }}
                     </span>
+                    @if($appointment->invoice_number)
+                    <span class="font-mono text-xs bg-emerald-50 text-emerald-700 px-3 py-1 rounded-lg font-bold border border-emerald-200" title="Invoice Number">
+                        Inv: {{ $appointment->invoice_number }}
+                    </span>
+                    @endif
                 </div>
                 <p class="text-xs text-gray-400 mt-1">Booked on {{ $appointment->created_at->format('M d, Y \a\t h:i A') }} ({{ $appointment->created_at->diffForHumans() }})</p>
             </div>
@@ -165,6 +170,10 @@
                             <span class="font-mono font-bold text-gray-900 text-sm mt-1 block">{{ $appointment->booking_number ?? 'N/A' }}</span>
                         </div>
                         <div class="bg-gray-50 p-4 rounded-xl border border-brand-100">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">Invoice No.</span>
+                            <span class="font-mono font-bold text-gray-900 text-sm mt-1 block">{{ $appointment->invoice_number ?? 'N/A' }}</span>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl border border-brand-100 col-span-2">
                             <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">Service Method</span>
                             <span class="font-bold text-gray-900 text-sm mt-1 block">{{ $appointment->service_method === 'Pickup' ? 'Home Pickup' : 'Shop Drop-off' }}</span>
                         </div>
@@ -217,11 +226,20 @@
 
             <!-- Logistics & Financial Breakdown -->
             <div class="bg-white border border-brand-200 rounded-3xl overflow-hidden shadow-sm">
-                <div class="px-6 py-4 bg-gray-50 border-b border-brand-100 flex items-center">
+                <div class="px-6 py-4 bg-gray-50 border-b border-brand-100 flex items-center justify-between">
                     <h3 class="font-bold text-gray-900 text-sm mb-0 flex items-center gap-2">
                         <span class="material-symbols-outlined text-gray-400 text-[20px]">payments</span>
                         Financial Estimate Summary
                     </h3>
+                    @if($appointment->pricing_confirmed)
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-green-100 text-green-800 border border-green-200">
+                            Confirmed
+                        </span>
+                    @else
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200">
+                            Pending Confirmation
+                        </span>
+                    @endif
                 </div>
                 <div class="p-6">
                     @php

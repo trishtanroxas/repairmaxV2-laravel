@@ -33,7 +33,8 @@ class Appointment extends Model
         'alt_address',
         'alt_barangay',
         'alt_city',
-        'additional_fee'
+        'additional_fee',
+        'pricing_confirmed'
     ];
 
     protected function casts(): array
@@ -46,6 +47,7 @@ class Appointment extends Model
             'completed_at' => 'datetime',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
+            'pricing_confirmed' => 'boolean',
         ];
     }
 

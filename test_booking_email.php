@@ -50,16 +50,7 @@ try {
     // Send email
     echo "\nSending email to: {$user->email}\n";
     
-    Mail::to($user->email)->send(new BookingConfirmationEmail(
-        $user->first_name,
-        $user->last_name,
-        $appointment->tracking_code,
-        $appointment->device_brand,
-        $appointment->device_model,
-        $appointment->fault_category,
-        $appointment->description,
-        $user->email
-    ));
+    Mail::to($user->email)->send(new BookingConfirmationEmail($appointment));
     
     echo "✓ Email sent successfully!\n\n";
     echo "=== Test Complete ===\n";

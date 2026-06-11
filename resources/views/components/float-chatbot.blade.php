@@ -1,101 +1,104 @@
-<div x-data="{ 
-    isOpen: false, 
-    activeTab: 'home',
-    searchQuery: '',
-    userInput: '',
-    isLoading: false,
-    sessionId: localStorage.getItem('chatbot_session_id') || (() => {
-        const id = 'sess_' + Math.random().toString(36).substring(2, 15);
-        localStorage.setItem('chatbot_session_id', id);
-        return id;
-    })(),
-    messages: [
-        { role: 'bot', content: 'Hi! I\'m Maxie, your Repairmax AI assistant. What kind of device issue are you experiencing today? I can help you diagnose it and set up a repair ticket.' }
-    ],
-    faqs: [
-        { q: 'How long does a repair take?', a: 'Most screen and battery repairs are completed within 1-2 hours. More complex repairs can take 1-3 business days.', open: false },
-        { q: 'Do you offer a warranty?', a: 'Yes! We offer a 90-day premium warranty on all parts and labor used during our repairs.', open: false },
-        { q: 'Can I get a price estimate?', a: 'Yes, you can use our Chatbot for a free diagnosis and rough estimate, or visit our booking page to view standard prices.', open: false },
-        { q: 'What brands do you repair?', a: 'We repair Apple (iPhone, iPad, Mac), Samsung, Google, Asus, Lenovo, HP, Dell, and many more.', open: false }
-    ],
-    get filteredFaqs() {
-        if (!this.searchQuery.trim()) return this.faqs;
-        const q = this.searchQuery.toLowerCase();
-        return this.faqs.filter(f => f.q.toLowerCase().includes(q) || f.a.toLowerCase().includes(q));
-    },
-    scrollToBottom() {
-        this.$nextTick(() => {
-            const el = document.getElementById('chat-messages-container');
-            if (el) {
-                el.scrollTo({
-                    top: el.scrollHeight,
-                    behavior: 'smooth'
-                });
+{{-- Alpine.js Chatbot Component Data (extracted to avoid large inline x-data parse errors) --}}
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('chatbot', () => ({
+        isOpen: false,
+        activeTab: 'home',
+        searchQuery: '',
+        userInput: '',
+        isLoading: false,
+        sessionId: localStorage.getItem('chatbot_session_id') || (() => {
+            const id = 'sess_' + Math.random().toString(36).substring(2, 15);
+            localStorage.setItem('chatbot_session_id', id);
+            return id;
+        })(),
+        messages: [
+            { role: 'bot', content: "Hi! I'm Maxie, your Repairmax AI assistant. What kind of device issue are you experiencing today? I can help you diagnose it and set up a repair ticket." }
+        ],
+        faqs: [
+            { q: 'How long does a repair take?', a: 'Most screen and battery repairs are completed within 1-2 hours. More complex repairs can take 1-3 business days.', open: false },
+            { q: 'Do you offer a warranty?', a: 'Yes! We offer a 90-day premium warranty on all parts and labor used during our repairs.', open: false },
+            { q: 'Can I get a price estimate?', a: 'Yes, you can use our Chatbot for a free diagnosis and rough estimate, or visit our booking page to view standard prices.', open: false },
+            { q: 'What brands do you repair?', a: 'We repair Apple (iPhone, iPad, Mac), Samsung, Google, Asus, Lenovo, HP, Dell, and many more.', open: false },
+            { q: 'How do I track my repair?', a: 'You can track your repair in two ways: (1) Log in to your Repairmax account and go to "My Bookings", or (2) Ask Maxie by typing your Booking Reference code (e.g. RX-XXXXXX) directly in the chat.', open: false },
+            { q: 'What payment methods do you accept?', a: 'We accept cash, GCash, PayMaya, credit/debit cards, and bank transfers. Payment is collected upon device pick-up after repair is complete.', open: false },
+            { q: 'Can I cancel or reschedule my appointment?', a: 'Yes! You can cancel or reschedule up to 2 hours before your appointment. Log in and go to "My Bookings", then select your booking to manage it.', open: false },
+            { q: 'Where are you located?', a: 'We are located at Commonwealth Ave. Cor. IBP Road (Litex Junction), Brgy. Payatas, Quezon City, 1119. Open Mon–Fri 8AM–6PM, Sat 9AM–4PM.', open: false },
+            { q: 'What if my device cannot be repaired?', a: 'If we determine your device is beyond repair, we will notify you immediately with a full diagnostic report. You will only be charged a minimal diagnostic fee.', open: false }
+        ],
+        get filteredFaqs() {
+            if (!this.searchQuery.trim()) return this.faqs;
+            const q = this.searchQuery.toLowerCase();
+            return this.faqs.filter(f => f.q.toLowerCase().includes(q) || f.a.toLowerCase().includes(q));
+        },
+        scrollToBottom() {
+            this.$nextTick(() => {
+                const el = document.getElementById('chat-messages-container');
+                if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+            });
+        },
+        async triggerQuickQuestion(questionText) {
+            this.activeTab = 'chat';
+            this.userInput = questionText;
+            await this.$nextTick();
+            this.sendMessage();
+        },
+        async sendMessage() {
+            if (!this.userInput.trim() || this.isLoading) return;
+
+            const userMsg = this.userInput;
+            this.messages.push({ role: 'user', content: userMsg });
+            this.userInput = '';
+            this.isLoading = true;
+            this.scrollToBottom();
+
+            const trackingRegex = /^RX-[A-Z0-9]{5,8}$/i;
+            if (trackingRegex.test(userMsg.trim())) {
+                try {
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    const response = await fetch('/api/chatbot/track', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+                        body: JSON.stringify({ tracking_code: userMsg.trim().toUpperCase() })
+                    });
+                    const data = await response.json();
+                    this.messages.push({ role: 'bot', content: data.reply || "Sorry, I couldn't track that ticket." });
+                } catch (error) {
+                    this.messages.push({ role: 'bot', content: 'System error while tracking ticket. Please try again.' });
+                } finally {
+                    this.isLoading = false;
+                    this.scrollToBottom();
+                }
+                return;
             }
-        });
-    },
-    async triggerQuickQuestion(questionText) {
-        this.activeTab = 'chat';
-        this.userInput = questionText;
-        await this.$nextTick();
-        this.sendMessage();
-    },
-    async sendMessage() {
-        if (!this.userInput.trim() || this.isLoading) return;
-        
-        const userMsg = this.userInput;
-        this.messages.push({ role: 'user', content: userMsg });
-        this.userInput = '';
-        this.isLoading = true;
-        this.scrollToBottom();
 
-        const trackingRegex = /^RM-\d{5}$/i;
-        if (trackingRegex.test(userMsg.trim())) {
             try {
-                const response = await fetch('/api/chatbot/track', {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const response = await fetch('/api/chatbot', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']').getAttribute('content')
-                    },
-                    body: JSON.stringify({ tracking_code: userMsg.trim().toUpperCase() })
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+                    body: JSON.stringify({ message: userMsg, session_id: this.sessionId })
                 });
-
                 const data = await response.json();
-                this.messages.push({ role: 'bot', content: data.reply || 'Sorry, I couldn\'t track that ticket.' });
-                this.scrollToBottom();
+                this.messages.push({ role: 'bot', content: data.reply || data.output || "Sorry, I didn't catch that." });
             } catch (error) {
-                this.messages.push({ role: 'bot', content: 'System error while tracking ticket. Please try again.' });
-                this.scrollToBottom();
+                this.messages.push({ role: 'bot', content: 'System error. Please try again.' });
             } finally {
                 this.isLoading = false;
+                this.scrollToBottom();
             }
-            return;
         }
+    }));
+});
+</script>
 
-        try {
-            const response = await fetch('/api/chatbot', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']').getAttribute('content')
-                },
-                body: JSON.stringify({ message: userMsg, session_id: this.sessionId })
-            });
+{{-- Chatbot Widget HTML --}}
+<div x-data="chatbot()"
+    @open-chat.window="isOpen = true; activeTab = 'chat'; scrollToBottom()"
+    id="chatbot-container"
+    class="fixed bottom-6 right-6 z-50 flex flex-col items-end font-sans">
 
-            const data = await response.json();
-            this.messages.push({ role: 'bot', content: data.reply || data.output || 'Sorry, I didn\'t catch that.' });
-            this.scrollToBottom();
-        } catch (error) {
-            this.messages.push({ role: 'bot', content: 'System error. Please try again.' });
-            this.scrollToBottom();
-        } finally {
-            this.isLoading = false;
-        }
-    }
-}" @open-chat.window="isOpen = true; activeTab = 'chat'; scrollToBottom()" id="chatbot-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end font-sans">
-
-    <!-- Larger Chat Window with Brand Deep Charcoal Theme -->
+    <!-- Chat Window -->
     <div x-show="isOpen"
         x-transition:enter="transition ease-out duration-300 transform origin-bottom-right"
         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
@@ -107,9 +110,10 @@
         style="display: none;"
         class="w-[calc(100vw-32px)] sm:w-[420px] h-[660px] max-h-[calc(100vh-120px)] max-sm:fixed max-sm:inset-0 max-sm:w-full max-sm:h-full max-sm:max-h-full max-sm:rounded-none max-sm:mb-0 max-sm:z-[60] bg-white border border-gray-100 rounded-[2.2rem] shadow-[0_16px_48px_rgba(0,0,0,0.12)] mb-4 overflow-hidden flex flex-col transition-all duration-300">
 
-        <!-- Tab 1: Home View -->
+        <!-- ═══════════════════════════════════════ -->
+        <!-- TAB 1: HOME                             -->
+        <!-- ═══════════════════════════════════════ -->
         <div x-show="activeTab === 'home'" class="flex-1 flex flex-col overflow-y-auto bg-gray-50 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
-            <!-- Premium White & Subtle Light Blue Header -->
             <div class="bg-gradient-to-b from-blue-50/20 to-white px-7 pt-9 pb-12 rounded-b-[2.5rem] relative shadow-xs border-b border-gray-100 flex flex-col gap-3">
                 <div class="flex items-center justify-between">
                     <span class="material-symbols-outlined text-blue-600 text-2xl bg-blue-50 p-2 rounded-xl border border-blue-100/50">smart_toy</span>
@@ -122,35 +126,89 @@
                         <span class="bg-clip-text text-transparent bg-linear-to-r from-indigo-600 via-blue-600 to-cyan-600">Hi there!</span> 👋
                     </h2>
                     <p class="text-gray-500 text-xs font-semibold leading-relaxed max-w-[90%]">
-                        AI chat powered by Repairmax - how can we help you today?
+                        AI chat powered by Repairmax — how can we help you today?
                     </p>
                 </div>
             </div>
 
-            <!-- Overlapping Floating Card Layout -->
             <div class="px-6 mt-6 flex flex-col gap-4 mb-6">
-                
-                <!-- Quick Actions List Card -->
+
+                <!-- Quick Actions List -->
                 <div class="bg-white border border-gray-100 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.03)] overflow-hidden">
                     <div class="divide-y divide-gray-100">
-                        <div @click="triggerQuickQuestion('What is Repairmax?')" class="flex justify-between items-center p-4.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
-                            <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">What is Repairmax?</span>
+
+                        <div @click="triggerQuickQuestion('What is Repairmax?')" class="flex justify-between items-center px-4 py-3.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-blue-500 text-base bg-blue-50 p-1.5 rounded-lg">info</span>
+                                <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">What is Repairmax?</span>
+                            </div>
                             <span class="material-symbols-outlined text-gray-400 group-hover:text-[#0f172a] text-base transition-all duration-200 group-hover:translate-x-0.5">chevron_right</span>
                         </div>
-                        
-                        <div @click="triggerQuickQuestion('How do I book a repair?')" class="flex justify-between items-center p-4.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
-                            <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">How do I book a repair?</span>
+
+                        <div @click="triggerQuickQuestion('How do I track my repair booking?')" class="flex justify-between items-center px-4 py-3.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-emerald-500 text-base bg-emerald-50 p-1.5 rounded-lg">manage_search</span>
+                                <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">How to track my repair?</span>
+                            </div>
                             <span class="material-symbols-outlined text-gray-400 group-hover:text-[#0f172a] text-base transition-all duration-200 group-hover:translate-x-0.5">chevron_right</span>
                         </div>
-                        
-                        <div @click="activeTab = 'help'" class="flex justify-between items-center p-4.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
-                            <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">FAQs & Help Center</span>
+
+                        <div @click="triggerQuickQuestion('How do I book a repair?')" class="flex justify-between items-center px-4 py-3.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-violet-500 text-base bg-violet-50 p-1.5 rounded-lg">event_available</span>
+                                <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">How do I book a repair?</span>
+                            </div>
                             <span class="material-symbols-outlined text-gray-400 group-hover:text-[#0f172a] text-base transition-all duration-200 group-hover:translate-x-0.5">chevron_right</span>
                         </div>
+
+                        <div @click="triggerQuickQuestion('What are your repair prices?')" class="flex justify-between items-center px-4 py-3.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-amber-500 text-base bg-amber-50 p-1.5 rounded-lg">payments</span>
+                                <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">What are your repair prices?</span>
+                            </div>
+                            <span class="material-symbols-outlined text-gray-400 group-hover:text-[#0f172a] text-base transition-all duration-200 group-hover:translate-x-0.5">chevron_right</span>
+                        </div>
+
+                        <div @click="triggerQuickQuestion('What is your repair warranty policy?')" class="flex justify-between items-center px-4 py-3.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-cyan-500 text-base bg-cyan-50 p-1.5 rounded-lg">verified_user</span>
+                                <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">Repair warranty policy</span>
+                            </div>
+                            <span class="material-symbols-outlined text-gray-400 group-hover:text-[#0f172a] text-base transition-all duration-200 group-hover:translate-x-0.5">chevron_right</span>
+                        </div>
+
+                        <div @click="triggerQuickQuestion('Where are you located and what are your contact details?')" class="flex justify-between items-center px-4 py-3.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-rose-500 text-base bg-rose-50 p-1.5 rounded-lg">location_on</span>
+                                <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">Contact &amp; Location</span>
+                            </div>
+                            <span class="material-symbols-outlined text-gray-400 group-hover:text-[#0f172a] text-base transition-all duration-200 group-hover:translate-x-0.5">chevron_right</span>
+                        </div>
+
+                        <!-- Switch to Live Agent -->
+                        <div @click="activeTab = 'live'" class="flex justify-between items-center px-4 py-3.5 hover:bg-orange-50 cursor-pointer transition-all duration-200 group">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-orange-500 text-base bg-orange-50 p-1.5 rounded-lg group-hover:bg-orange-100">support_agent</span>
+                                <div>
+                                    <p class="text-xs font-bold text-gray-800 group-hover:text-orange-600 transition-colors leading-tight">Switch to Live Agent</p>
+                                    <p class="text-[9px] font-semibold text-gray-400 leading-tight">Talk to a human support rep</p>
+                                </div>
+                            </div>
+                            <span class="material-symbols-outlined text-orange-300 group-hover:text-orange-500 text-base transition-all duration-200 group-hover:translate-x-0.5">chevron_right</span>
+                        </div>
+
+                        <div @click="activeTab = 'help'" class="flex justify-between items-center px-4 py-3.5 hover:bg-gray-50 cursor-pointer transition-all duration-200 group">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-gray-500 text-base bg-gray-100 p-1.5 rounded-lg">help_center</span>
+                                <span class="text-xs font-bold text-gray-800 group-hover:text-[#0f172a] transition-colors">FAQs &amp; Help Center</span>
+                            </div>
+                            <span class="material-symbols-outlined text-gray-400 group-hover:text-[#0f172a] text-base transition-all duration-200 group-hover:translate-x-0.5">chevron_right</span>
+                        </div>
+
                     </div>
                 </div>
 
-                <!-- Main CTA Chat with Maxie Card -->
+                <!-- Chat with Maxie CTA -->
                 <div @click="activeTab = 'chat'; scrollToBottom();" class="bg-white border border-gray-100 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-5 flex items-center justify-between hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer group">
                     <div class="flex flex-col gap-1">
                         <h3 class="text-xs font-extrabold text-gray-900 group-hover:text-[#0f172a] transition-colors">Chat with Maxie</h3>
@@ -161,7 +219,7 @@
                     </div>
                 </div>
 
-                <!-- Quick Booking Link Card -->
+                <!-- Book a Repair CTA -->
                 <a href="/booking" class="bg-white border border-gray-100 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-5 flex items-center justify-between hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline group">
                     <div class="flex flex-col gap-1">
                         <h3 class="text-xs font-extrabold text-gray-900 group-hover:text-[#0f172a] transition-colors">Book a Repair</h3>
@@ -175,26 +233,31 @@
             </div>
         </div>
 
-        <!-- Tab 2: Chat View -->
+        <!-- ═══════════════════════════════════════ -->
+        <!-- TAB 2: CHAT                             -->
+        <!-- ═══════════════════════════════════════ -->
         <div x-show="activeTab === 'chat'" class="flex-1 flex flex-col overflow-hidden bg-gray-50">
-            <!-- Slim Header with Light Theme -->
-            <div class="bg-white border-b border-gray-100 p-4.5 flex items-center gap-3 relative shadow-xs">
+            <div class="bg-white border-b border-gray-100 px-4 py-3 flex items-center gap-3 relative shadow-xs">
                 <button @click="activeTab = 'home'" class="bg-transparent! border-none! shadow-none! p-0! text-gray-500 hover:text-gray-800 transition-colors cursor-pointer flex items-center justify-center">
                     <span class="material-symbols-outlined text-xl">arrow_back</span>
                 </button>
-                <div class="flex items-center gap-2.5">
+                <div class="flex items-center gap-2.5 flex-1">
                     <span class="material-symbols-outlined text-blue-600 text-lg bg-blue-50 p-1.5 rounded-lg border border-blue-100/50">smart_toy</span>
                     <div class="flex flex-col">
                         <span class="font-extrabold text-sm leading-tight text-gray-900">Maxie</span>
-                        <span class="text-[9px] text-blue-600 font-extrabold uppercase tracking-wider">Online | Assistant</span>
+                        <span class="text-[9px] text-blue-600 font-extrabold uppercase tracking-wider">Online | AI Assistant</span>
                     </div>
                 </div>
+                <button @click="activeTab = 'live'"
+                    class="flex items-center gap-1 bg-orange-50 border border-orange-100 text-orange-500 rounded-full px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider cursor-pointer hover:bg-orange-100 transition-colors mr-7 shadow-none! border-none!">
+                    <span class="material-symbols-outlined text-sm leading-none">support_agent</span>
+                    Live Agent
+                </button>
                 <button @click="isOpen = false" class="bg-transparent! border-none! shadow-none! p-0! text-gray-400 hover:text-gray-600 transition-colors cursor-pointer absolute right-4 flex items-center justify-center">
                     <span class="material-symbols-outlined text-xl">close</span>
                 </button>
             </div>
 
-            <!-- Scrollable Messages Container -->
             <div id="chat-messages-container" class="flex-1 p-5 overflow-y-auto bg-gray-50 flex flex-col gap-4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
                 <template x-for="(msg, index) in messages" :key="index">
                     <div :class="msg.role === 'bot' ? 'self-start' : 'self-end'" class="max-w-[85%] flex flex-col gap-1">
@@ -204,8 +267,6 @@
                         </div>
                     </div>
                 </template>
-                
-                <!-- Bouncing Three-Dot Loader -->
                 <div x-show="isLoading" class="self-start bg-white border border-gray-100 text-gray-800 px-4 py-3 rounded-2xl rounded-tl-none shadow-sm flex gap-1.5 items-center">
                     <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                     <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
@@ -213,13 +274,12 @@
                 </div>
             </div>
 
-            <!-- Input Form -->
             <div class="p-3.5 border-t border-gray-100 bg-white">
                 <div class="flex items-center gap-2 bg-gray-50 rounded-full px-4 py-1.5 border border-transparent focus-within:border-gray-200 focus-within:bg-white transition-all shadow-inner">
-                    <input type="text" 
-                        x-model="userInput" 
+                    <input type="text"
+                        x-model="userInput"
                         @keydown.enter="sendMessage()"
-                        placeholder="Ask Maxie anything..." 
+                        placeholder="Ask Maxie anything..."
                         class="flex-1 bg-transparent border-none text-xs py-2.5 font-semibold text-gray-700 placeholder-gray-400"
                         style="outline: none !important; box-shadow: none !important; border: none !important; caret-color: #0f172a !important;">
                     <button @click="sendMessage()"
@@ -231,9 +291,10 @@
             </div>
         </div>
 
-        <!-- Tab 3: Help View -->
+        <!-- ═══════════════════════════════════════ -->
+        <!-- TAB 3: HELP / FAQ                       -->
+        <!-- ═══════════════════════════════════════ -->
         <div x-show="activeTab === 'help'" class="flex-1 flex flex-col overflow-hidden bg-gray-50">
-            <!-- Slim Header -->
             <div class="bg-white border-b border-gray-100 p-4.5 flex items-center gap-3 relative shadow-xs">
                 <button @click="activeTab = 'home'" class="bg-transparent! border-none! shadow-none! p-0! text-gray-500 hover:text-gray-800 transition-colors cursor-pointer flex items-center justify-center">
                     <span class="material-symbols-outlined text-xl">arrow_back</span>
@@ -246,39 +307,27 @@
                     <span class="material-symbols-outlined text-xl">close</span>
                 </button>
             </div>
-
-            <!-- FAQ Search Box and Accordions -->
             <div class="flex-1 p-5 overflow-y-auto flex flex-col gap-4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
-                <!-- Premium Search Box -->
                 <div class="bg-white rounded-2xl p-2 border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex items-center gap-2.5">
                     <span class="material-symbols-outlined text-gray-400 text-lg pl-1.5">search</span>
-                    <input type="text" 
-                        x-model="searchQuery" 
-                        placeholder="Search FAQs..." 
+                    <input type="text" x-model="searchQuery" placeholder="Search FAQs..."
                         class="flex-1 bg-transparent border-none text-xs p-0 text-gray-700 py-1.5 font-semibold placeholder-gray-400"
                         style="outline: none !important; box-shadow: none !important; border: none !important; caret-color: #0f172a !important;">
                     <button x-show="searchQuery" @click="searchQuery = ''" class="bg-transparent! border-none! shadow-none! p-0! text-gray-400 hover:text-gray-600 transition-colors cursor-pointer pr-1 flex items-center justify-center">
                         <span class="material-symbols-outlined text-base">close</span>
                     </button>
                 </div>
-
-                <!-- List of FAQ Cards -->
                 <div class="flex flex-col gap-2.5">
                     <template x-for="(faq, index) in filteredFaqs" :key="index">
                         <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.02)] transition-all">
-                            <button @click="faq.open = !faq.open" 
+                            <button @click="faq.open = !faq.open"
                                 class="w-full text-left p-4 flex justify-between items-center gap-3 transition-colors hover:bg-gray-50 bg-transparent! border-none! shadow-none! focus:outline-none cursor-pointer">
                                 <span class="text-xs font-bold text-gray-800" x-text="faq.q"></span>
-                                <span class="material-symbols-outlined text-gray-400 text-lg transition-transform duration-200" 
-                                    :class="faq.open ? 'rotate-180' : ''">expand_more</span>
+                                <span class="material-symbols-outlined text-gray-400 text-lg transition-transform duration-200" :class="faq.open ? 'rotate-180' : ''">expand_more</span>
                             </button>
-                            <div x-show="faq.open" x-transition
-                                class="px-4 pb-4 text-xs font-semibold text-gray-500 border-t border-gray-50 pt-2 leading-relaxed whitespace-normal"
-                                x-text="faq.a">
-                            </div>
+                            <div x-show="faq.open" x-transition class="px-4 pb-4 text-xs font-semibold text-gray-500 border-t border-gray-50 pt-2 leading-relaxed whitespace-normal" x-text="faq.a"></div>
                         </div>
                     </template>
-                    
                     <div x-show="filteredFaqs.length === 0" class="text-center py-8 text-gray-400 text-xs font-bold bg-white rounded-2xl border border-gray-100 shadow-sm">
                         No matching results found
                     </div>
@@ -286,35 +335,149 @@
             </div>
         </div>
 
-        <!-- Persistent Bottom Tab Bar (Deep Charcoal Accents) -->
-        <div class="bg-white border-t border-gray-100 py-3 px-8 flex justify-around items-center shadow-inner">
-            <button @click="activeTab = 'home'" 
-                class="flex flex-col items-center gap-1 bg-transparent! border-none! shadow-none! p-0! cursor-pointer focus:outline-none transition-all duration-200"
-                :class="activeTab === 'home' || activeTab === 'help' ? 'text-[#0f172a] font-semibold' : 'text-gray-400 hover:text-gray-600'">
-                <span class="material-symbols-outlined text-2xl">home</span>
-                <span class="text-[10px] uppercase tracking-wider font-semibold">Home</span>
-            </button>
-            
-            <button @click="activeTab = 'chat'; scrollToBottom();" 
-                class="flex flex-col items-center gap-1 bg-transparent! border-none! shadow-none! p-0! cursor-pointer focus:outline-none transition-all duration-200"
-                :class="activeTab === 'chat' ? 'text-[#0f172a] font-semibold' : 'text-gray-400 hover:text-gray-600'">
-                <span class="material-symbols-outlined text-2xl">chat</span>
-                <span class="text-[10px] uppercase tracking-wider font-semibold">Chat</span>
-            </button>
+        <!-- ═══════════════════════════════════════ -->
+        <!-- TAB 4: LIVE AGENT                       -->
+        <!-- ═══════════════════════════════════════ -->
+        <div x-show="activeTab === 'live'" class="flex-1 flex flex-col overflow-hidden bg-gray-50">
+            <div class="bg-white border-b border-gray-100 p-4.5 flex items-center gap-3 relative shadow-xs">
+                <button @click="activeTab = 'home'" class="bg-transparent! border-none! shadow-none! p-0! text-gray-500 hover:text-gray-800 transition-colors cursor-pointer flex items-center justify-center">
+                    <span class="material-symbols-outlined text-xl">arrow_back</span>
+                </button>
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-orange-500 text-lg bg-orange-50 p-1.5 rounded-lg border border-orange-100">support_agent</span>
+                    <div>
+                        <span class="font-extrabold text-sm text-gray-900 block leading-tight">Live Agent</span>
+                        <span class="text-[9px] text-orange-500 font-extrabold uppercase tracking-wider">Human Support</span>
+                    </div>
+                </div>
+                <button @click="isOpen = false" class="bg-transparent! border-none! shadow-none! p-0! text-gray-400 hover:text-gray-600 transition-colors cursor-pointer absolute right-4 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-xl">close</span>
+                </button>
+            </div>
+
+            <div class="flex-1 p-5 overflow-y-auto flex flex-col gap-4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+
+                <!-- Availability Banner -->
+                <div class="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-100 rounded-2xl p-4 flex items-start gap-3">
+                    <div class="bg-orange-100 rounded-full p-2 mt-0.5 flex-shrink-0">
+                        <span class="material-symbols-outlined text-orange-500 text-lg leading-none">schedule</span>
+                    </div>
+                    <div>
+                        <p class="text-xs font-extrabold text-gray-800 mb-1">Live agents are available</p>
+                        <p class="text-[10px] font-semibold text-gray-500 leading-relaxed">Mon – Fri &nbsp;|&nbsp; 8:00 AM – 6:00 PM<br>Sat &nbsp;|&nbsp; 9:00 AM – 4:00 PM</p>
+                        <p class="text-[10px] font-semibold text-orange-500 mt-1.5">Avg. response time: ~5 minutes</p>
+                    </div>
+                </div>
+
+                <p class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest px-1">Choose a channel</p>
+
+                <!-- Facebook Messenger -->
+                <a href="https://m.me/repairmaxonline" target="_blank" class="bg-white border border-gray-100 rounded-2xl p-4 flex items-center gap-4 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline group cursor-pointer">
+                    <div class="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #0078FF 0%, #A033FF 100%);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.477 2 2 6.145 2 11.259c0 2.83 1.32 5.356 3.393 7.036V22l3.104-1.702A10.57 10.57 0 0 0 12 20.52c5.523 0 10-4.145 10-9.261C22 6.145 17.523 2 12 2zm1.076 12.48l-2.548-2.714-4.977 2.714 5.474-5.808 2.61 2.714 4.916-2.714-5.475 5.808z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs font-extrabold text-gray-900 group-hover:text-blue-600 transition-colors">Facebook Messenger</p>
+                        <p class="text-[10px] text-gray-400 font-semibold mt-0.5">Chat with us on Facebook</p>
+                    </div>
+                    <span class="material-symbols-outlined text-gray-300 group-hover:text-blue-400 text-base transition-colors">open_in_new</span>
+                </a>
+
+                <!-- Phone Call -->
+                <a href="tel:+639123456789" class="bg-white border border-gray-100 rounded-2xl p-4 flex items-center gap-4 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline group cursor-pointer">
+                    <div class="w-11 h-11 bg-emerald-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-white text-xl">call</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs font-extrabold text-gray-900 group-hover:text-emerald-600 transition-colors">Call Us</p>
+                        <p class="text-[10px] text-gray-400 font-semibold mt-0.5">+63 912 345 6789</p>
+                    </div>
+                    <span class="material-symbols-outlined text-gray-300 group-hover:text-emerald-400 text-base transition-colors">chevron_right</span>
+                </a>
+
+                <!-- Email -->
+                <a href="mailto:repairmaxsample@gmail.com" class="bg-white border border-gray-100 rounded-2xl p-4 flex items-center gap-4 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 no-underline group cursor-pointer">
+                    <div class="w-11 h-11 bg-blue-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-white text-xl">mail</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs font-extrabold text-gray-900 group-hover:text-blue-600 transition-colors">Send an Email</p>
+                        <p class="text-[10px] text-gray-400 font-semibold mt-0.5">repairmaxsample@gmail.com</p>
+                    </div>
+                    <span class="material-symbols-outlined text-gray-300 group-hover:text-blue-400 text-base transition-colors">chevron_right</span>
+                </a>
+
+                <!-- Walk In -->
+                <div class="bg-white border border-gray-100 rounded-2xl p-4 flex items-center gap-4">
+                    <div class="w-11 h-11 bg-rose-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-white text-xl">store</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs font-extrabold text-gray-900">Walk In</p>
+                        <p class="text-[10px] text-gray-400 font-semibold mt-0.5 leading-relaxed">Commonwealth Ave. Cor. IBP Rd,<br>Brgy. Payatas, Quezon City 1119</p>
+                    </div>
+                </div>
+
+                <!-- Back to AI nudge -->
+                <button @click="activeTab = 'chat'; scrollToBottom();"
+                    class="bg-transparent! shadow-none! border border-gray-200 rounded-2xl p-3.5 flex items-center justify-center gap-2 w-full text-xs font-bold text-gray-400 hover:text-gray-600 hover:border-gray-300 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">smart_toy</span>
+                    Or continue chatting with Maxie (AI)
+                </button>
+
+            </div>
         </div>
-        
-        <!-- Subtle Branding -->
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- BOTTOM TAB BAR                          -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="bg-white border-t border-gray-100 py-2.5 px-4 flex justify-around items-center shadow-inner">
+
+            <button @click="activeTab = 'home'"
+                class="flex flex-col items-center gap-0.5 bg-transparent! border-none! shadow-none! p-0! cursor-pointer focus:outline-none transition-all duration-200"
+                :class="activeTab === 'home' ? 'text-[#0f172a]' : 'text-gray-400 hover:text-gray-600'">
+                <span class="material-symbols-outlined text-xl">home</span>
+                <span class="text-[9px] uppercase tracking-wider font-extrabold">Home</span>
+            </button>
+
+            <button @click="activeTab = 'chat'; scrollToBottom();"
+                class="flex flex-col items-center gap-0.5 bg-transparent! border-none! shadow-none! p-0! cursor-pointer focus:outline-none transition-all duration-200"
+                :class="activeTab === 'chat' ? 'text-[#0f172a]' : 'text-gray-400 hover:text-gray-600'">
+                <span class="material-symbols-outlined text-xl">chat</span>
+                <span class="text-[9px] uppercase tracking-wider font-extrabold">Chat</span>
+            </button>
+
+            <button @click="activeTab = 'help'"
+                class="flex flex-col items-center gap-0.5 bg-transparent! border-none! shadow-none! p-0! cursor-pointer focus:outline-none transition-all duration-200"
+                :class="activeTab === 'help' ? 'text-[#0f172a]' : 'text-gray-400 hover:text-gray-600'">
+                <span class="material-symbols-outlined text-xl">help</span>
+                <span class="text-[9px] uppercase tracking-wider font-extrabold">FAQs</span>
+            </button>
+
+            <button @click="activeTab = 'live'"
+                class="flex flex-col items-center gap-0.5 bg-transparent! border-none! shadow-none! p-0! cursor-pointer focus:outline-none transition-all duration-200"
+                :class="activeTab === 'live' ? 'text-orange-500' : 'text-gray-400 hover:text-orange-400'">
+                <span class="material-symbols-outlined text-xl">support_agent</span>
+                <span class="text-[9px] uppercase tracking-wider font-extrabold">Live</span>
+            </button>
+
+        </div>
+
+        <!-- Branding -->
         <div class="bg-white text-center pb-2 pt-0.5 text-[8px] font-bold text-gray-300 uppercase tracking-widest select-none">
             Powered by Repairmax AI Agent
         </div>
 
     </div>
 
-    <!-- Floating Toggle Button (Deep Charcoal) -->
+    <!-- Floating Toggle Button -->
     <button @click="isOpen = !isOpen; if(isOpen && activeTab === 'chat') scrollToBottom();"
         id="chat-toggle"
         class="bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(37,99,235,0.35)] transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none cursor-pointer"
         :class="isOpen ? 'rotate-90' : ''">
         <span class="material-symbols-outlined text-2xl" x-text="isOpen ? 'close' : 'chat'">chat</span>
     </button>
+
 </div>

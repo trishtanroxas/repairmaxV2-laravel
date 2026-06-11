@@ -111,7 +111,7 @@ class AiSupport extends Component
         try {
             $n8nWebhookUrl = env('N8N_WEBHOOK_URL', 'http://localhost:5678/webhook-test/chatbot');
 
-            $response = Http::asJson()->withHeaders([
+            $response = Http::withoutVerifying()->asJson()->withHeaders([
                 'X-N8N-SECRET' => env('N8N_WEBHOOK_SECRET', 'repairmax_secret_123'),
             ])->post($n8nWebhookUrl, [
                 'message' => $text,
@@ -144,6 +144,84 @@ class AiSupport extends Component
 
         $this->isTyping = false;
         $this->dispatch('scroll-to-bottom');
+    }
+
+    public function switchToSupport()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            $this->dispatch('toast', message: 'You must be logged in to request support.', type: 'error');
+            return;
+        }
+
+        // Get context from current chatbot messages
+        $context = $this->getChatContext();
+
+        // Create the message ticket
+        $supportMessage = \App\Models\Message::create([
+            'user_id' => $user->id,
+            'subject' => 'Switch to Live Support (AI Support Page)',
+            'message' => 'User ' . $user->first_name . ' ' . $user->last_name . ' has requested live support from the AI Assistant. Last chatbot messages for context: ' . $context,
+            'is_read' => false,
+            'admin_read' => false,
+        ]);
+
+        // Notify all admins
+        $admins = \App\Models\User::where('role', 'admin')->get();
+        $userFullName = $user->first_name . ' ' . $user->last_name;
+        
+        foreach ($admins as $admin) {
+            \App\Models\Notification::create([
+                'user_id' => $admin->id,
+                'admin_id' => $admin->id,
+                'title' => 'Live Support Request',
+                'message' => $userFullName . ' requested live support from AI Chat.',
+                'type' => 'support_message',
+                'related_model' => 'Message',
+                'related_id' => $supportMessage->id,
+                'is_read' => false,
+            ]);
+        }
+
+        // Append a system message in the chat
+        $msgText = 'You have switched to live support. An admin has been notified and will reply to you shortly. You can also view your support tickets in the "Support Messages" menu.';
+        
+        if ($this->currentSessionId) {
+            \App\Models\ChatbotMessage::create([
+                'chatbot_session_id' => $this->currentSessionId,
+                'role' => 'assistant',
+                'content' => $msgText,
+            ]);
+        }
+
+        $this->messages[] = [
+            'role' => 'assistant',
+            'content' => $msgText,
+            'time' => now()->format('h:i A'),
+        ];
+
+        $this->dispatch('toast', message: 'Requested live support! An admin has been notified.', type: 'success');
+        $this->dispatch('scroll-to-bottom');
+    }
+
+    private function getChatContext(): string
+    {
+        if (!$this->currentSessionId) {
+            return '(No active chat session context)';
+        }
+        $msgs = \App\Models\ChatbotMessage::where('chatbot_session_id', $this->currentSessionId)
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get()
+            ->reverse();
+            
+        $context = "";
+        foreach ($msgs as $msg) {
+            $roleName = $msg->role === 'user' ? 'User' : 'Maxie';
+            $context .= "\n- {$roleName}: {$msg->content}";
+        }
+        
+        return $context ?: '(No messages in session)';
     }
 
     public function render()

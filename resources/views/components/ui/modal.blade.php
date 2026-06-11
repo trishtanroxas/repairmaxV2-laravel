@@ -36,7 +36,7 @@ default => 'sm:max-w-2xl',
     </div>
 
     <div x-show="show"
-        class="mb-6 bg-white rounded-[2.5rem] overflow-hidden shadow-2xl transform transition-all sm:w-full sm:mx-auto {{ $maxWidthClass }}"
+        class="mb-6 bg-white modal-content rounded-[2.5rem] overflow-hidden shadow-2xl transform transition-all sm:w-full sm:mx-auto {{ $maxWidthClass }}"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-95 translate-y-4 sm:translate-y-0"
         x-transition:enter-end="opacity-100 scale-100 translate-y-0"

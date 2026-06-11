@@ -1,6 +1,8 @@
 <div class="w-full" x-data="{ 
     showEmailModal: $wire.entangle('showEmailModal'),
-    showStatusModal: $wire.entangle('showStatusModal')
+    showStatusModal: $wire.entangle('showStatusModal'),
+    showFinanceModal: $wire.entangle('showFinanceModal'),
+    showDeleteModal: false
 }">
     <!-- Header Section -->
     <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -8,7 +10,7 @@
             <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Appointment Details</h1>
             <p class="text-gray-500 mt-1">View and manage appointment information</p>
         </div>
-        <a href="{{ route('admin.appointment') }}" class="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-full font-bold transition-colors">
+        <a href="{{ route('admin.appointment') }}" class="px-6 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-900 dark:text-white rounded-full font-bold transition-colors">
             ← Go Back
         </a>
     </div>
@@ -24,7 +26,7 @@
     <div class="space-y-6">
         <!-- Status & Type Indicator Card -->
         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-dark-blue-from dark:to-dark-blue-to rounded-2xl border border-blue-200 dark:border-blue-500/20 p-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                 <!-- Status -->
                 <div>
                     <p class="text-sm text-gray-600 font-semibold mb-1">Current Status</p>
@@ -35,8 +37,8 @@
                                 'In Progress' => 'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20',
                                 'Ready for Pickup' => 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20',
                                 'Scheduled' => 'bg-indigo-100 text-indigo-700 border-indigo-200 dark:bg-indigo-500/10 dark:text-indigo-400 dark:border-indigo-500/20',
-                                'Pending' => 'bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-500/10 dark:text-yellow-450 dark:border-yellow-500/20',
-                                'Cancelled' => 'bg-red-100 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20',
+                                'Pending' => 'bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-500/10 dark:text-yellow-455 dark:border-yellow-500/20',
+                                'Cancelled' => 'bg-red-100 text-red-750 border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20',
                                 default => 'bg-gray-100 text-gray-700 border-gray-200 dark:bg-white/5 dark:text-gray-400 dark:border-white/10'
                             };
                         @endphp
@@ -44,9 +46,9 @@
                             <span class="material-symbols-outlined text-base">info</span>
                             {{ $appointment->status }}
                         </span>
-                        <button @click="showStatusModal = true" class="text-blue-600 hover:text-blue-800 font-semibold text-sm ml-2">
+                        <a href="javascript:void(0)" @click="showStatusModal = true" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-semibold text-sm ml-2 no-underline">
                             Change
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -71,6 +73,12 @@
                     <p class="text-sm text-gray-600 font-semibold mb-1">Booking Reference</p>
                     <p class="text-lg font-bold text-blue-900 dark:text-blue-400 font-mono">{{ $appointment->booking_number ?? 'N/A' }}</p>
                 </div>
+
+                <!-- Invoice Number -->
+                <div>
+                    <p class="text-sm text-gray-600 font-semibold mb-1">Invoice Number</p>
+                    <p class="text-lg font-bold text-blue-905 dark:text-blue-400 font-mono">{{ $appointment->invoice_number ?? 'N/A' }}</p>
+                </div>
             </div>
         </div>
 
@@ -88,11 +96,7 @@
                     <span class="material-symbols-outlined">receipt_long</span>
                     Send Invoice
                 </button>
-                <button @click="showStatusModal = true" class="flex items-center gap-2 px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-full font-bold transition-colors">
-                    <span class="material-symbols-outlined">edit</span>
-                    Change Status
-                </button>
-                <button wire:click="deleteAppointment" onclick="return confirm('Are you sure? This action cannot be undone.')" class="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold transition-colors">
+                <button type="button" @click="showDeleteModal = true" class="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold transition-colors">
                     <span class="material-symbols-outlined">delete</span>
                     Delete
                 </button>
@@ -101,13 +105,39 @@
 
         <!-- Pricing & Cost Section -->
         <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-dark-green-from dark:to-dark-green-to rounded-2xl border border-green-200 dark:border-green-500/20 p-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined">attach_money</span>
-                Pricing & Cost Details
-            </h2>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2 m-0 p-0">
+                    <span class="material-symbols-outlined">attach_money</span>
+                    Pricing & Cost Details
+                </h2>
+                <div class="flex items-center gap-2">
+                    @if(!$appointment->pricing_confirmed)
+                        <button wire:click="confirmPricing" class="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition-all shadow-sm border border-transparent">
+                            <span class="material-symbols-outlined text-base">check_circle</span>
+                            Confirm Pricing
+                        </button>
+                    @else
+                        <span class="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 rounded-xl text-sm font-bold">
+                            <span class="material-symbols-outlined text-base">verified</span>
+                            Confirmed
+                        </span>
+                    @endif
+                    <button wire:click="openFinanceModal" class="inline-flex items-center gap-1.5 px-4 py-2 bg-white/80 hover:bg-white text-green-700 hover:text-green-800 dark:bg-green-500/10 dark:hover:bg-green-500/20 dark:text-green-450 dark:hover:text-green-400 border border-green-200 dark:border-green-500/20 rounded-xl text-sm font-bold transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-base">edit</span>
+                        Edit Costs
+                    </button>
+                </div>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white dark:bg-[#020617]/40 rounded-xl p-4 border border-green-100 dark:border-green-500/10">
-                    <p class="text-sm text-gray-600 font-semibold">Estimated Quote</p>
+                    <p class="text-sm text-gray-600 font-semibold flex items-center justify-between">
+                        <span>Estimated Quote</span>
+                        @if($appointment->pricing_confirmed)
+                            <span class="text-[9px] uppercase font-black px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Confirmed</span>
+                        @else
+                            <span class="text-[9px] uppercase font-black px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-450 border border-amber-500/20">Pending</span>
+                        @endif
+                    </p>
                     <p class="text-2xl font-bold text-green-600 dark:text-green-400 mt-2">₱{{ number_format((float)($appointment->quote ?? 0), 2) }}</p>
                 </div>
                 <div class="bg-white dark:bg-[#020617]/40 rounded-xl p-4 border border-green-100 dark:border-green-500/10">
@@ -279,9 +309,7 @@
                                 <span class="text-xs uppercase font-mono font-bold text-slate-500 tracking-wider">Issue Description</span>
                             </div>
                             @if(!empty(trim($details['Issue Description'] ?? '')) && strtolower(trim($details['Issue Description'])) !== 'n/a')
-                                <p class="text-gray-700 font-medium leading-relaxed text-sm whitespace-pre-wrap text-left mt-3">
-                                    {{ $details['Issue Description'] }}
-                                </p>
+                                <p class="text-gray-700 font-medium leading-relaxed text-sm whitespace-pre-wrap text-left mt-3">{{ $details['Issue Description'] }}</p>
                             @else
                                 <div class="flex items-center gap-2 text-slate-400 py-3 mt-1">
                                     <span class="material-symbols-outlined text-base">info</span>
@@ -307,6 +335,7 @@
                                     {{ $details['Service Method'] ?: 'N/A' }}
                                 </span>
                             </div>
+                        </div>
                                                 <!-- Pickup Address -->
                         @php
                             $hasAddress = !empty(trim($details['Pickup Address'] ?? '')) && strtolower(trim($details['Pickup Address'])) !== 'n/a';
@@ -330,12 +359,10 @@
                             @if($hasAddress)
                                 <div class="bg-indigo-50/40 hover:bg-indigo-50 dark:bg-indigo-500/5 dark:hover:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 rounded-2xl p-6 transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-1">
                                     <div class="flex items-center gap-2 mb-3 border-b border-indigo-100 dark:border-indigo-500/20 pb-3">
-                                        <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 p-1.5 rounded-lg text-lg">location_on</span>n</span>
+                                        <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 p-1.5 rounded-lg text-lg">location_on</span>
                                         <span class="text-xs uppercase font-mono font-bold text-indigo-600 dark:text-indigo-400 tracking-wider">Pickup/Delivery Address</span>
                                     </div>
-                                    <p class="text-gray-700 dark:text-gray-300 font-medium leading-relaxed text-sm whitespace-pre-wrap text-left mt-3">
-                                        {{ $details['Pickup Address'] }}
-                                    </p>
+                                    <p class="text-gray-700 dark:text-gray-300 font-medium leading-relaxed text-sm whitespace-pre-wrap text-left mt-3">{{ $details['Pickup Address'] }}</p>
                                 </div>
                             @else
                                 <div class="bg-rose-50/40 hover:bg-rose-50 border border-rose-200 rounded-2xl p-6 transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-1">
@@ -356,9 +383,7 @@
                         @endif
                     </div>
                 @else
-                    <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                        {{ $descClean ?: 'No description provided.' }}
-                    </p>
+                    <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $descClean ?: 'No description provided.' }}</p>
                 @endif
             </div>
         </div>
@@ -377,7 +402,6 @@
             </div>
         </div>
         @endif
-    </div>
 
     <!-- Email Modal -->
     <div x-show="showEmailModal"
@@ -389,10 +413,10 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
-        @keydown.escape.window="showEmailModal = false">
+        @keydown.escape.window="$wire.set('showEmailModal', false)">
         
         <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-2xl w-full my-auto overflow-hidden flex flex-col max-h-[90vh] transform transition-all"
-            @click.outside="showEmailModal = false"
+            @click.outside="$wire.set('showEmailModal', false)"
             x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0 scale-95 translate-y-4"
             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
@@ -400,62 +424,86 @@
             x-transition:leave-start="opacity-100 scale-100 translate-y-0"
             x-transition:leave-end="opacity-0 scale-95 translate-y-4">
             
-            <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between shrink-0 bg-white">
-                <h2 class="text-xl font-bold text-gray-900">Send Email</h2>
-                <button @click="showEmailModal = false" class="text-gray-400 hover:text-gray-600 transition-colors">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-
-            <div class="p-8 space-y-6 overflow-y-auto">
-                <!-- Email Type Badge -->
-                <div class="inline-block px-4 py-2 rounded-xl 
-                    @if($emailType === 'receipt') bg-blue-100 text-blue-700
-                    @elseif($emailType === 'invoice') bg-indigo-100 text-indigo-700
-                    @else bg-gray-100 text-gray-700 @endif
-                    font-bold text-sm">
-                    {{ ucfirst($emailType) }}
+            <form wire:submit.prevent="sendEmail" class="flex flex-col h-full overflow-hidden">
+                <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between shrink-0 bg-white">
+                    <h2 class="text-xl font-bold text-gray-900">Send Email</h2>
+                    <button type="button" @click="$wire.set('showEmailModal', false)" class="text-gray-400 hover:text-gray-600 transition-colors bg-transparent border-0 p-0 shadow-none">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
                 </div>
 
-                <!-- Subject Field -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Subject</label>
-                    <input type="text" wire:model="emailSubject" placeholder="Email subject..." 
-                        class="w-full px-4 py-3.5 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none transition-all text-sm bg-gray-50/50">
-                    @error('emailSubject')
-                        <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                <div class="p-8 space-y-6 overflow-y-auto">
+                    <!-- Email Template Selector -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-750 mb-2">Email Template</label>
+                        <select wire:model.live="emailType" class="w-full px-4 py-3.5 border border-gray-250 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none text-sm transition-all bg-gray-50/50">
+                            <option value="receipt">Service Receipt</option>
+                            <option value="invoice">Invoice</option>
+                            <option value="custom">Custom Email</option>
+                        </select>
+                    </div>
+
+                    <!-- PDF Attachment Preview Section -->
+                    @if($emailType === 'receipt' || $emailType === 'invoice')
+                    <div class="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-white/5 rounded-2xl p-5 flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3 text-gray-700 dark:text-gray-300">
+                            <span class="material-symbols-outlined text-red-500 text-[28px]">picture_as_pdf</span>
+                            <div>
+                                <span class="text-xs text-gray-405 uppercase font-mono font-bold block">Email Attachment</span>
+                                <span class="font-bold text-sm text-gray-900 dark:text-white">
+                                    {{ $emailType === 'receipt' ? 'receipt-' . $appointment->tracking_code . '.pdf' : 'invoice-' . ($appointment->invoice_number ?? $appointment->tracking_code) . '.pdf' }}
+                                </span>
+                            </div>
+                        </div>
+                        <a href="{{ route('admin.appointment.' . $emailType, $appointment->id) }}" target="_blank" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 dark:text-blue-400 rounded-xl text-xs font-black transition-all border border-blue-250 no-underline inline-flex items-center gap-1.5 shadow-sm">
+                            <span class="material-symbols-outlined text-[16px]">visibility</span>
+                            Review PDF
+                        </a>
+                    </div>
+                    @endif
+
+                    <!-- Subject Field -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-750 mb-2">Subject</label>
+                        <input type="text" wire:model="emailSubject" placeholder="Email subject..." 
+                            class="w-full px-4 py-3.5 border border-gray-250 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none transition-all text-sm bg-gray-50/50">
+                        @error('emailSubject')
+                            <p class="text-red-650 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Message Body Field -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-750 mb-2">Message Body</label>
+                        <textarea wire:model="emailBody" placeholder="Type the email body here..." rows="10"
+                            class="w-full px-4 py-3.5 border border-gray-250 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none transition-all font-mono text-sm resize-none bg-gray-50/50"></textarea>
+                        @error('emailBody')
+                            <p class="text-red-650 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Send To Info -->
+                    <div class="bg-blue-50 dark:bg-blue-955/20 border border-blue-100 dark:border-blue-500/20 rounded-2xl p-5">
+                        <p class="text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                            <span class="font-bold text-gray-900 dark:text-white">Send to:</span> 
+                            <span class="font-mono text-blue-600 dark:text-blue-400 bg-white dark:bg-[#020617]/50 px-3 py-1 rounded-lg border border-blue-200/50 dark:border-blue-500/20">{{ $appointment->user?->email ?? 'N/A' }}</span>
+                        </p>
+                    </div>
                 </div>
 
-                <!-- Message Body Field -->
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Message Body</label>
-                    <textarea wire:model="emailBody" placeholder="Type the email body here..." rows="10"
-                        class="w-full px-4 py-3.5 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none transition-all font-mono text-sm resize-none bg-gray-50/50"></textarea>
-                    @error('emailBody')
-                        <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                <!-- Action Buttons -->
+                <div class="px-8 py-6 border-t border-gray-100 flex flex-col sm:flex-row gap-3 bg-white shrink-0">
+                    <button type="button" @click="$wire.set('showEmailModal', false)" class="flex-1 px-6 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-full transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" wire:loading.attr="disabled" class="flex-1 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-colors flex items-center justify-center gap-2">
+                        <span wire:loading.remove wire:target="sendEmail" class="material-symbols-outlined text-[20px]">send</span>
+                        <span wire:loading wire:target="sendEmail" class="material-symbols-outlined text-[20px] animate-spin text-white">progress_activity</span>
+                        <span wire:loading.remove wire:target="sendEmail">Send</span>
+                        <span wire:loading wire:target="sendEmail">Sending...</span>
+                    </button>
                 </div>
-
-                <!-- Send To Info -->
-                <div class="bg-blue-50 dark:bg-blue-955/20 border border-blue-100 dark:border-blue-500/20 rounded-2xl p-5">
-                    <p class="text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                        <span class="font-bold text-gray-900 dark:text-white">Send to:</span> 
-                        <span class="font-mono text-blue-600 dark:text-blue-400 bg-white dark:bg-[#020617]/50 px-3 py-1 rounded-lg border border-blue-200/50 dark:border-blue-500/20">{{ $appointment->user?->email ?? 'N/A' }}</span>
-                    </p>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="px-8 py-6 border-t border-gray-100 flex flex-col sm:flex-row gap-3 bg-white shrink-0">
-                <button @click="showEmailModal = false" class="flex-1 px-6 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-full transition-colors">
-                    Cancel
-                </button>
-                <button wire:click="sendEmail" class="flex-1 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-200">
-                    <span class="material-symbols-outlined text-[20px]">send</span>
-                    Send
-                </button>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -505,10 +553,134 @@
                     <button @click="showStatusModal = false" class="flex-1 px-6 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-full transition-colors">
                         Cancel
                     </button>
-                    <button wire:click="updateStatus" class="flex-1 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-colors shadow-lg shadow-blue-200">
-                        Update
+                    <button type="button" wire:click="updateStatus" wire:loading.attr="disabled" class="flex-1 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-colors shadow-lg flex items-center justify-center gap-2">
+                        <span wire:loading.remove wire:target="updateStatus" class="material-symbols-outlined text-[20px]">edit_calendar</span>
+                        <span wire:loading wire:target="updateStatus" class="material-symbols-outlined text-[20px] animate-spin text-white">progress_activity</span>
+                        <span wire:loading.remove wire:target="updateStatus">Update</span>
+                        <span wire:loading wire:target="updateStatus">Updating...</span>
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!-- Finance Update Modal -->
+    <div x-show="showFinanceModal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-md"
+        x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        @keydown.escape.window="$wire.set('showFinanceModal', false)">
+        
+        <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-md w-full p-10 transform transition-all"
+            @click.outside="$wire.set('showFinanceModal', false)"
+            x-transition:enter="ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+            x-transition:leave-end="opacity-0 scale-95 translate-y-4">
+            
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-3xl">attach_money</span>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900">Edit Costs</h2>
+            </div>
+
+            <form wire:submit.prevent="updateFinance" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-bold text-gray-750 mb-2">Estimated Quote (₱)</label>
+                    <input type="number" step="0.01" wire:model="formQuote" class="w-full px-4 py-3.5 border border-gray-250 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none text-sm transition-all bg-gray-50/50">
+                    @error('formQuote')
+                        <p class="text-red-650 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-750 mb-2">Final Cost (₱) - Leave blank if pending/TBD</label>
+                    <input type="number" step="0.01" placeholder="TBD" wire:model="formFinalCost" class="w-full px-4 py-3.5 border border-gray-250 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none text-sm transition-all bg-gray-50/50">
+                    @error('formFinalCost')
+                        <p class="text-red-650 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-750 mb-2">Additional Fees (₱)</label>
+                    <input type="number" step="0.01" wire:model="formAdditionalFee" class="w-full px-4 py-3.5 border border-gray-250 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none text-sm transition-all bg-gray-50/50">
+                    @error('formAdditionalFee')
+                        <p class="text-red-650 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-750 mb-2">Invoice Number</label>
+                    <input type="text" placeholder="e.g. INV-00001" wire:model="formInvoiceNumber" class="w-full px-4 py-3.5 border border-gray-250 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none text-sm transition-all bg-gray-50/50">
+                    @error('formInvoiceNumber')
+                        <p class="text-red-650 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-100">
+                    <button type="button" @click="$wire.set('showFinanceModal', false)" class="flex-1 px-6 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-full transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" wire:loading.attr="disabled" class="flex-1 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-colors shadow-lg flex items-center justify-center gap-2">
+                        <span wire:loading.remove wire:target="updateFinance" class="material-symbols-outlined text-[20px]">save</span>
+                        <span wire:loading wire:target="updateFinance" class="material-symbols-outlined text-[20px] animate-spin text-white">progress_activity</span>
+                        <span wire:loading.remove wire:target="updateFinance">Save Changes</span>
+                        <span wire:loading wire:target="updateFinance">Saving...</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div x-show="showDeleteModal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-md"
+        x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        @keydown.escape.window="showDeleteModal = false">
+        
+        <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-md w-full p-10 transform transition-all"
+            @click.outside="showDeleteModal = false"
+            x-transition:enter="ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+            x-transition:leave-end="opacity-0 scale-95 translate-y-4">
+            
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mx-auto mb-4 border border-red-200 shadow-sm">
+                    <span class="material-symbols-outlined text-3xl">delete_forever</span>
+                </div>
+                <h3 class="text-2xl font-black text-gray-900 tracking-tighter font-[Montserrat]">Delete Appointment?</h3>
+                <p class="text-sm text-gray-400 font-medium mt-2">Are you sure you want to permanently delete this appointment? This action cannot be undone.</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-100">
+                <button type="button" @click="showDeleteModal = false" class="flex-1 px-6 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-full transition-colors">
+                    Cancel
+                </button>
+                <button type="button" wire:click="deleteAppointment" wire:loading.attr="disabled" class="flex-1 px-6 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-full transition-colors shadow-lg flex items-center justify-center gap-2">
+                    <span wire:loading.remove wire:target="deleteAppointment" class="material-symbols-outlined text-[20px]">delete_forever</span>
+                    <span wire:loading wire:target="deleteAppointment" class="material-symbols-outlined text-[20px] animate-spin text-white">progress_activity</span>
+                    <span wire:loading.remove wire:target="deleteAppointment">Confirm Delete</span>
+                    <span wire:loading wire:target="deleteAppointment">Deleting...</span>
+                </button>
             </div>
         </div>
     </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Receipt - {{ $appointment->tracking_code }}</title>
+    <title>Receipt - {{ $appointment->booking_number ?: $appointment->tracking_code }}</title>
     <style>
         * {
             margin: 0;
@@ -182,7 +182,7 @@
         <div class="receipt-header">
             <div class="receipt-title">SERVICE RECEIPT</div>
             <div class="receipt-subtitle">RepairMax Device Repair Service</div>
-            <div class="receipt-subtitle">Receipt ID: {{ $appointment->tracking_code }}</div>
+            <div class="receipt-subtitle">Booking Reference: {{ $appointment->booking_number ?: $appointment->tracking_code }}</div>
         </div>
 
         <div class="receipt-info">
@@ -196,6 +196,9 @@
 
             <div class="info-section">
                 <h3>Service Details</h3>
+                @if($appointment->invoice_number)
+                <p><span class="info-label">Invoice #:</span> <strong>{{ $appointment->invoice_number }}</strong></p>
+                @endif
                 <p><span class="info-label">Date:</span> {{ \Carbon\Carbon::parse($appointment->pref_date)->format('M d, Y') }}</p>
                 <p><span class="info-label">Time:</span> {{ \Carbon\Carbon::parse($appointment->pref_time)->format('h:i A') }}</p>
                 <p><span class="info-label">Status:</span> <strong>{{ $appointment->status }}</strong></p>

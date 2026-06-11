@@ -66,7 +66,12 @@
                                     <span class="text-gray-600 text-sm font-medium">{{ $appointment->fault_category }}</span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if($appointment->user?->role === 'user')
+                                    @if($appointment->user_id && $appointment->user?->role === 'admin')
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-purple-50 text-purple-700 border border-purple-100 rounded-lg text-xs font-bold">
+                                            <span class="material-symbols-outlined text-[14px]">admin_panel_settings</span>
+                                            Admin
+                                        </span>
+                                    @elseif($appointment->user_id)
                                         <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-green-50 text-green-700 border border-green-100 rounded-lg text-xs font-bold">
                                             <span class="material-symbols-outlined text-[14px]">person_check</span>
                                             User

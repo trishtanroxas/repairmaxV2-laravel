@@ -31,7 +31,7 @@ class N8nService
                 'timestamp' => now()->toIso8601String(),
             ];
 
-            $response = Http::timeout($this->timeout)
+            $response = Http::withoutVerifying()->timeout($this->timeout)
                 ->post("{$this->webhookUrl}/webhook/chatbot-message", $payload);
 
             if ($response->successful()) {
@@ -120,7 +120,7 @@ class N8nService
     private function triggerWorkflow(string $workflowName, array $data): array
     {
         try {
-            $response = Http::timeout($this->timeout)
+            $response = Http::withoutVerifying()->timeout($this->timeout)
                 ->post("{$this->webhookUrl}/webhook/{$workflowName}", $data);
 
             if ($response->successful()) {
@@ -153,7 +153,7 @@ class N8nService
     public function healthCheck(): bool
     {
         try {
-            $response = Http::timeout(5)
+            $response = Http::withoutVerifying()->timeout(5)
                 ->get("{$this->baseUrl}/api/v1/health");
 
             return $response->successful();

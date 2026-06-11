@@ -17,7 +17,11 @@ class AppointmentDownloadController extends Controller
             abort(401, 'Unauthorized');
         }
 
-        $appointment = $user->appointments()->findOrFail($appointmentId);
+        if ($user->role === 'admin') {
+            $appointment = Appointment::findOrFail($appointmentId);
+        } else {
+            $appointment = $user->appointments()->findOrFail($appointmentId);
+        }
 
         // Generate PDF from HTML template
         $html = View::make('livewire.pdf.receipt-pdf-print', [
@@ -30,7 +34,7 @@ class AppointmentDownloadController extends Controller
         $pdf->loadHTML($html);
         $pdf->setPaper('A4', 'portrait');
 
-        return $pdf->download('receipt-' . $appointment->tracking_code . '.pdf');
+        return $pdf->stream('receipt-' . $appointment->tracking_code . '.pdf');
     }
 
     public function downloadInvoice(string $appointmentId)
@@ -42,7 +46,11 @@ class AppointmentDownloadController extends Controller
             abort(401, 'Unauthorized');
         }
 
-        $appointment = $user->appointments()->findOrFail($appointmentId);
+        if ($user->role === 'admin') {
+            $appointment = Appointment::findOrFail($appointmentId);
+        } else {
+            $appointment = $user->appointments()->findOrFail($appointmentId);
+        }
 
         // Generate PDF from HTML template
         $html = View::make('livewire.pdf.receipt-pdf-print', [
@@ -55,7 +63,7 @@ class AppointmentDownloadController extends Controller
         $pdf->loadHTML($html);
         $pdf->setPaper('A4', 'portrait');
 
-        return $pdf->download('invoice-' . ($appointment->invoice_number ?? $appointment->tracking_code) . '.pdf');
+        return $pdf->stream('invoice-' . ($appointment->invoice_number ?? $appointment->tracking_code) . '.pdf');
     }
 
     public function viewReceipt(string $appointmentId)
@@ -67,7 +75,11 @@ class AppointmentDownloadController extends Controller
             abort(401, 'Unauthorized');
         }
 
-        $appointment = $user->appointments()->findOrFail($appointmentId);
+        if ($user->role === 'admin') {
+            $appointment = Appointment::findOrFail($appointmentId);
+        } else {
+            $appointment = $user->appointments()->findOrFail($appointmentId);
+        }
 
         // Display receipt and invoice as HTML (not PDF)
         return View::make('livewire.pdf.receipt-and-invoice-view', [
@@ -85,7 +97,11 @@ class AppointmentDownloadController extends Controller
             abort(401, 'Unauthorized');
         }
 
-        $appointment = $user->appointments()->findOrFail($appointmentId);
+        if ($user->role === 'admin') {
+            $appointment = Appointment::findOrFail($appointmentId);
+        } else {
+            $appointment = $user->appointments()->findOrFail($appointmentId);
+        }
 
         // Display receipt and invoice as HTML (not PDF)
         return View::make('livewire.pdf.receipt-and-invoice-view', [

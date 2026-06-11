@@ -64,9 +64,15 @@
                         <p class="text-xs text-green-600 font-medium tracking-tight">Repairmax Assistant</p>
                     </div>
                 </div>
-                <span class="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full">
-                    Active Session
-                </span>
+                <div class="flex items-center gap-2">
+                    <button wire:click="switchToSupport" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-full transition-all flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">support_agent</span>
+                        Switch to Support
+                    </button>
+                    <span class="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full">
+                        Active Session
+                    </span>
+                </div>
             </div>
 
             <div id="chat-messages-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 bg-gray-50/30 scroll-smooth">

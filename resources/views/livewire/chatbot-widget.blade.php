@@ -11,11 +11,19 @@
                 <p class="text-xs text-blue-100">Powered by n8n</p>
             </div>
         </div>
-        <button wire:click="toggleHistory" class="p-2 hover:bg-blue-500 rounded-full transition">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-        </button>
+        <div class="flex items-center gap-2">
+            @if($currentSession)
+            <button wire:click="switchToSupport" class="text-xs bg-white text-blue-700 hover:bg-blue-50 font-bold px-3 py-1.5 rounded-full transition flex items-center gap-1 shadow-sm">
+                <span class="material-symbols-outlined text-[14px]">support_agent</span>
+                Support
+            </button>
+            @endif
+            <button wire:click="toggleHistory" class="p-2 hover:bg-blue-500 rounded-full transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
     </div>
 
     <div class="flex flex-1 overflow-hidden">

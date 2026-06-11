@@ -158,6 +158,69 @@ class ChatbotWidget extends Component
         $this->showHistory = !$this->showHistory;
     }
 
+    public function switchToSupport()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            $this->dispatch('toast', message: 'You must be logged in to request support.', type: 'error');
+            return;
+        }
+
+        // Get context from current session chatbot messages
+        $context = "";
+        if ($this->currentSession) {
+            $msgs = ChatbotMessage::where('chatbot_session_id', $this->currentSession)
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
+                ->get()
+                ->reverse();
+                
+            foreach ($msgs as $msg) {
+                $roleName = $msg->is_user ? 'User' : 'Bot';
+                $context .= "\n- {$roleName}: {$msg->message}";
+            }
+        }
+
+        $supportMessage = \App\Models\Message::create([
+            'user_id' => $user->id,
+            'subject' => 'Switch to Live Support (Chatbot Widget)',
+            'message' => 'User requested support from the chatbot widget. Last messages:' . ($context ?: ' (No messages)'),
+            'is_read' => false,
+            'admin_read' => false,
+        ]);
+
+        // Notify admins
+        $admins = \App\Models\User::where('role', 'admin')->get();
+        $userFullName = $user->first_name . ' ' . $user->last_name;
+        foreach ($admins as $admin) {
+            \App\Models\Notification::create([
+                'user_id' => $admin->id,
+                'admin_id' => $admin->id,
+                'title' => 'Live Support Request',
+                'message' => $userFullName . ' requested live support from chatbot widget.',
+                'type' => 'support_message',
+                'related_model' => 'Message',
+                'related_id' => $supportMessage->id,
+                'is_read' => false,
+            ]);
+        }
+
+        // Add system message to the chatbot messages
+        if ($this->currentSession) {
+            $msgText = 'You have switched to live support. An admin has been notified and will reply to you shortly. You can also view your support tickets in the "Support Messages" menu.';
+            
+            ChatbotMessage::create([
+                'chatbot_session_id' => $this->currentSession,
+                'message' => $msgText,
+                'is_user' => false,
+            ]);
+            
+            $this->loadMessages();
+        }
+
+        $this->dispatch('toast', message: 'Requested live support! An admin has been notified.', type: 'success');
+    }
+
     public function render()
     {
         return view('livewire.chatbot-widget', [

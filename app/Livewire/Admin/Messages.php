@@ -19,10 +19,35 @@ class Messages extends Component
     public $selectedMessage = null;
     public $replyMessage = '';
     public $searchTerm = '';
+    public $lastMessageId;
 
     public function mount()
     {
-        // Load messages targeted at admin
+        $this->lastMessageId = Message::max('id') ?? 0;
+    }
+
+    public function checkForNewMessages()
+    {
+        $newMessages = Message::with('user')
+            ->where('id', '>', $this->lastMessageId)
+            ->where(function ($query) {
+                $query->whereNull('admin_id')
+                    ->orWhere('admin_id', auth()->id());
+            })
+            ->get();
+
+        if ($newMessages->isNotEmpty()) {
+            foreach ($newMessages as $message) {
+                $userName = $message->user ? ($message->user->first_name . ' ' . $message->user->last_name) : 'A user';
+                if (str_contains(strtolower($message->subject), 'switch to live support') || str_contains(strtolower($message->message), 'requested live support')) {
+                    $this->dispatch('toast', message: "{$userName} has switched to live support!", type: 'info');
+                } else {
+                    $this->dispatch('toast', message: "New message from {$userName}: {$message->subject}", type: 'info');
+                }
+            }
+            $this->lastMessageId = $newMessages->max('id');
+            $this->dispatch('$refresh');
+        }
     }
 
     public function getMessages()

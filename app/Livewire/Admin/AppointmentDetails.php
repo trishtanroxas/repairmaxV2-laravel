@@ -7,6 +7,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\GeneralEmail;
 
 #[Layout('components.layouts.admin')]
 #[Title('Appointment Details | Repairmax')]
@@ -27,6 +28,13 @@ class AppointmentDetails extends Component
     // Status update
     public $newStatus = '';
     public $showStatusModal = false;
+
+    // Finance update
+    public $showFinanceModal = false;
+    public $formQuote = 0;
+    public $formFinalCost = '';
+    public $formAdditionalFee = 0;
+    public $formInvoiceNumber = '';
 
     public function mount($id)
     {
@@ -51,13 +59,14 @@ class AppointmentDetails extends Component
     public function openEmailModal($type = 'receipt')
     {
         $this->emailType = $type;
+        $refNumber = $this->appointment->booking_number ?: $this->appointment->tracking_code;
         
         // Pre-fill the subject based on the type
         if ($type === 'receipt') {
-            $this->emailSubject = 'Service Receipt - Appointment #' . $this->appointment->tracking_code;
+            $this->emailSubject = 'Service Receipt - Booking Reference #' . $refNumber;
             $this->emailBody = $this->generateReceiptTemplate();
         } elseif ($type === 'invoice') {
-            $this->emailSubject = 'Invoice - Appointment #' . $this->appointment->tracking_code;
+            $this->emailSubject = 'Invoice - Booking Reference #' . $refNumber;
             $this->emailBody = $this->generateInvoiceTemplate();
         }
         
@@ -67,21 +76,30 @@ class AppointmentDetails extends Component
     // Generate receipt template
     private function generateReceiptTemplate()
     {
-        $finalCost = $this->appointment->final_cost ?? 'Pending';
+        $refNumber = $this->appointment->booking_number ?: $this->appointment->tracking_code;
+        $quoteVal = is_numeric($this->appointment->quote) 
+            ? '₱' . number_format((float)$this->appointment->quote, 2) 
+            : ($this->appointment->pricing_confirmed ? '₱0.00' : 'Pending');
+        $finalCost = $this->appointment->final_cost;
+        $finalCostVal = is_numeric($finalCost) 
+            ? '₱' . number_format((float)$finalCost, 2) 
+            : ($this->appointment->pricing_confirmed ? '₱0.00' : 'Pending');
         $description = $this->appointment->description ?? 'N/A';
+        
+        $invoiceLine = $this->appointment->invoice_number ? "\n📌 Invoice Number: " . $this->appointment->invoice_number : "";
         
         return <<<HTML
 Dear Valued Customer,
 
 Here is your SERVICE RECEIPT for confirmation:
 
-📌 Booking Reference: {$this->appointment->booking_number}
+📌 Booking Reference: {$refNumber}{$invoiceLine}
 📌 Device: {$this->appointment->device_brand} {$this->appointment->device_model}
 📌 Issue: {$this->appointment->fault_category}
 📌 Status: {$this->appointment->status}
 
-💰 Quote Price: ₱{$this->appointment->quote}
-💰 Final Cost: ₱{$finalCost}
+💰 Quote Price: {$quoteVal}
+💰 Final Cost: {$finalCostVal}
 
 🔧 Description: {$description}
 
@@ -95,19 +113,28 @@ HTML;
     // Generate the invoice template
     private function generateInvoiceTemplate()
     {
+        $refNumber = $this->appointment->booking_number ?: $this->appointment->tracking_code;
         $invoiceNumber = $this->appointment->invoice_number ?? 'N/A';
         $createdDate = $this->appointment->created_at ? $this->appointment->created_at->format('M d, Y') : 'N/A';
         $userName = $this->appointment->user ? $this->appointment->user->getFullName() : 'Guest Customer';
         $userEmail = $this->appointment->user ? $this->appointment->user->email : 'N/A';
         $userPhone = $this->appointment->user ? $this->appointment->user->phone : 'N/A';
         $description = $this->appointment->description ?? 'N/A';
+        
+        $quoteVal = is_numeric($this->appointment->quote) 
+            ? '₱' . number_format((float)$this->appointment->quote, 2) 
+            : ($this->appointment->pricing_confirmed ? '₱0.00' : 'Pending');
         $finalCost = $this->appointment->final_cost ?? $this->appointment->quote;
+        $finalCostVal = is_numeric($finalCost) 
+            ? '₱' . number_format((float)$finalCost, 2) 
+            : ($this->appointment->pricing_confirmed ? '₱0.00' : 'Pending');
         $additionalFees = max(0, ($this->appointment->final_cost ?? 0) - ($this->appointment->quote ?? 0));
+        $additionalFeesVal = '₱' . number_format((float)$additionalFees, 2);
         
         return <<<HTML
 OFFICIAL INVOICE
 
-Booking Reference: {$this->appointment->booking_number}
+Booking Reference: {$refNumber}
 Invoice Number: {$invoiceNumber}
 Date: {$createdDate}
 
@@ -128,11 +155,11 @@ Description: {$description}
 ========================================
 PRICING BREAKDOWN
 ========================================
-Service Quote: ₱{$this->appointment->quote}
-Final Cost: ₱{$finalCost}
-Additional Fees: ₱{$additionalFees}
+Service Quote: {$quoteVal}
+Final Cost: {$finalCostVal}
+Additional Fees: {$additionalFeesVal}
 
-TOTAL AMOUNT DUE: ₱{$finalCost}
+TOTAL AMOUNT DUE: {$finalCostVal}
 
 ========================================
 
@@ -157,16 +184,41 @@ HTML;
             $recipientEmail = $this->appointment->user?->email;
             
             if (!$recipientEmail) {
-                session()->flash('error', 'No email address for this customer.');
+                $this->dispatch('toast', message: 'No email address for this customer.', type: 'error');
                 return;
             }
 
-            // Send using Mail class
-            Mail::raw($this->emailBody, function ($message) use ($recipientEmail) {
-                $message->to($recipientEmail)
-                    ->subject($this->emailSubject)
-                    ->from(config('mail.from.address'), 'RepairMax');
-            });
+            $pdfData = null;
+            $pdfFileName = null;
+
+            if ($this->emailType === 'receipt') {
+                $html = view('livewire.pdf.receipt-pdf-print', [
+                    'appointment' => $this->appointment,
+                    'user' => $this->appointment->user,
+                    'type' => 'receipt'
+                ])->render();
+                
+                $pdf = app('dompdf.wrapper');
+                $pdf->loadHTML($html);
+                $pdf->setPaper('A4', 'portrait');
+                $pdfData = $pdf->output();
+                $pdfFileName = 'receipt-' . $this->appointment->tracking_code . '.pdf';
+            } elseif ($this->emailType === 'invoice') {
+                $html = view('livewire.pdf.receipt-pdf-print', [
+                    'appointment' => $this->appointment,
+                    'user' => $this->appointment->user,
+                    'type' => 'invoice'
+                ])->render();
+                
+                $pdf = app('dompdf.wrapper');
+                $pdf->loadHTML($html);
+                $pdf->setPaper('A4', 'portrait');
+                $pdfData = $pdf->output();
+                $pdfFileName = 'invoice-' . ($this->appointment->invoice_number ?? $this->appointment->tracking_code) . '.pdf';
+            }
+
+            // Send using GeneralEmail Mailable (HTML Template) with PDF attachment if available
+            Mail::to($recipientEmail)->send(new GeneralEmail($this->emailSubject, $this->emailBody, $pdfData, $pdfFileName));
 
             // Reset the form
             $this->showEmailModal = false;
@@ -174,9 +226,9 @@ HTML;
             $this->emailBody = '';
             $this->emailType = 'receipt';
 
-            session()->flash('message', 'Email successfully sent to ' . $recipientEmail);
+            $this->dispatch('toast', message: 'Email successfully sent to ' . $recipientEmail, type: 'success');
         } catch (\Exception $e) {
-            session()->flash('error', 'Failed to send email: ' . $e->getMessage());
+            $this->dispatch('toast', message: 'Failed to send email: ' . $e->getMessage(), type: 'error');
         }
     }
 
@@ -226,6 +278,71 @@ HTML;
             return redirect()->route('admin.appointment');
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to delete appointment: ' . $e->getMessage());
+        }
+    }
+
+    // Detect template selector change to update subject and body
+    public function updatedEmailType($value)
+    {
+        $refNumber = $this->appointment->booking_number ?: $this->appointment->tracking_code;
+        if ($value === 'receipt') {
+            $this->emailSubject = 'Service Receipt - Booking Reference #' . $refNumber;
+            $this->emailBody = $this->generateReceiptTemplate();
+        } elseif ($value === 'invoice') {
+            $this->emailSubject = 'Invoice - Booking Reference #' . $refNumber;
+            $this->emailBody = $this->generateInvoiceTemplate();
+        } else {
+            $this->emailSubject = '';
+            $this->emailBody = '';
+        }
+    }
+
+    // Open the finance modal
+    public function openFinanceModal()
+    {
+        $this->formQuote = $this->appointment->quote;
+        $this->formFinalCost = $this->appointment->final_cost ?? '';
+        $this->formAdditionalFee = $this->appointment->additional_fee;
+        $this->formInvoiceNumber = $this->appointment->invoice_number ?? '';
+        $this->showFinanceModal = true;
+    }
+
+    // Save edited financial details
+    public function updateFinance()
+    {
+        $this->validate([
+            'formQuote' => 'required|numeric|min:0',
+            'formFinalCost' => 'nullable|numeric|min:0',
+            'formAdditionalFee' => 'required|numeric|min:0',
+            'formInvoiceNumber' => 'nullable|string|max:255',
+        ]);
+
+        try {
+            $this->appointment->update([
+                'quote' => $this->formQuote,
+                'final_cost' => ($this->formFinalCost !== '' && $this->formFinalCost !== null) ? $this->formFinalCost : null,
+                'additional_fee' => $this->formAdditionalFee,
+                'invoice_number' => $this->formInvoiceNumber ?: null,
+                'pricing_confirmed' => true,
+            ]);
+
+            $this->loadAppointment();
+            $this->showFinanceModal = false;
+            $this->dispatch('toast', message: 'Financial details successfully updated!', type: 'success');
+        } catch (\Exception $e) {
+            $this->dispatch('toast', message: 'Failed to update financial details: ' . $e->getMessage(), type: 'error');
+        }
+    }
+
+    // Confirm the pricing directly
+    public function confirmPricing()
+    {
+        try {
+            $this->appointment->update(['pricing_confirmed' => true]);
+            $this->loadAppointment();
+            $this->dispatch('toast', message: 'Pricing successfully confirmed!', type: 'success');
+        } catch (\Exception $e) {
+            $this->dispatch('toast', message: 'Failed to confirm pricing: ' . $e->getMessage(), type: 'error');
         }
     }
 }

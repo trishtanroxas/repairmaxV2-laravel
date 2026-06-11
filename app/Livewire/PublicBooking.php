@@ -173,8 +173,8 @@ class PublicBooking extends Component
 
     public function generateTrackingCode()
     {
-        $count = Appointment::count();
-        $nextNumber = str_pad($count + 1, 5, '0', STR_PAD_LEFT);
+        $maxId = Appointment::max('id') ?? 0;
+        $nextNumber = str_pad($maxId + 1, 5, '0', STR_PAD_LEFT);
         $this->tracking_code = 'RM-' . $nextNumber;
         $this->booking_number = 'RM-' . $nextNumber;
     }
@@ -440,6 +440,10 @@ class PublicBooking extends Component
         $appointment->additional_fee = $this->additional_fee;
         $appointment->quote          = $calculatedQuote;
         $appointment->booking_number = $trackingCode;
+        $appointment->save();
+
+        // Auto-generate invoice number based on appointment ID (INV-#####)
+        $appointment->invoice_number = 'INV-' . str_pad($appointment->id, 5, '0', STR_PAD_LEFT);
         $appointment->save();
 
         // Create notifications for all admins

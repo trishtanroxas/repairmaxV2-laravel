@@ -241,7 +241,7 @@ class Settings extends Component
         $this->n8nConnectionStatusClass = 'text-blue-600 bg-blue-50';
 
         try {
-            $response = Http::timeout(5)->asJson()->post($this->n8nWebhookUrl, [
+            $response = Http::withoutVerifying()->timeout(5)->asJson()->post($this->n8nWebhookUrl, [
                 'message' => 'ping',
                 'user_id' => 'test_admin',
                 'timestamp' => now()->toIso8601String(),

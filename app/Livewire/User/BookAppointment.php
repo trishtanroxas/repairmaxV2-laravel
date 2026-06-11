@@ -17,6 +17,8 @@ use App\Models\Notification;
 use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppointmentDetailsEmail;
 
 #[Layout('layouts.user')]
 #[Title('Book Appointment | Repairmax')]
@@ -193,8 +195,8 @@ class BookAppointment extends Component
 
     public function generateTrackingCode()
     {
-        $count = Appointment::count();
-        $nextNumber = str_pad($count + 1, 5, '0', STR_PAD_LEFT);
+        $maxId = Appointment::max('id') ?? 0;
+        $nextNumber = str_pad($maxId + 1, 5, '0', STR_PAD_LEFT);
         $this->tracking_code = 'RM-' . $nextNumber;
         $this->booking_number = 'RM-' . $nextNumber;
     }
@@ -483,6 +485,10 @@ class BookAppointment extends Component
         $appointment->booking_number = $trackingCode;
         $appointment->save();
 
+        // Auto-generate invoice number based on appointment ID (INV-#####)
+        $appointment->invoice_number = 'INV-' . str_pad($appointment->id, 5, '0', STR_PAD_LEFT);
+        $appointment->save();
+
         // Create notifications for all admins
         $admins = User::where('role', 'admin')->get();
         $userFullName = $this->first_name . ' ' . $this->last_name;
@@ -498,6 +504,13 @@ class BookAppointment extends Component
                 'related_id' => $appointment->id,
                 'is_read' => false,
             ]);
+        }
+
+        // Send appointment details email to user
+        try {
+            Mail::to($this->email)->send(new AppointmentDetailsEmail($appointment));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Failed to send appointment details email: ' . $e->getMessage());
         }
 
         Session::flash('success', 'Booking confirmed! Ticket Number: ' . $appointment->tracking_code);

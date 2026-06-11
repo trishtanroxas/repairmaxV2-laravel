@@ -148,6 +148,21 @@
             background-color: rgba(59, 130, 246, 0.1) !important;
             color: #60a5fa !important;
         }
+        body.dark .bg-blue-100 {
+            background-color: rgba(59, 130, 246, 0.15) !important;
+        }
+        body.dark .bg-yellow-50 {
+            background-color: rgba(245, 158, 11, 0.08) !important;
+        }
+        body.dark .bg-yellow-100 {
+            background-color: rgba(245, 158, 11, 0.2) !important;
+        }
+        body.dark .text-yellow-800 {
+            color: #fbbf24 !important;
+        }
+        body.dark .hover\:bg-blue-50:hover {
+            background-color: rgba(59, 130, 246, 0.15) !important;
+        }
         body.dark .bg-green-50 {
             background-color: rgba(16, 185, 129, 0.1) !important;
             color: #34d399 !important;

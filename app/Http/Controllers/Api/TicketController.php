@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
 class TicketController extends Controller
@@ -33,12 +32,19 @@ class TicketController extends Controller
                 'user_id' => 'nullable|integer',
             ]);
 
-            // Generate a unique tracking code (RX-XXXXX)
-            $trackingCode = 'RX-' . strtoupper(Str::random(6));
+            // Generate a sequential tracking code (RM-#####) matching the web booking format
+            $maxId = Appointment::max('id') ?? 0;
+            $trackingCode = 'RM-' . str_pad($maxId + 1, 5, '0', STR_PAD_LEFT);
+
+            $selectedFault = ($validated['fault_category'] && $validated['fault_category'] !== 'Other')
+                ? \App\Models\FaultType::where('name', $validated['fault_category'])->first()
+                : null;
+            $basePrice = $selectedFault ? $selectedFault->base_price : 0;
 
             $appointment = Appointment::create([
-                'user_id' => $validated['user_id'] ?? 8, // Default to test user if not provided
+                'user_id' => $validated['user_id'] ?? (\App\Models\User::first()?->id ?? 1), // Default to first user if not provided
                 'tracking_code' => $trackingCode,
+                'booking_number' => $trackingCode,
                 'device_brand' => $validated['device_brand'],
                 'device_model' => $validated['device_model'],
                 'fault_category' => $validated['fault_category'],
@@ -46,7 +52,12 @@ class TicketController extends Controller
                 'pref_date' => $validated['pref_date'],
                 'pref_time' => $validated['pref_time'],
                 'status' => 'Pending',
+                'quote' => $basePrice,
             ]);
+
+            // Auto-generate invoice number based on appointment ID (INV-#####)
+            $appointment->invoice_number = 'INV-' . str_pad($appointment->id, 5, '0', STR_PAD_LEFT);
+            $appointment->save();
 
             return response()->json([
                 'status' => 'success',

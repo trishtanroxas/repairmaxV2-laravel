@@ -28,8 +28,9 @@ class AppointmentDetailsEmail extends Mailable
      */
     public function envelope(): Envelope
     {
+        $refNumber = $this->appointment->booking_number ?: $this->appointment->tracking_code;
         return new Envelope(
-            subject: 'Your Repairmax Appointment Confirmed [' . $this->appointment->tracking_code . ']',
+            subject: 'Your Repairmax Booking Confirmed [' . $refNumber . ']',
         );
     }
 

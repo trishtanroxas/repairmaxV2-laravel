@@ -3,563 +3,469 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Receipt & Invoice - {{ $appointment->tracking_code }}</title>
+    <title>Receipt & Invoice - {{ $appointment->booking_number ?: $appointment->tracking_code }}</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #1f2937;
-            line-height: 1.6;
-            background: #f3f4f6;
-            padding: 20px;
-        }
-
-        .viewport-controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background: #1f2937;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #111827;
-        }
-
-        .btn-secondary {
-            background: #e5e7eb;
-            color: #1f2937;
-            border: 1px solid #d1d5db;
-        }
-
-        .btn-secondary:hover {
-            background: #d1d5db;
-        }
-
-        .btn-success {
-            background: #10b981;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #059669;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px;
-            background: white;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #1f2937;
-        }
-
-        .logo-section {
-            margin-bottom: 15px;
-        }
-
-        .company-name {
-            font-size: 32px;
-            font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 5px;
-        }
-
-        .doc-type {
-            font-size: 18px;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .doc-number {
+            color: #334155;
+            background: #f1f5f9;
+            padding: 30px 20px;
             font-size: 12px;
-            color: #9ca3af;
-            margin-top: 8px;
+            line-height: 1.4;
         }
 
-        .info-section {
-            margin-bottom: 35px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
+        /* ── Controls ── */
+        .controls {
+            display: flex; gap: 10px; margin-bottom: 24px;
+            justify-content: center; flex-wrap: wrap;
+        }
+        .btn {
+            padding: 9px 22px; border: none; border-radius: 9999px;
+            cursor: pointer; font-size: 13px; font-weight: 700;
+            display: inline-flex; align-items: center; gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: #1e3a8a; color: white; }
+        .btn-primary:hover { background: #1e40af; }
+        .btn-secondary { background: white; color: #4b5563; border: 1px solid #e2e8f0; }
+        .btn-success { background: #10b981; color: white; }
+
+        /* ── Document Card ── */
+        .doc-card {
+            max-width: 780px; margin: 0 auto 30px;
+            background: white; border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            overflow: hidden; border: 1px solid #e2e8f0;
         }
 
-        .info-block {
-            font-size: 13px;
+        /* ── Dark Header ── */
+        .doc-header {
+            padding: 20px 28px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative;
+        }
+        .doc-header-receipt { background: #064e3b; }
+        .doc-header-invoice { background: #1e3a8a; }
+
+        .logo-area { display: flex; flex-direction: column; gap: 3px; }
+        .logo-img { height: 32px; width: auto; }
+        .company-tagline {
+            font-size: 9px; color: rgba(255,255,255,0.6);
+            text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;
         }
 
-        .info-label {
-            font-weight: bold;
-            color: #374151;
-            margin-bottom: 3px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .doc-title-area { text-align: right; }
+        .doc-title {
+            font-size: 22px; font-weight: 900; color: white;
+            letter-spacing: -0.5px; line-height: 1;
+        }
+        .doc-ref { font-size: 11px; color: rgba(255,255,255,0.7); font-family: monospace; margin-top: 3px; }
+
+        /* ── Stamp (in header, not over content) ── */
+        .stamp {
+            position: absolute; right: 28px; top: 50%;
+            transform: translateY(-50%) rotate(-6deg);
+            border: 2px solid rgba(255,255,255,0.5);
+            color: white; font-size: 11px; font-weight: 900;
+            padding: 4px 10px; border-radius: 5px;
+            text-transform: uppercase; letter-spacing: 2px;
+            white-space: nowrap;
         }
 
-        .info-value {
-            color: #1f2937;
-            margin-bottom: 8px;
+        /* ── Body Content ── */
+        .doc-body { padding: 20px 28px; }
+
+        /* Status strip */
+        .status-strip {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 14px; border-radius: 8px; margin-bottom: 16px;
+        }
+        .status-strip-receipt { background: #ecfdf5; border-left: 3px solid #10b981; }
+        .status-strip-invoice { background: #eff6ff; border-left: 3px solid #2563eb; }
+        .status-label { font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        .status-val-receipt { font-size: 13px; font-weight: 800; color: #065f46; }
+        .status-val-invoice { font-size: 13px; font-weight: 800; color: #1e3a8a; }
+
+        /* Two-col info grid */
+        .info-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 14px; margin-bottom: 14px;
+        }
+        .info-card {
+            background: #f8fafc; border: 1px solid #e2e8f0;
+            border-radius: 12px; padding: 14px;
+        }
+        .card-header-receipt {
+            font-size: 9px; font-weight: 800; color: #047857;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin-bottom: 8px; border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+        }
+        .card-header-invoice {
+            font-size: 9px; font-weight: 800; color: #1e3a8a;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin-bottom: 8px; border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+        }
+        .info-row { margin-bottom: 5px; display: flex; gap: 6px; }
+        .info-row-label { color: #64748b; min-width: 90px; }
+        .info-row-value { font-weight: 700; color: #1e293b; }
+
+        /* Invoice table */
+        .invoice-table {
+            width: 100%; border-collapse: collapse;
+            font-size: 12px; margin-bottom: 14px;
+            border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;
+        }
+        .invoice-table th {
+            background: #f1f5f9; border-bottom: 1px solid #e2e8f0;
+            padding: 9px 12px; text-align: left; font-weight: 800;
+            color: #475569; text-transform: uppercase; font-size: 9px; letter-spacing: 0.5px;
+        }
+        .invoice-table td {
+            border-bottom: 1px solid #f1f5f9;
+            padding: 10px 12px; vertical-align: middle;
+        }
+        .invoice-table tr:last-child td { border-bottom: none; }
+
+        /* Description — compact, truncated for single-page fit */
+        .desc-box {
+            background: #f8fafc; border: 1px solid #e2e8f0;
+            border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;
+        }
+        .desc-header-receipt { font-size: 9px; font-weight: 800; color: #047857; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .desc-header-invoice { font-size: 9px; font-weight: 800; color: #1e3a8a; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .desc-content {
+            color: #475569; font-size: 11px; line-height: 1.5;
+            white-space: pre-wrap; max-height: 80px; overflow: hidden;
         }
 
-        .device-section {
-            background: #f9fafb;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
+        /* Pricing / Total */
+        .pricing-area { margin-top: 10px; }
+        .pricing-row {
+            display: flex; justify-content: flex-end;
+            padding: 5px 0; border-bottom: 1px solid #f1f5f9;
         }
-
-        .section-title {
-            font-size: 13px;
-            font-weight: bold;
-            text-transform: uppercase;
-            color: #374151;
-            margin-bottom: 12px;
-            letter-spacing: 0.5px;
+        .pricing-label { color: #64748b; margin-right: 40px; }
+        .pricing-val { font-weight: 700; color: #1e293b; min-width: 90px; text-align: right; }
+        .total-bar-receipt {
+            display: flex; justify-content: flex-end; align-items: center;
+            background: #064e3b; color: white; padding: 10px 16px;
+            border-radius: 10px; margin-top: 6px;
         }
-
-        .device-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        .total-bar-invoice {
+            display: flex; justify-content: flex-end; align-items: center;
+            background: #1e3a8a; color: white; padding: 10px 16px;
+            border-radius: 10px; margin-top: 6px;
         }
+        .total-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-right: 40px; }
+        .total-val { font-size: 16px; font-weight: 900; min-width: 90px; text-align: right; }
 
-        .device-item {
-            font-size: 13px;
-        }
-
-        .device-label {
-            color: #6b7280;
-            font-size: 11px;
-            margin-bottom: 3px;
-        }
-
-        .device-value {
-            color: #1f2937;
-            font-weight: bold;
-        }
-
-        .description-section {
-            background: #f9fafb;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .description-section .section-title {
-            margin-bottom: 8px;
-        }
-
-        .description-text {
-            color: #1f2937;
-        }
-
-        .totals-section {
-            margin-bottom: 30px;
-        }
-
-        .totals-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-
-        .totals-table tr {
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .totals-table td {
-            padding: 10px 0;
-        }
-
-        .totals-table .label {
-            text-align: right;
-            padding-right: 20px;
-            color: #6b7280;
-        }
-
-        .totals-table .value {
-            text-align: right;
-            font-weight: bold;
-            color: #1f2937;
-        }
-
-        .totals-table .total-row {
-            background: #1f2937;
-            color: white;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .totals-table .total-row .label,
-        .totals-table .total-row .value {
-            color: white;
-            padding: 12px 0;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        .status-completed {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .status-cancelled {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-            text-align: center;
-            font-size: 11px;
-            color: #6b7280;
-        }
-
-        .footer-text {
-            margin: 5px 0;
-        }
-
-        .notes-section {
-            background: #fef3c7;
-            padding: 15px;
-            border-left: 4px solid #f59e0b;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 13px;
-        }
-
-        .notes-label {
-            font-weight: bold;
-            color: #92400e;
-            margin-bottom: 5px;
-        }
-
-        .notes-text {
-            color: #78350f;
-        }
-
-        .page-break {
-            page-break-after: always;
-            border-top: 2px dashed #d1d5db;
-            margin: 40px 0;
-            padding-top: 40px;
+        /* Footer */
+        .doc-footer {
+            border-top: 1px solid #e2e8f0; margin-top: 14px;
+            padding-top: 10px; text-align: center;
+            font-size: 10px; color: #94a3b8; line-height: 1.6;
         }
 
         @media print {
-            body {
-                background: white;
-                margin: 0;
-                padding: 0;
+            body { background: white; padding: 0; }
+            .controls { display: none; }
+            .doc-card {
+                box-shadow: none; border-radius: 0; border: none;
+                margin: 0; max-width: 100%;
+                page-break-after: always;
             }
-
-            .viewport-controls {
-                display: none;
-            }
-
-            .container {
-                margin: 0;
-                padding: 20px;
-                box-shadow: none;
-                border-radius: 0;
-            }
-        }
-
-        .documents-wrapper {
-            display: none;
-        }
-
-        .documents-wrapper.show {
-            display: block;
+            .doc-card:last-child { page-break-after: auto; }
         }
     </style>
 </head>
 <body>
+
     <!-- Controls -->
-    <div class="viewport-controls">
+    <div class="controls">
         <button class="btn btn-primary" onclick="window.print()">🖨️ Print</button>
         <button class="btn btn-secondary" onclick="downloadAsHTML()">📥 Download HTML</button>
-        <button class="btn btn-success" onclick="goBack()">← Back</button>
+        <button class="btn btn-success" onclick="window.history.back()">← Back</button>
     </div>
 
-    <!-- Receipt -->
-    <div class="container">
-        <div class="header">
-            <div class="logo-section">
-                <div class="company-name">RepairMax</div>
-                <div class="doc-type">SERVICE RECEIPT</div>
-                <div class="doc-number">#{{ $appointment->tracking_code }}</div>
-            </div>
-        </div>
+    {{-- ══════════════════════════════════ --}}
+    {{-- RECEIPT                           --}}
+    {{-- ══════════════════════════════════ --}}
+    <div class="doc-card">
 
-        @if(strtolower($appointment->status) == 'completed')
-            <div class="status-badge status-completed">✓ Completed</div>
-        @elseif(strtolower($appointment->status) == 'cancelled')
-            <div class="status-badge status-cancelled">✗ Cancelled</div>
-        @endif
-
-        <div class="info-section">
-            <div>
-                <div class="info-block">
-                    <div class="info-label">Customer Name</div>
-                    <div class="info-value">{{ $user->first_name }} {{ $user->last_name }}</div>
-                </div>
-                <div class="info-block">
-                    <div class="info-label">Email Address</div>
-                    <div class="info-value">{{ $user->email }}</div>
-                </div>
-                <div class="info-block">
-                    <div class="info-label">Phone Number</div>
-                    <div class="info-value">{{ $user->phone }}</div>
-                </div>
+        <div class="doc-header doc-header-receipt">
+            <div class="logo-area">
+                <img src="{{ asset('img/logo-r-white.png') }}" class="logo-img" alt="RepairMax">
+                <div class="company-tagline">Premium Repair Specialists</div>
             </div>
-            <div>
-                <div class="info-block">
-                    <div class="info-label">Service ID / Tracking Code</div>
-                    <div class="info-value">{{ $appointment->tracking_code }}</div>
-                </div>
-                <div class="info-block">
-                    <div class="info-label">Service Date</div>
-                    <div class="info-value">{{ $appointment->pref_date->format('M d, Y') }} at {{ \Carbon\Carbon::parse($appointment->pref_time)->format('h:i A') }}</div>
-                </div>
-                @if($appointment->completed_at)
-                <div class="info-block">
-                    <div class="info-label">Completed Date</div>
-                    <div class="info-value">{{ $appointment->completed_at->format('M d, Y') }}</div>
-                </div>
+            <div class="doc-title-area" style="margin-right: 80px;">
+                <div class="doc-title">SERVICE RECEIPT</div>
+                <div class="doc-ref">Ref #: {{ $appointment->booking_number ?: $appointment->tracking_code }}</div>
+                @if($appointment->invoice_number)
+                <div class="doc-ref">Invoice #: {{ $appointment->invoice_number }}</div>
                 @endif
             </div>
-        </div>
-
-        <div class="device-section">
-            <div class="section-title">Device Information</div>
-            <div class="device-grid">
-                <div class="device-item">
-                    <div class="device-label">Brand</div>
-                    <div class="device-value">{{ $appointment->device_brand }}</div>
-                </div>
-                <div class="device-item">
-                    <div class="device-label">Model</div>
-                    <div class="device-value">{{ $appointment->device_model }}</div>
-                </div>
-                <div class="device-item">
-                    <div class="device-label">Issue Category</div>
-                    <div class="device-value">{{ $appointment->fault_category }}</div>
-                </div>
-                <div class="device-item">
-                    <div class="device-label">Status</div>
-                    <div class="device-value">{{ $appointment->status }}</div>
-                </div>
+            <div class="stamp">
+                @if($appointment->status == 'Completed') PAID @else {{ $appointment->status }} @endif
             </div>
         </div>
 
-        @if($appointment->description)
-        <div class="description-section">
-            <div class="section-title">Service Description</div>
-            <div class="description-text">{{ $appointment->description }}</div>
-        </div>
-        @endif
+        <div class="doc-body">
 
-        @if(strtolower($appointment->status) == 'completed')
-        <div class="totals-section">
-            <table class="totals-table">
-                <tr>
-                    <td class="label">Estimated Quote:</td>
-                    <td class="value">₱{{ number_format($appointment->quote ?? 0, 2) }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Final Service Cost:</td>
-                    <td class="value">₱{{ number_format($appointment->final_cost ?? $appointment->quote ?? 0, 2) }}</td>
-                </tr>
-                @if($appointment->final_cost != $appointment->quote && $appointment->quote)
-                <tr>
-                    <td class="label">Adjustment:</td>
-                    <td class="value">₱{{ number_format(($appointment->final_cost ?? 0) - ($appointment->quote ?? 0), 2) }}</td>
-                </tr>
+            <div class="status-strip status-strip-receipt">
+                <div>
+                    <div class="status-label">Current Appointment Status</div>
+                    <div class="status-val-receipt">{{ $appointment->status }}</div>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="card-header-receipt">Customer Information</div>
+                    <div class="info-row">
+                        <span class="info-row-label">Name:</span>
+                        <span class="info-row-value">{{ $user->first_name }} {{ $user->last_name }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row-label">Email:</span>
+                        <span class="info-row-value" style="font-size:11px;">{{ $user->email }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row-label">Phone:</span>
+                        <span class="info-row-value">{{ $user->phone }}</span>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="card-header-receipt">Service Details</div>
+                    @if($appointment->invoice_number)
+                    <div class="info-row">
+                        <span class="info-row-label">Invoice #:</span>
+                        <span class="info-row-value" style="font-family:monospace;">{{ $appointment->invoice_number }}</span>
+                    </div>
+                    @endif
+                    <div class="info-row">
+                        <span class="info-row-label">Booking Ref:</span>
+                        <span class="info-row-value" style="font-family:monospace;">{{ $appointment->booking_number ?: $appointment->tracking_code }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row-label">Device:</span>
+                        <span class="info-row-value">{{ $appointment->device_brand }} {{ $appointment->device_model }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row-label">Service Date:</span>
+                        <span class="info-row-value">{{ $appointment->pref_date->format('M d, Y') }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row-label">Schedule Time:</span>
+                        <span class="info-row-value">{{ \Carbon\Carbon::parse($appointment->pref_time)->format('h:i A') }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row-label">Issue:</span>
+                        <span class="info-row-value">{{ $appointment->fault_category }}</span>
+                    </div>
+                </div>
+            </div>
+
+            @if($appointment->description)
+            <div class="desc-box">
+                <div class="desc-header-receipt">Description of Issue</div>
+                <div class="desc-content">{{ $appointment->description }}</div>
+            </div>
+            @endif
+
+            <div class="pricing-area">
+                <div class="pricing-row">
+                    <span class="pricing-label">Estimated Diagnostics Quote</span>
+                    <span class="pricing-val">₱{{ number_format($appointment->quote ?? 0, 2) }}</span>
+                </div>
+                @if(is_numeric($appointment->final_cost))
+                    @if($appointment->final_cost != $appointment->quote && $appointment->quote)
+                    <div class="pricing-row">
+                        <span class="pricing-label">Price Adjustment</span>
+                        <span class="pricing-val">₱{{ number_format($appointment->final_cost - $appointment->quote, 2) }}</span>
+                    </div>
+                    @endif
+                    <div class="total-bar-receipt">
+                        <span class="total-label">Total Amount Paid</span>
+                        <span class="total-val">₱{{ number_format($appointment->final_cost, 2) }}</span>
+                    </div>
+                @else
+                    <div class="total-bar-receipt">
+                        <span class="total-label">Estimated Total Due</span>
+                        <span class="total-val">₱{{ number_format($appointment->quote ?? 0, 2) }}</span>
+                    </div>
                 @endif
-                <tr class="total-row">
-                    <td class="label">TOTAL AMOUNT DUE:</td>
-                    <td class="value">₱{{ number_format($appointment->final_cost ?? $appointment->quote ?? 0, 2) }}</td>
-                </tr>
-            </table>
-        </div>
-        @endif
+            </div>
 
-        <div class="footer">
-            <div class="footer-text">Thank you for choosing RepairMax for your device repair needs!</div>
-            <div class="footer-text">Document generated on {{ now()->format('M d, Y \a\t h:i A') }}</div>
+            <div class="doc-footer">
+                <div>Thank you for choosing RepairMax for your device repair needs!</div>
+                <div>Document generated on {{ now()->format('M d, Y \a\t h:i A') }}</div>
+                <div style="font-style:italic; margin-top: 2px;">This receipt is electronically generated and valid without signature.</div>
+            </div>
+
         </div>
     </div>
 
-    <!-- Invoice -->
-    <div class="container page-break">
-        <div class="header">
-            <div class="logo-section">
-                <div class="company-name">RepairMax</div>
-                <div class="doc-type">INVOICE</div>
-                <div class="doc-number">#{{ $appointment->invoice_number ?? 'N/A' }}</div>
+    {{-- ══════════════════════════════════ --}}
+    {{-- INVOICE                           --}}
+    {{-- ══════════════════════════════════ --}}
+    <div class="doc-card">
+
+        <div class="doc-header doc-header-invoice">
+            <div class="logo-area">
+                <img src="{{ asset('img/logo-r-white.png') }}" class="logo-img" alt="RepairMax">
+                <div class="company-tagline">Premium Repair Specialists</div>
+            </div>
+            <div class="doc-title-area" style="margin-right: 80px;">
+                <div class="doc-title">INVOICE</div>
+                <div class="doc-ref">Invoice #: {{ $appointment->invoice_number ?? 'Pending' }}</div>
+                <div class="doc-ref">Booking Ref: {{ $appointment->booking_number ?: $appointment->tracking_code }}</div>
+            </div>
+            <div class="stamp">
+                @if($appointment->status == 'Completed') INVOICED @else {{ $appointment->status }} @endif
             </div>
         </div>
 
-        @if(strtolower($appointment->status) == 'completed')
-            <div class="status-badge status-completed">✓ Completed</div>
-        @elseif(strtolower($appointment->status) == 'cancelled')
-            <div class="status-badge status-cancelled">✗ Cancelled</div>
-        @endif
+        <div class="doc-body">
 
-        <div class="info-section">
-            <div>
-                <div class="info-block">
-                    <div class="info-label">Customer Name</div>
-                    <div class="info-value">{{ $user->first_name }} {{ $user->last_name }}</div>
-                </div>
-                <div class="info-block">
-                    <div class="info-label">Email Address</div>
-                    <div class="info-value">{{ $user->email }}</div>
-                </div>
-                <div class="info-block">
-                    <div class="info-label">Phone Number</div>
-                    <div class="info-value">{{ $user->phone }}</div>
+            <div class="status-strip status-strip-invoice">
+                <div>
+                    <div class="status-label">Current Appointment Status</div>
+                    <div class="status-val-invoice">{{ $appointment->status }}</div>
                 </div>
             </div>
-            <div>
-                <div class="info-block">
-                    <div class="info-label">Service ID / Tracking Code</div>
-                    <div class="info-value">{{ $appointment->tracking_code }}</div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="card-header-invoice">Billing Information</div>
+                    <div class="info-row">
+                        <span class="info-row-label">Name:</span>
+                        <span class="info-row-value">{{ $user->first_name }} {{ $user->last_name }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row-label">Email:</span>
+                        <span class="info-row-value" style="font-size:11px;">{{ $user->email }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row-label">Phone:</span>
+                        <span class="info-row-value">{{ $user->phone }}</span>
+                    </div>
                 </div>
-                <div class="info-block">
-                    <div class="info-label">Service Date</div>
-                    <div class="info-value">{{ $appointment->pref_date->format('M d, Y') }} at {{ \Carbon\Carbon::parse($appointment->pref_time)->format('h:i A') }}</div>
+                <div class="info-card">
+                    <div class="card-header-invoice">Invoice Details</div>
+                    <div class="info-row">
+                        <span class="info-row-label">Invoice #:</span>
+                        <span class="info-row-value" style="font-family:monospace;">{{ $appointment->invoice_number ?? 'Pending' }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row-label">Booking Ref:</span>
+                        <span class="info-row-value" style="font-family:monospace;">{{ $appointment->booking_number ?: $appointment->tracking_code }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row-label">Service Date:</span>
+                        <span class="info-row-value">{{ $appointment->pref_date->format('M d, Y') }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-row-label">Schedule Time:</span>
+                        <span class="info-row-value">{{ \Carbon\Carbon::parse($appointment->pref_time)->format('h:i A') }}</span>
+                    </div>
                 </div>
-                @if($appointment->completed_at)
-                <div class="info-block">
-                    <div class="info-label">Completed Date</div>
-                    <div class="info-value">{{ $appointment->completed_at->format('M d, Y') }}</div>
-                </div>
-                @endif
             </div>
-        </div>
 
-        <div class="device-section">
-            <div class="section-title">Device Information</div>
-            <div class="device-grid">
-                <div class="device-item">
-                    <div class="device-label">Brand</div>
-                    <div class="device-value">{{ $appointment->device_brand }}</div>
-                </div>
-                <div class="device-item">
-                    <div class="device-label">Model</div>
-                    <div class="device-value">{{ $appointment->device_model }}</div>
-                </div>
-                <div class="device-item">
-                    <div class="device-label">Issue Category</div>
-                    <div class="device-value">{{ $appointment->fault_category }}</div>
-                </div>
-                <div class="device-item">
-                    <div class="device-label">Status</div>
-                    <div class="device-value">{{ $appointment->status }}</div>
-                </div>
-            </div>
-        </div>
-
-        @if($appointment->description)
-        <div class="description-section">
-            <div class="section-title">Service Description</div>
-            <div class="description-text">{{ $appointment->description }}</div>
-        </div>
-        @endif
-
-        @if($appointment->completion_notes)
-        <div class="notes-section">
-            <div class="notes-label">Technician Notes</div>
-            <div class="notes-text">{{ $appointment->completion_notes }}</div>
-        </div>
-        @endif
-
-        @if(strtolower($appointment->status) == 'completed')
-        <div class="totals-section">
-            <table class="totals-table">
-                <tr>
-                    <td class="label">Estimated Quote:</td>
-                    <td class="value">₱{{ number_format($appointment->quote ?? 0, 2) }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Final Service Cost:</td>
-                    <td class="value">₱{{ number_format($appointment->final_cost ?? $appointment->quote ?? 0, 2) }}</td>
-                </tr>
-                @if($appointment->final_cost != $appointment->quote && $appointment->quote)
-                <tr>
-                    <td class="label">Adjustment:</td>
-                    <td class="value">₱{{ number_format(($appointment->final_cost ?? 0) - ($appointment->quote ?? 0), 2) }}</td>
-                </tr>
-                @endif
-                <tr class="total-row">
-                    <td class="label">TOTAL AMOUNT DUE:</td>
-                    <td class="value">₱{{ number_format($appointment->final_cost ?? $appointment->quote ?? 0, 2) }}</td>
-                </tr>
+            {{-- Line-item table --}}
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th style="width:55%;">Service / Item Description</th>
+                        <th style="width:20%; text-align:center;">Device</th>
+                        <th style="width:25%; text-align:right;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong style="color:#1e293b;">{{ $appointment->fault_category }}</strong>
+                            <div style="color:#64748b; font-size:10px; margin-top:2px;">Initial quote estimate & diagnostics assessment fee</div>
+                        </td>
+                        <td style="text-align:center; color:#475569;">
+                            {{ $appointment->device_brand }}<br>
+                            <span style="font-size:10px; color:#64748b;">{{ $appointment->device_model }}</span>
+                        </td>
+                        <td style="text-align:right; font-weight:bold; color:#1e293b;">
+                            ₱{{ number_format($appointment->quote ?? 0, 2) }}
+                        </td>
+                    </tr>
+                    @if(is_numeric($appointment->final_cost) && ($appointment->final_cost != $appointment->quote))
+                    <tr>
+                        <td>
+                            <strong style="color:#1e293b;">Labor & Additional Repair Fees</strong>
+                            <div style="color:#64748b; font-size:10px; margin-top:2px;">Cost adjustments during repair work</div>
+                        </td>
+                        <td style="text-align:center; color:#475569;">—</td>
+                        <td style="text-align:right; font-weight:bold; color:#1e293b;">
+                            ₱{{ number_format($appointment->final_cost - ($appointment->quote ?? 0), 2) }}
+                        </td>
+                    </tr>
+                    @endif
+                </tbody>
             </table>
-        </div>
-        @endif
 
-        <div class="footer">
-            <div class="footer-text">Thank you for choosing RepairMax for your device repair needs!</div>
-            <div class="footer-text">Document generated on {{ now()->format('M d, Y \a\t h:i A') }}</div>
+            @if($appointment->description)
+            <div class="desc-box">
+                <div class="desc-header-invoice">Description of Issue</div>
+                <div class="desc-content">{{ $appointment->description }}</div>
+            </div>
+            @endif
+
+            @if($appointment->completion_notes)
+            <div class="desc-box" style="background:#fffbeb; border-color:#fef3c7; border-left: 3px solid #d97706;">
+                <div style="font-size:9px; font-weight:800; color:#b45309; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Technician Notes</div>
+                <div class="desc-content" style="color:#78350f;">{{ $appointment->completion_notes }}</div>
+            </div>
+            @endif
+
+            <div class="pricing-area">
+                <div class="pricing-row">
+                    <span class="pricing-label">Subtotal</span>
+                    <span class="pricing-val">₱{{ number_format($appointment->quote ?? 0, 2) }}</span>
+                </div>
+                @if(is_numeric($appointment->final_cost) && ($appointment->final_cost != $appointment->quote))
+                <div class="pricing-row">
+                    <span class="pricing-label">Adjustments</span>
+                    <span class="pricing-val">₱{{ number_format($appointment->final_cost - $appointment->quote, 2) }}</span>
+                </div>
+                <div class="total-bar-invoice">
+                    <span class="total-label">Total Amount Due</span>
+                    <span class="total-val">₱{{ number_format($appointment->final_cost, 2) }}</span>
+                </div>
+                @else
+                <div class="total-bar-invoice">
+                    <span class="total-label">Estimated Total Due</span>
+                    <span class="total-val">₱{{ number_format($appointment->quote ?? 0, 2) }}</span>
+                </div>
+                @endif
+            </div>
+
+            <div class="doc-footer">
+                <div>Thank you for choosing RepairMax for your device repair needs!</div>
+                <div>Document generated on {{ now()->format('M d, Y \a\t h:i A') }}</div>
+                <div style="font-style:italic; margin-top: 2px;">This invoice is electronically generated and valid without signature.</div>
+            </div>
+
         </div>
     </div>
 
     <script>
-        function goBack() {
-            window.history.back();
-        }
-
         function downloadAsHTML() {
             const html = document.documentElement.outerHTML;
             const blob = new Blob([html], { type: 'text/html' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'receipt-invoice-{{ $appointment->tracking_code }}.html';
+            a.download = 'receipt-invoice-{{ $appointment->booking_number ?: $appointment->tracking_code }}.html';
             a.click();
             window.URL.revokeObjectURL(url);
         }

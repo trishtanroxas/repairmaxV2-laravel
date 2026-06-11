@@ -444,10 +444,15 @@ Route::post('/booking', function (Request $request) {
             $photoPath = $request->file('device_image')->store('repairs', 'public');
         }
 
+        $trackingCode = 'RPR-' . strtoupper(uniqid());
+        $selectedFault = ($validated['device_type'] && $validated['device_type'] !== 'Other') ? \App\Models\FaultType::where('name', $validated['device_type'])->first() : null;
+        $basePrice = $selectedFault ? $selectedFault->base_price : 0;
+
         /** @var \App\Models\Appointment $appointment */
         $appointment = Appointment::create([
             'user_id' => $user->id,
-            'tracking_code' => 'RPR-' . strtoupper(uniqid()),
+            'tracking_code' => $trackingCode,
+            'booking_number' => $trackingCode,
             'device_brand' => $validated['brand'],
             'device_model' => $validated['model'] ?? 'Not Specified',
             'fault_category' => $validated['device_type'],
@@ -456,20 +461,12 @@ Route::post('/booking', function (Request $request) {
             'status' => 'Pending',
             'pref_date' => now()->addDay(),
             'pref_time' => '10:00:00',
+            'quote' => $basePrice,
         ]);
 
         // Send booking confirmation email
         try {
-            Mail::to($user->email)->send(new BookingConfirmationEmail(
-                $user->first_name,
-                $user->last_name,
-                $appointment->tracking_code,
-                $appointment->device_brand,
-                $appointment->device_model,
-                $appointment->fault_category,
-                $appointment->description,
-                $user->email
-            ));
+            Mail::to($user->email)->send(new BookingConfirmationEmail($appointment));
         } catch (\Exception $e) {
             Log::error('Email sending error: ' . $e->getMessage());
         }
@@ -648,6 +645,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/reports', Reports::class)->name('reports');
     Route::get('/reports-analytics', ReportsAnalytics::class)->name('reports-analytics');
     
+    // PDF Downloads/Views
+    Route::get('/appointment/{id}/receipt', [AppointmentDownloadController::class, 'downloadReceipt'])->name('appointment.receipt');
+    Route::get('/appointment/{id}/invoice', [AppointmentDownloadController::class, 'downloadInvoice'])->name('appointment.invoice');
+    Route::get('/appointment/{id}/receipt-view', [AppointmentDownloadController::class, 'viewReceipt'])->name('appointment.receipt-view');
+    Route::get('/appointment/{id}/invoice-view', [AppointmentDownloadController::class, 'viewInvoice'])->name('appointment.invoice-view');
+
     // Settings
     Route::get('/settings', Settings::class)->name('settings');
 });

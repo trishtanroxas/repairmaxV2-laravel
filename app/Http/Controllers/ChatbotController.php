@@ -24,7 +24,7 @@ class ChatbotController extends Controller
             // Using 'localhost' instead of '127.0.0.1' for better Docker-to-Host compatibility
             $n8nWebhookUrl = env('N8N_WEBHOOK_URL', 'http://localhost:5678/webhook-test/chatbot');
 
-            $response = Http::asJson()->withHeaders([
+            $response = Http::withoutVerifying()->asJson()->withHeaders([
                 'X-N8N-SECRET' => env('N8N_WEBHOOK_SECRET', 'repairmax_secret_123'),
             ])->post($n8nWebhookUrl, [
                 'message' => $request->message,
