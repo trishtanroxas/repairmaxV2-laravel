@@ -189,13 +189,13 @@ class PublicBooking extends Component
         }
     }
 
-    public function updatedCity($value)
+    public function updatedCity(string $value)
     {
         $this->city = $value;
         $this->calculateAdditionalFee();
     }
 
-    public function updatedPickupOption($value)
+    public function updatedPickupOption(string $value)
     {
         $this->pickup_option = $value;
         $this->calculateAdditionalFee();

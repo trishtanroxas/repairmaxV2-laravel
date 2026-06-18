@@ -8,16 +8,18 @@ use Livewire\Attributes\Title;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\GeneralEmail;
+use App\Models\AppointmentReschedule;
+use Carbon\Carbon;
 
 #[Layout('components.layouts.admin')]
 #[Title('Appointment Details | Repairmax')]
 class AppointmentDetails extends Component
 {
     // Appointment ID from URL parameter
-    public $appointmentId;
+    public int|string $appointmentId;
     
     // Appointment data
-    public $appointment = null;
+    public ?Appointment $appointment = null;
     
     // Email modal state
     public $showEmailModal = false;
@@ -31,13 +33,22 @@ class AppointmentDetails extends Component
 
     // Finance update
     public $showFinanceModal = false;
+    public $formQuote = 0;
+    public $formFinalCost = '';
     public $formServiceCost = 0;
     public $formPartsUnitPrice = 0;
     public $formPartsCost = 0;
     public $formAdditionalFee = 0;
     public $formInvoiceNumber = '';
 
-    public function mount($id)
+    // Reschedule feature properties
+    public $showRescheduleModal = false;
+    public $rescheduleReason = '';
+    public $rescheduleDate = '';
+    public $rescheduleTime = '';
+    public $rescheduleType = 'admin_initiated';
+
+    public function mount(int|string $id)
     {
         $this->appointmentId = $id;
         $this->loadAppointment();
@@ -247,10 +258,10 @@ HTML;
         ]);
 
         try {
-            // If marking as Completed, require costs to be filled
+            // If marking as Completed, require costs to be filled (pricing confirmed)
             if (strtolower($this->newStatus) === 'completed') {
-                if (!$this->appointment->service_cost || !$this->appointment->parts_unit_price || !$this->appointment->parts_cost) {
-                    $this->dispatch('toast', message: 'Please enter Service Cost, Parts Unit Price, and Parts Cost before marking as Completed.', type: 'error');
+                if (!$this->appointment->pricing_confirmed) {
+                    $this->dispatch('toast', message: 'Please update and confirm financial details before marking as Completed.', type: 'error');
                     return;
                 }
             }
@@ -261,7 +272,7 @@ HTML;
             if ($this->appointment->user_id) {
                 \App\Models\Notification::create([
                     'user_id' => $this->appointment->user_id,
-                    'admin_id' => auth()->id(),
+                    'admin_id' => \Illuminate\Support\Facades\Auth::id(),
                     'title' => 'Appointment Status Updated',
                     'message' => "Your appointment status has been updated to: {$this->newStatus}",
                     'type' => 'appointment_confirmation',
@@ -295,8 +306,7 @@ HTML;
         }
     }
 
-    // Detect template selector change to update subject and body
-    public function updatedEmailType($value)
+    public function updatedEmailType(string $value)
     {
         $refNumber = $this->appointment->booking_number ?: $this->appointment->tracking_code;
         if ($value === 'receipt') {
@@ -317,6 +327,7 @@ HTML;
         $this->formQuote = $this->appointment->quote;
         $this->formFinalCost = $this->appointment->final_cost ?? '';
         $this->formServiceCost = $this->appointment->service_cost ?? 0;
+        $this->formPartsUnitPrice = $this->appointment->parts_unit_price ?? 0;
         $this->formPartsCost = $this->appointment->parts_cost ?? 0;
         $this->formAdditionalFee = $this->appointment->additional_fee;
         $this->formInvoiceNumber = $this->appointment->invoice_number ?? '';
@@ -379,6 +390,74 @@ HTML;
             $this->dispatch('toast', message: 'Pricing successfully confirmed!', type: 'success');
         } catch (\Exception $e) {
             $this->dispatch('toast', message: 'Failed to confirm pricing: ' . $e->getMessage(), type: 'error');
+        }
+    }
+
+    // Open the reschedule modal
+    public function openRescheduleModal()
+    {
+        $this->rescheduleDate = $this->appointment->pref_date ? $this->appointment->pref_date->format('Y-m-d') : '';
+        $this->rescheduleTime = $this->appointment->pref_time ? substr($this->appointment->pref_time, 0, 5) : '';
+        $this->rescheduleReason = '';
+        $this->rescheduleType = 'admin_initiated';
+        
+        $this->showRescheduleModal = true;
+    }
+
+    // Confirm the reschedule and update appointment
+    public function confirmReschedule()
+    {
+        $this->validate([
+            'rescheduleDate' => 'required|date|after:today',
+            'rescheduleTime' => 'required|date_format:H:i',
+            'rescheduleReason' => 'nullable|string',
+            'rescheduleType' => 'required|in:user_no_show,technician_unavailable,admin_initiated',
+        ]);
+
+        try {
+            $newDateTime = Carbon::parse($this->rescheduleDate . ' ' . $this->rescheduleTime);
+
+            // Create reschedule record
+            AppointmentReschedule::create([
+                'appointment_id' => $this->appointment->id,
+                'rescheduled_by' => \Illuminate\Support\Facades\Auth::id(),
+                'original_date' => $this->appointment->pref_date,
+                'new_date' => $newDateTime,
+                'reason' => $this->rescheduleReason,
+                'reschedule_type' => $this->rescheduleType,
+                'notes' => 'Admin initiated reschedule from details view',
+            ]);
+
+            // Update appointment
+            $this->appointment->update([
+                'pref_date' => $newDateTime->toDateString(),
+                'pref_time' => $newDateTime->format('H:i'),
+                'cancellation_reason' => $this->rescheduleType,
+                'reschedule_count' => $this->appointment->reschedule_count + 1,
+                'is_rescheduled' => true,
+                'status' => 'Scheduled',
+            ]);
+
+            // Create notification for customer
+            if ($this->appointment->user_id) {
+                \App\Models\Notification::create([
+                    'user_id' => $this->appointment->user_id,
+                    'admin_id' => \Illuminate\Support\Facades\Auth::id(),
+                    'title' => 'Appointment Rescheduled',
+                    'message' => "Your appointment has been rescheduled to " . $newDateTime->format('M d, Y \a\t h:i A') . ". Reason: " . ($this->rescheduleReason ?: 'Administrative adjustment.'),
+                    'type' => 'appointment_confirmation',
+                    'related_model' => 'Appointment',
+                    'related_id' => $this->appointment->id,
+                ]);
+            }
+
+            $this->loadAppointment();
+            $this->showRescheduleModal = false;
+            $this->reset(['rescheduleReason', 'rescheduleDate', 'rescheduleTime', 'rescheduleType']);
+            
+            $this->dispatch('toast', message: 'Appointment rescheduled successfully!', type: 'success');
+        } catch (\Exception $e) {
+            $this->dispatch('toast', message: 'Failed to reschedule appointment: ' . $e->getMessage(), type: 'error');
         }
     }
 }

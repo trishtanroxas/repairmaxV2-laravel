@@ -212,17 +212,17 @@ class BookAppointment extends Component
         }
     }
 
-    public function updatedCity($value)
+    public function updatedCity(string $value)
     {
         $this->city = $value;
         $this->calculateAdditionalFee();
-    }
-
-    public function updatedPickupOption($value)
-    {
-        $this->pickup_option = $value;
-        $this->calculateAdditionalFee();
-    }
+     }
+ 
+     public function updatedPickupOption(string $value)
+     {
+         $this->pickup_option = $value;
+         $this->calculateAdditionalFee();
+     }
 
     #[Computed]
     public function brands()

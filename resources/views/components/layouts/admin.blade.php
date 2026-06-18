@@ -340,7 +340,6 @@
         body.dark .laravel-pagination .relative.inline-flex.items-center.border:focus-visible {
             outline: none !important;
             box-shadow: none !important;
-            ring: none !important;
             --tw-ring-color: transparent !important;
             border-color: transparent !important;
         }
@@ -555,7 +554,7 @@
                     <input type="text" 
                         placeholder="Search appointments..." 
                         class="w-full pl-10 pr-4 py-2 bg-gray-50 hover:bg-gray-100/70 dark:bg-white/5 dark:hover:bg-white/10 text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-none transition-all placeholder:text-gray-450 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
-                        onkeydown="if(event.key === 'Enter') { window.location.href = '{{ route('admin.appointment') }}?search=' + encodeURIComponent(this.value); }">
+                        @keydown.enter="window.location.href = '{{ route('admin.appointment') }}?search=' + encodeURIComponent($el.value)">
                 </div>
  
                 <!-- Upper UI Controls -->

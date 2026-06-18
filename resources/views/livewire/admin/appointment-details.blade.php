@@ -2,6 +2,7 @@
     showEmailModal: $wire.entangle('showEmailModal'),
     showStatusModal: $wire.entangle('showStatusModal'),
     showFinanceModal: $wire.entangle('showFinanceModal'),
+    showRescheduleModal: $wire.entangle('showRescheduleModal'),
     showDeleteModal: false
 }">
     <!-- Header Section -->
@@ -96,6 +97,12 @@
                     <span class="material-symbols-outlined">receipt_long</span>
                     Send Invoice
                 </button>
+                @if ($appointment->status !== 'Completed' && $appointment->status !== 'Cancelled' && $appointment->reschedule_count < 3)
+                <button type="button" wire:click="openRescheduleModal" class="flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-full font-bold transition-colors">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    Reschedule
+                </button>
+                @endif
                 <button type="button" @click="showDeleteModal = true" class="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold transition-colors">
                     <span class="material-symbols-outlined">delete</span>
                     Delete
@@ -705,6 +712,87 @@
                     <span wire:loading wire:target="deleteAppointment">Deleting...</span>
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Reschedule Modal -->
+    <div x-show="showRescheduleModal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-md"
+        x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        @keydown.escape.window="showRescheduleModal = false">
+        
+        <div class="bg-white modal-content rounded-[2.5rem] shadow-2xl max-w-md w-full p-10 transform transition-all"
+            @click.outside="showRescheduleModal = false"
+            x-transition:enter="ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+            x-transition:leave-end="opacity-0 scale-95 translate-y-4">
+            
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-250">
+                    <span class="material-symbols-outlined text-3xl">calendar_month</span>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900">Reschedule</h2>
+                <p class="text-sm text-gray-400 mt-1">Booking Ref: <span class="font-mono font-semibold">{{ $appointment->booking_number }}</span></p>
+            </div>
+
+            <form wire:submit.prevent="confirmReschedule" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Reschedule Reason</label>
+                    <select wire:model="rescheduleType" class="w-full px-4 py-3.5 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none text-sm transition-all bg-gray-50/50">
+                        <option value="user_no_show">User No-Show</option>
+                        <option value="technician_unavailable">Technician Unavailable</option>
+                        <option value="admin_initiated">Admin Initiated</option>
+                    </select>
+                    @error('rescheduleType')
+                        <p class="text-red-650 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">New Date</label>
+                    <input type="date" wire:model="rescheduleDate" class="w-full px-4 py-3.5 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none text-sm transition-all bg-gray-50/50">
+                    @error('rescheduleDate')
+                        <p class="text-red-650 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">New Time</label>
+                    <input type="time" wire:model="rescheduleTime" class="w-full px-4 py-3.5 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none text-sm transition-all bg-gray-50/50">
+                    @error('rescheduleTime')
+                        <p class="text-red-650 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Reason/Notes</label>
+                    <textarea wire:model="rescheduleReason" rows="3" placeholder="Enter notes or explanation..." class="w-full px-4 py-3.5 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-400 outline-none text-sm transition-all resize-none bg-gray-50/50"></textarea>
+                    @error('rescheduleReason')
+                        <p class="text-red-650 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-100">
+                    <button type="button" @click="showRescheduleModal = false" class="flex-1 px-6 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-full transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" wire:loading.attr="disabled" class="flex-1 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-colors shadow-lg flex items-center justify-center gap-2">
+                        <span wire:loading.remove wire:target="confirmReschedule" class="material-symbols-outlined text-[20px]">calendar_today</span>
+                        <span wire:loading wire:target="confirmReschedule" class="material-symbols-outlined text-[20px] animate-spin text-white">progress_activity</span>
+                        <span wire:loading.remove wire:target="confirmReschedule">Confirm</span>
+                        <span wire:loading wire:target="confirmReschedule">Saving...</span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

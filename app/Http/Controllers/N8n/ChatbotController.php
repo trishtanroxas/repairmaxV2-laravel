@@ -9,6 +9,8 @@ use App\Models\Appointment;
 use App\Services\N8nService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ChatbotController extends Controller
 {
@@ -29,7 +31,7 @@ class ChatbotController extends Controller
             'session_id' => 'nullable|integer|exists:chatbot_sessions,id',
         ]);
 
-        $userId = auth()->id();
+        $userId = Auth::id();
         $sessionId = $validated['session_id'] ?? null;
 
         // Create or get session
@@ -135,11 +137,11 @@ class ChatbotController extends Controller
     /**
      * Get conversation messages
      */
-    public function getMessages($sessionId): JsonResponse
+    public function getMessages(int $sessionId): JsonResponse
     {
         $session = ChatbotSession::findOrFail($sessionId);
         
-        $this->authorize('view', $session);
+        Gate::authorize('view', $session);
 
         $messages = $session->messages()
             ->orderBy('created_at', 'asc')
@@ -172,7 +174,7 @@ class ChatbotController extends Controller
         ]);
 
         $session = ChatbotSession::create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'title' => $validated['title'] ?? 'New Conversation',
         ]);
 
@@ -191,7 +193,7 @@ class ChatbotController extends Controller
      */
     public function getSessions(): JsonResponse
     {
-        $sessions = ChatbotSession::where('user_id', auth()->id())
+        $sessions = ChatbotSession::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->with(['messages' => function ($query) {
                 $query->latest()->limit(1);
@@ -212,11 +214,11 @@ class ChatbotController extends Controller
     /**
      * Delete session
      */
-    public function deleteSession($sessionId): JsonResponse
+    public function deleteSession(int $sessionId): JsonResponse
     {
         $session = ChatbotSession::findOrFail($sessionId);
         
-        $this->authorize('delete', $session);
+        Gate::authorize('delete', $session);
 
         $session->messages()->delete();
         $session->delete();

@@ -28,15 +28,276 @@
         }
         [x-cloak] { display: none !important; }
 
+        /* Scoped Dark Mode overrides for all User Dashboard Views */
+        body.dark {
+            color: #cbd5e1 !important; /* text-gray-300 */
+        }
+        /* Convert generic white cards to glassmorphism (excluding modals) */
+        body.dark .bg-white:not(aside):not(aside *):not(header):not(header *):not(.absolute):not(.fixed):not(.modal-content):not(.modal-content *) {
+            background-color: rgba(255, 255, 255, 0.03) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #e2e8f0 !important;
+        }
+        body.dark .bg-gray-55\/5:not(.modal-content):not(.modal-content *),
+        body.dark .bg-gray-50:not(.modal-content):not(.modal-content *),
+        body.dark .bg-gray-50\/30:not(.modal-content):not(.modal-content *),
+        body.dark .bg-gray-50\/50:not(.modal-content):not(.modal-content *),
+        body.dark .bg-gray-50\/70:not(.modal-content):not(.modal-content *) {
+            background-color: rgba(255, 255, 255, 0.02) !important;
+            border-color: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        /* Solid modal styles in dark mode to remove glassy/see-thru effect */
+        body.dark .modal-content {
+            background-color: #191e2e !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        body.dark .modal-content .bg-white {
+            background-color: #191e2e !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        body.dark .modal-content .bg-gray-50,
+        body.dark .modal-content .bg-gray-55\/5,
+        body.dark .modal-content .bg-gray-50\/30,
+        body.dark .modal-content .bg-gray-50\/50 {
+            background-color: #121622 !important; /* Slightly darker solid #191e2e */
+            border-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        /* Buttons inside modal */
+        body.dark .modal-content .bg-white.border {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+        }
+        body.dark .modal-content .bg-white.border:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        body.dark .modal-content .text-gray-900,
+        body.dark .modal-content .text-gray-800,
+        body.dark .modal-content .text-gray-700 {
+            color: #ffffff !important;
+        }
+        body.dark .modal-content .text-gray-500,
+        body.dark .modal-content .text-gray-400 {
+            color: #94a3b8 !important; /* highly visible grey */
+        }
+        /* Text overrides */
+        body.dark .text-gray-900,
+        body.dark .text-gray-800,
+        body.dark .text-gray-750,
+        body.dark .text-gray-750\/80,
+        body.dark .text-gray-700 {
+            color: #ffffff !important;
+        }
+        body.dark .text-gray-650,
+        body.dark .text-gray-600,
+        body.dark .text-gray-550,
+        body.dark .text-gray-500,
+        body.dark .text-gray-455 {
+            color: #94a3b8 !important; /* text-gray-400 */
+        }
+        body.dark .text-gray-400 {
+            color: #cbd5e1 !important; /* text-gray-300 */
+        }
+        /* Borders */
+        body.dark .border-brand-200,
+        body.dark .border-brand-100,
+        body.dark .border-brand-250,
+        body.dark .border-gray-250,
+        body.dark .border-gray-200,
+        body.dark .border-gray-100,
+        body.dark .divide-brand-100,
+        body.dark .divide-brand-200,
+        body.dark .border-t,
+        body.dark .border-b,
+        body.dark .divide-y,
+        body.dark .divide-y > * {
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark .border-blue-100 {
+            border-color: rgba(59, 130, 246, 0.2) !important;
+        }
+        body.dark .border-blue-100\/50 {
+            border-color: rgba(59, 130, 246, 0.1) !important;
+        }
+        body.dark .border-blue-100\/80 {
+            border-color: rgba(59, 130, 246, 0.16) !important;
+        }
+        /* Buttons styling */
+        body.dark .bg-gray-900 {
+            background-color: #1e293b !important;
+            color: #ffffff !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        body.dark .bg-gray-900:hover {
+            background-color: #2b3a55 !important;
+        }
+        body.dark .bg-gray-100 {
+            background-color: rgba(255, 255, 255, 0.06) !important;
+            color: #ffffff !important;
+            border-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        body.dark .bg-gray-100:hover {
+            background-color: rgba(255, 255, 255, 0.12) !important;
+        }
+        /* Badge colors */
+        body.dark .bg-blue-50 {
+            background-color: rgba(59, 130, 246, 0.1) !important;
+            color: #60a5fa !important;
+        }
+        body.dark .bg-blue-100 {
+            background-color: rgba(59, 130, 246, 0.15) !important;
+        }
+        body.dark .bg-yellow-50 {
+            background-color: rgba(245, 158, 11, 0.08) !important;
+        }
+        body.dark .bg-yellow-100 {
+            background-color: rgba(245, 158, 11, 0.2) !important;
+        }
+        body.dark .text-yellow-800 {
+            color: #fbbf24 !important;
+        }
+        body.dark .hover\:bg-blue-50:hover {
+            background-color: rgba(59, 130, 246, 0.15) !important;
+        }
+        body.dark .bg-green-50 {
+            background-color: rgba(16, 185, 129, 0.1) !important;
+            color: #34d399 !important;
+        }
+        body.dark .bg-orange-50 {
+            background-color: rgba(249, 115, 22, 0.1) !important;
+            color: #fb923c !important;
+        }
+        body.dark .bg-purple-50 {
+            background-color: rgba(139, 92, 246, 0.1) !important;
+            color: #c084fc !important;
+        }
+        body.dark .bg-amber-50 {
+            background-color: rgba(245, 158, 11, 0.1) !important;
+            color: #fbbf24 !important;
+        }
+        body.dark .bg-red-50 {
+            background-color: rgba(239, 68, 68, 0.1) !important;
+            color: #f87171 !important;
+        }
+        /* Inputs & forms styling */
+        body.dark input,
+        body.dark select,
+        body.dark textarea {
+            background-color: rgba(255, 255, 255, 0.02) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+        }
         body.dark input:focus,
         body.dark select:focus,
         body.dark textarea:focus,
+        body.dark .dark input:focus,
+        body.dark .dark select:focus,
+        body.dark .dark textarea:focus,
         .dark input:focus,
         .dark select:focus,
         .dark textarea:focus {
             border-color: #3b82f6 !important;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.35) !important;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
             outline: none !important;
+        }
+        body.dark input::placeholder,
+        body.dark textarea::placeholder {
+            color: #475569 !important;
+        }
+        /* Dropdowns list in select */
+        body.dark select option {
+            background-color: #0b0f19 !important;
+            color: #ffffff !important;
+        }
+        /* Labels */
+        body.dark label {
+            color: #cbd5e1 !important;
+        }
+        /* Table rows hover and headers */
+        body.dark thead.bg-gray-50,
+        body.dark tr.bg-gray-50,
+        body.dark tr.bg-gray-50\/50,
+        body.dark tr.bg-gray-50\/70,
+        body.dark thead.bg-gray-50\/70,
+        body.dark thead.bg-gray-50\/50 {
+            background-color: rgba(255, 255, 255, 0.04) !important;
+        }
+        body.dark .bg-blue-50\/50 {
+            background-color: rgba(59, 130, 246, 0.15) !important;
+        }
+        /* Fix: too-bright hover states in dark mode */
+        body.dark tr.hover\:bg-gray-50:hover,
+        body.dark tr.hover\:bg-gray-50\/80:hover,
+        body.dark tr.hover\:bg-gray-50\/50:hover,
+        body.dark tr.hover\:bg-gray-50\/60:hover,
+        body.dark div.hover\:bg-gray-50:hover,
+        body.dark div.hover\:bg-gray-50\/60:hover,
+        body.dark div.hover\:bg-gray-50\/50:hover,
+        body.dark div.hover\:bg-gray-50\/80:hover,
+        body.dark a.hover\:bg-gray-50:hover,
+        body.dark a.hover\:bg-gray-50\/50:hover,
+        body.dark a.hover\:bg-gray-50\/80:hover,
+        body.dark button.hover\:bg-gray-50:hover,
+        body.dark button.hover\:bg-gray-50\/50:hover,
+        body.dark button.hover\:bg-gray-50\/80:hover,
+        body.dark li.hover\:bg-gray-50:hover,
+        body.dark .hover\:bg-gray-50:hover,
+        body.dark .hover\:bg-gray-50\/30:hover,
+        body.dark .hover\:bg-gray-50\/50:hover,
+        body.dark .hover\:bg-gray-50\/60:hover,
+        body.dark .hover\:bg-gray-50\/80:hover,
+        body.dark .hover\:bg-gray-100:hover,
+        body.dark .hover\:bg-gray-100\/50:hover,
+        body.dark .hover\:bg-gray-100\/80:hover,
+        body.dark .hover\:bg-gray-200:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        /* Fix: white shadow glow on hover in dark mode */
+        body.dark .hover\:shadow-md:hover,
+        body.dark .hover\:shadow-lg:hover {
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6) !important;
+        }
+        body.dark .transition-shadow:hover,
+        body.dark .shadow-md {
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5) !important;
+        }
+        /* Fix: white avatar border ring and status dot ring in dark mode */
+        body.dark img.border.border-gray-200,
+        body.dark img.rounded-full.border,
+        body.dark img.border-white {
+            border-color: rgba(255, 255, 255, 0.12) !important;
+        }
+        body.dark span.border-white,
+        body.dark span.border-2.border-white,
+        body.dark .border-white:not(img) {
+            border-color: #020617 !important; /* blends with dark theme row/card backgrounds */
+        }
+        /* Fix: badge white borders in dark mode */
+        body.dark .border-green-100 {
+            border-color: rgba(16, 185, 129, 0.2) !important;
+        }
+        body.dark .border-blue-100 {
+            border-color: rgba(59, 130, 246, 0.2) !important;
+        }
+        body.dark .border-orange-100 {
+            border-color: rgba(249, 115, 22, 0.2) !important;
+        }
+        body.dark .border-purple-100 {
+            border-color: rgba(139, 92, 246, 0.2) !important;
+        }
+        body.dark .border-amber-100,
+        body.dark .border-yellow-100 {
+            border-color: rgba(245, 158, 11, 0.2) !important;
+        }
+        body.dark .border-red-100 {
+            border-color: rgba(239, 68, 68, 0.2) !important;
         }
 
         /* Pagination overrides in dark mode */
@@ -66,7 +327,6 @@
         body.dark .laravel-pagination .relative.inline-flex.items-center.border:focus-visible {
             outline: none !important;
             box-shadow: none !important;
-            ring: none !important;
             --tw-ring-color: transparent !important;
             border-color: transparent !important;
         }
@@ -316,7 +576,7 @@
                     <input type="text" 
                         placeholder="Search repairs, services..." 
                         class="w-full pl-10 pr-4 py-2 bg-gray-50 hover:bg-gray-100/70 dark:bg-white/5 dark:hover:bg-white/10 text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-none transition-all placeholder:text-gray-450 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:focus:!border-blue-500 dark:focus:!ring-2 dark:focus:!ring-blue-500/25"
-                        onkeydown="if(event.key === 'Enter') { window.location.href = '{{ route('user.services') }}?search=' + encodeURIComponent(this.value); }">
+                        @keydown.enter="window.location.href = '{{ route('user.services') }}?search=' + encodeURIComponent($el.value)">
                 </div>
  
                 <!-- User UI Dropdown -->

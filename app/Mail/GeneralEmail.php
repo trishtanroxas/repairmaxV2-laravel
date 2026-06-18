@@ -12,12 +12,12 @@ class GeneralEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subjectLine;
-    public $bodyContent;
-    protected $pdfData;
-    protected $pdfFileName;
+    public string $subjectLine;
+    public string $bodyContent;
+    protected ?string $pdfData;
+    protected ?string $pdfFileName;
 
-    public function __construct($subjectLine, $bodyContent, $pdfData = null, $pdfFileName = null)
+    public function __construct(string $subjectLine, string $bodyContent, ?string $pdfData = null, ?string $pdfFileName = null)
     {
         $this->subjectLine = $subjectLine;
         $this->bodyContent = $bodyContent;

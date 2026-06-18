@@ -534,7 +534,7 @@ Route::post('/contact/send', function (Request $request) {
         ]);
 
     } catch (\Exception $e) {
-        \Log::error('Contact form error: ' . $e->getMessage());
+        Log::error('Contact form error: ' . $e->getMessage());
         return response()->json([
             'success' => false,
             'message' => 'Sorry, there was an error sending your message. Please try again later.'
