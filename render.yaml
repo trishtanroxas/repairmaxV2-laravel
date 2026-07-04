@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: repairmax-v2
+    env: php
+    buildCommand: "composer install --no-dev --optimize-autoloader && npm install && npm run build"
+    documentRoot: public
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        value: "base64:GebO1XmoW7Wq6NK4GnUmhPRGgweZ7vQN2iRjTvlCY/U="
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        value: aws-1-ap-southeast-2.pooler.supabase.com
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_DATABASE
+        value: postgres
+      - key: DB_USERNAME
+        value: postgres.sbzcdflxgvwhqgsvnllc
+      - key: DB_PASSWORD
+        value: RepairMax2026Password
