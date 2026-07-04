@@ -41,9 +41,13 @@ return new class extends Migration
             });
 
         // 4. Finally, change the column to JSON
-        Schema::table('appointments', function (Blueprint $table) {
-            $table->json('photo_paths')->nullable()->change();
-        });
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('ALTER TABLE appointments ALTER COLUMN photo_paths TYPE json USING photo_paths::json');
+        } else {
+            Schema::table('appointments', function (Blueprint $table) {
+                $table->json('photo_paths')->nullable()->change();
+            });
+        }
     }
 
     public function down(): void
