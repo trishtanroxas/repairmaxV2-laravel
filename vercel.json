@@ -17,9 +17,16 @@
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "true",
+    "APP_KEY": "base64:GebO1XmoW7Wq6NK4GnUmhPRGgweZ7vQN2iRjTvlCY/U=",
     "VIEW_COMPILED_PATH": "/tmp",
     "CACHE_STORE": "array",
     "SESSION_DRIVER": "cookie",
-    "LOG_CHANNEL": "stderr"
+    "LOG_CHANNEL": "stderr",
+    "DB_CONNECTION": "pgsql",
+    "DB_HOST": "aws-1-ap-southeast-2.pooler.supabase.com",
+    "DB_PORT": "5432",
+    "DB_DATABASE": "postgres",
+    "DB_USERNAME": "postgres.sbzcdflxgvwhqgsvnllc",
+    "DB_PASSWORD": "RepairMax2026Password"
   }
 }
