@@ -23,4 +23,5 @@ Homestead.yaml
 Thumbs.db
 /.gemini
 *.json
+!vercel.json
 /scratch
