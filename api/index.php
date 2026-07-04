@@ -1,4 +1,13 @@
 <?php
 
-// Forward Vercel requests to Laravel's public/index.php - trigger build
-require __DIR__ . '/../public/index.php';
+try {
+    // Forward Vercel requests to Laravel's public/index.php
+    require __DIR__ . '/../public/index.php';
+} catch (\Throwable $e) {
+    header("HTTP/1.1 500 Internal Server Error");
+    echo "<h1>Application Bootstrap Error</h1>";
+    echo "<p><strong>Message:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
+    echo "<p><strong>File:</strong> " . htmlspecialchars($e->getFile()) . " on line " . $e->getLine() . "</p>";
+    echo "<h3>Stack Trace:</h3>";
+    echo "<pre>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
+}
