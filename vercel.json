@@ -1,8 +1,6 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": "npm run build",
-  "outputDirectory": ".",
   "functions": {
     "api/index.php": {
       "runtime": "vercel-php@0.8.0"
